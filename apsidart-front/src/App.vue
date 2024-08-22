@@ -2,6 +2,7 @@
 import { computed, onMounted } from 'vue';
 import { useGestionsAppStore } from './stores/GestionsAppStore';
 import WaitingScreen from './views/WaitingScreen.vue';
+import { RouterView } from 'vue-router';
 
 const gestionsAppStore = useGestionsAppStore();
 
@@ -11,7 +12,7 @@ onMounted(() => {
   // GET profil
   setTimeout(() => {
     gestionsAppStore.isAppLoaded = true;
-  }, 2000)
+  }, 2500)
 })
 
 </script>
@@ -20,4 +21,5 @@ onMounted(() => {
 
   <WaitingScreen v-if="!isAppLoaded" />
   <RouterView v-else />
+  
 </template>
