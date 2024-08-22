@@ -1,6 +1,12 @@
 <script setup lang="ts">
+import PreviousGameComponent from '@/components/PreviousGameComponent.vue';
+import RankingComponent from '@/components/RankingComponent.vue';
+import ProfileComponent from '@/components/ProfileComponent.vue';
+
 </script>
 
 <template>
-    <h2>HomePage</h2>
+    <ProfileComponent />
+    <RankingComponent />
+    <PreviousGameComponent />
 </template>

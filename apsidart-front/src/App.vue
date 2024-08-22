@@ -1,17 +1,17 @@
 <script setup lang="ts">
 import { computed, onMounted } from 'vue';
-import { useGestionsAppStore } from './stores/GestionsAppStore';
-import WaitingScreen from './views/WaitingScreen.vue';
+import { useManagementAppStore } from './stores/ManagementAppStore';
+import WaitingPage from './views/WaitingPage.vue';
 import { RouterView } from 'vue-router';
 
-const gestionsAppStore = useGestionsAppStore();
+const managementAppStore = useManagementAppStore();
 
-const isAppLoaded = computed(() => gestionsAppStore.isAppLoaded);
+const isAppLoaded = computed(() => managementAppStore.isAppLoaded);
 
 onMounted(() => {
   // GET profil
   setTimeout(() => {
-    gestionsAppStore.isAppLoaded = true;
+    managementAppStore.isAppLoaded = true;
   }, 2500)
 })
 
@@ -19,7 +19,7 @@ onMounted(() => {
 
 <template>
 
-  <WaitingScreen v-if="!isAppLoaded" />
+  <WaitingPage v-if="!isAppLoaded" />
   <RouterView v-else />
   
 </template>
