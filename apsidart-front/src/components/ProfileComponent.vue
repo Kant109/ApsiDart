@@ -57,6 +57,9 @@ const saveUser = () => {
         :css="false"
     >
         <div class="user-profile-container">
+            <div class="cancel" @click.prevent="seeProfile">
+                <img src="../assets/images/close-cross.svg" alt="Fermer">
+            </div>
             <div class="user-picture">
                 <img src="../assets/mock/user-picture.svg" alt="Photo de profil">
             </div>
@@ -76,17 +79,21 @@ const saveUser = () => {
                 <label for="mail">Email</label>
                 <input type="text" id="mail" name="mail" v-model="User.mail"/>
             </div>
-            <div class="save" @click.prevent="saveUser">Btn Save</div>
-            <div class="cancel" @click.prevent="seeProfile">Annuler</div>
+            <div class="save">
+                <a @click.prevent="saveUser">Sauvegarder</a>
+            </div>
         </div>
     </transition>
 </template>
 
 <style lang="scss">
+@import "../assets/mixins/buttons.scss";
+
 .profile-container {
     display: flex;
     flex-direction: column;
     margin: 1rem;
+    padding: 1rem;
     border-radius: 10px;
     box-shadow: 0px 0px 50px 2px rgba(0,0,0,0.5);
     position: relative;
@@ -103,7 +110,6 @@ const saveUser = () => {
 
     .profile-infos-container {
         display: flex;
-        margin: 1rem;
         gap: 1rem;
         align-items: center;
 
@@ -116,7 +122,7 @@ const saveUser = () => {
                 width: 6rem;
                 height: 6rem;
                 aspect-ratio: 1/1;
-                background-color: grey;
+                background-color: lightgrey;
                 border-radius: 50%;
             }
 
@@ -160,6 +166,17 @@ const saveUser = () => {
     padding: 2rem;
     border-radius: 10px;
     box-shadow: 0px 0px 50px 2px rgba(0,0,0,0.5);
+    position: relative;
+
+    .cancel {
+        position: absolute;
+        top: 1rem;
+        right: 1rem;
+
+        img {
+            width: 1.5rem;
+        }
+    }
 
     .user-picture {
         display: flex;
@@ -171,7 +188,7 @@ const saveUser = () => {
             height: 7rem;
             aspect-ratio: 1/1;
             border-radius: 50%;
-            background-color: grey;
+            background-color: lightgrey;
         }
 
     }
@@ -208,6 +225,10 @@ const saveUser = () => {
         &:focus {
             border: 1px solid black;
         }
+    }
+
+    .save {
+        @include button-primary(#c90900);
     }
 }
 </style>
