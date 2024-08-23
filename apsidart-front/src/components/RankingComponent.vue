@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import User from "../assets/mock/user.json";
 
 const seeRanking = () => {
     console.log('go to full ranking')
@@ -19,9 +20,9 @@ const seeRanking = () => {
         <div class="ranking-player">
 
             <div class="podium">
-                <div class="second-place"></div>
-                <div class="first-place"></div>
-                <div class="third-place"></div>
+                <div class="place second">{{ User.pseudo }}</div>
+                <div class="place first">{{ User.pseudo }}</div>
+                <div class="place third">{{ User.pseudo }}</div>
             </div>
             <div class="check-ranking">
                 <a @click.prevent="seeRanking">classement<span class="arrow"></span></a>
@@ -58,17 +59,63 @@ const seeRanking = () => {
     .ranking-player {
 
         .podium {
+            display: flex;
+            justify-content: space-evenly;
 
+            .place {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                text-align: center;
+                font-family: "Kanit", sans-serif;
+                margin-top: 1rem;
+
+                &.second::before {
+                    content: "";
+                    display: block;
+                    background-image: url("../assets/images/2nd-place-medal.svg");
+                    background-repeat: no-repeat;
+                    height: 2rem;
+                    width: 2rem;
+                    margin-top: 2rem;
+                }
+
+                &.first::before {
+                    content: "";
+                    display: block;
+                    background-image: url("../assets/images/1st-place-medal.svg");
+                    background-repeat: no-repeat;
+                    height: 2rem;
+                    width: 2rem;
+                }
+
+                &.third::before {
+                    content: "";
+                    display: block;
+                    background-image: url("../assets/images/3rd-place-medal.svg");
+                    background-repeat: no-repeat;
+                    height: 2rem;
+                    width: 2rem;
+                    margin-top: 3rem;
+                }
+            }
         }
 
         .check-ranking {
+            margin-top: 1rem;
 
             a {
+                display: flex;
                 font-family: "Kanit", sans-serif;
+                font-size: 1rem;
 
-                .arrow {
+                .arrow::after {
                     content: "";
-                    background-image: url("../assets/images/right-arrow.svg");;
+                    display: block;
+                    height: 1.5rem;
+                    width: 1.5rem;
+                    margin-left: .5rem;
+                    background-image: url("../assets/images/right-arrow.svg");
                 }
             }
         }
