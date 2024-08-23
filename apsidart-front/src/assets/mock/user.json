@@ -1,6 +1,8 @@
 {
     "name": "ROULET",
     "firstname": "Quentin",
+    "birthdate": "11/09/1999",
+    "mail": "qroulet@mail.fr",
     "win": "3",
     "loose": "7",
     "rank": "10"
