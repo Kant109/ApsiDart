@@ -33,7 +33,7 @@ const saveUser = () => {
 </script>
 
 <template>
-    <div class="profile-container" v-if="!seeMore">
+    <div class="profile-container">
         <div class="see-more">
             <img src="../assets/images/see-more.svg" alt="Voir plus" @click.prevent="seeProfile">
         </div>
@@ -50,37 +50,39 @@ const saveUser = () => {
         </div>
     </div>
     <transition
-        v-else
+        v-if="seeMore"
         appear
         @before-enter="beforeEnter"
         @enter="enter"
         :css="false"
     >
         <div class="user-profile-container">
-            <div class="cancel" @click.prevent="seeProfile">
-                <img src="../assets/images/close-cross.svg" alt="Fermer">
-            </div>
-            <div class="user-picture">
-                <img src="../assets/mock/user-picture.svg" alt="Photo de profil">
-            </div>
-            <div class="input name">
-                <label for="name">Nom</label>
-                <input type="text" id="name" name="name" v-model="User.name"/>
-            </div>
-            <div class="input firstname">
-                <label for="firstname">Prénom</label>
-                <input type="text" id="firstname" name="firstname" v-model="User.firstname"/>
-            </div>
-            <div class="input birthdate">
-                <label for="birthdate">Date de naissance</label>
-                <input type="text" id="birthdate" name="birthdate" v-model="User.birthdate"/>
-            </div>
-            <div class="input mail">
-                <label for="mail">Email</label>
-                <input type="text" id="mail" name="mail" v-model="User.mail"/>
-            </div>
-            <div class="save">
-                <a @click.prevent="saveUser">Sauvegarder</a>
+            <div class="user-profile-box">
+                <div class="cancel" @click.prevent="seeProfile">
+                    <img src="../assets/images/close-cross.svg" alt="Fermer">
+                </div>
+                <div class="user-picture">
+                    <img src="../assets/mock/user-picture.svg" alt="Photo de profil">
+                </div>
+                <div class="input name">
+                    <label for="name">Nom</label>
+                    <input type="text" id="name" name="name" v-model="User.name"/>
+                </div>
+                <div class="input firstname">
+                    <label for="firstname">Prénom</label>
+                    <input type="text" id="firstname" name="firstname" v-model="User.firstname"/>
+                </div>
+                <div class="input birthdate">
+                    <label for="birthdate">Date de naissance</label>
+                    <input type="text" id="birthdate" name="birthdate" v-model="User.birthdate"/>
+                </div>
+                <div class="input mail">
+                    <label for="mail">Email</label>
+                    <input type="text" id="mail" name="mail" v-model="User.mail"/>
+                </div>
+                <div class="save">
+                    <a @click.prevent="saveUser">Sauvegarder</a>
+                </div>
             </div>
         </div>
     </transition>
@@ -159,76 +161,92 @@ const saveUser = () => {
 }
 
 .user-profile-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(161, 161, 161, 0.25);
+    backdrop-filter: blur(5px);
     display: flex;
-    flex-direction: column;
-    gap: 1rem;
-    margin: 1rem;
-    padding: 2rem;
-    border-radius: 10px;
-    box-shadow: 0px 0px 50px 2px rgba(0,0,0,0.5);
-    position: relative;
+    justify-content: center;
+    z-index: 1000;
 
-    .cancel {
-        position: absolute;
-        top: 1rem;
-        right: 1rem;
-
-        img {
-            width: 1.5rem;
-        }
-    }
-
-    .user-picture {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-
-        img {
-            width: 7rem;
-            height: 7rem;
-            aspect-ratio: 1/1;
-            border-radius: 50%;
-            background-color: lightgrey;
-        }
-
-    }
-
-    .input {
+    .user-profile-box {
         display: flex;
         flex-direction: column;
+        align-items: center;
+        gap: 1rem;
+        margin: 1rem;
+        padding: 2rem 0;
+        border-radius: 10px;
+        box-shadow: 0px 0px 50px 2px rgba(0,0,0,0.5);
         position: relative;
-        border: 1px solid lightgrey;
-        border-radius: 5px;
-        height: 3rem;
-        max-width: 100%;
-
-        label {
+        background-color: white;
+        height: fit-content;
+    
+        .cancel {
             position: absolute;
-            top: -.7rem;
-            background-color: white;
-            margin-left: .5rem;
-            text-align: center;
-            font-family: "Kanit", sans-serif;
-            font-size: 1rem;
+            top: 1rem;
+            right: 1rem;
+    
+            img {
+                width: 1.5rem;
+            }
         }
-
-        input {
-            border: none;
-            font-family: "Kanit", sans-serif;
-            font-size: 1.5rem;
-            height: 100%;
-            padding: .5rem;
-            margin: 0 .5rem;
-            outline: none;
+    
+        .user-picture {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+    
+            img {
+                width: 7rem;
+                height: 7rem;
+                aspect-ratio: 1/1;
+                border-radius: 50%;
+                background-color: lightgrey;
+            }
+    
         }
-
-        &:focus {
-            border: 1px solid black;
+    
+        .input {
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            border: 1px solid lightgrey;
+            border-radius: 5px;
+            height: 3rem;
+            max-width: 80%;
+    
+            label {
+                position: absolute;
+                top: -.7rem;
+                background-color: white;
+                margin-left: .5rem;
+                text-align: center;
+                font-family: "Kanit", sans-serif;
+                font-size: 1rem;
+            }
+    
+            input {
+                border: none;
+                font-family: "Kanit", sans-serif;
+                font-size: 1.5rem;
+                height: 100%;
+                padding: .5rem;
+                margin: 0 .5rem;
+                outline: none;
+            }
+    
+            &:focus {
+                border: 1px solid black;
+            }
         }
-    }
-
-    .save {
-        @include button-primary(#c90900);
+    
+        .save {
+            @include button-primary(#c90900);
+        }
     }
 }
 </style>
