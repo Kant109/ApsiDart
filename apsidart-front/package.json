@@ -12,6 +12,7 @@
     "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts --fix --ignore-path .gitignore"
   },
   "dependencies": {
+    "gsap": "^3.12.5",
     "lottie-web-vue": "^2.0.7",
     "pinia": "^2.1.7",
     "vue": "^3.4.29",

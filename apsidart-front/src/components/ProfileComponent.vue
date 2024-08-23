@@ -14,8 +14,8 @@ import User from "../assets/mock/user.json";
             <div class="profile-infos">
                 <div class="name">{{ User.name }}</div>
                 <div class="firstname">{{ User.firstname }}</div>
-                <div class="ratio">{{ User.ratio }}</div>
-                <div class="rank">{{ User.rank }}</div>
+                <div class="ratio">Ratio (V/D) : &nbsp;<div class="value">{{ User.win }}/{{ User.loose }}</div></div>
+                <div class="rank">Classement : &nbsp;<div class="value">{{ User.rank }}</div>ème</div>
             </div>
         </div>
     </div>
@@ -43,30 +43,47 @@ import User from "../assets/mock/user.json";
     .profile-infos-container {
         display: flex;
         margin: 1rem;
-        gap: .5rem;
+        gap: 1rem;
+        align-items: center;
 
         .profile-picture {
             display: flex;
             background-color: red;
             border-radius: 50%;
-            width: 5rem;
-            aspect-ratio: 1/1;
+            width: 6rem;
+            height: 6rem;
             justify-content: center;
             align-items: center;
 
             img {
-                width: 4rem;
+                width: 5rem;
+                height: 5rem;
                 aspect-ratio: 1/1;
             }
 
         }
 
         .profile-infos {
+            display: flex;
+            flex-direction: column;
+
             .name {
                 font-family: "Bungee Tint", sans-serif;
+                font-size: 1.5rem;
             }
             .firstname {
                 font-family: "Kanit", sans-serif;
+                font-size: 1.5rem;
+            }
+            
+            .ratio, .rank {
+                display: flex;
+                align-items: center;
+                font-family: "Kanit", sans-serif;
+
+                .value {
+                    font-family: "Bungee Tint", sans-serif;
+                }
             }
         }
     }

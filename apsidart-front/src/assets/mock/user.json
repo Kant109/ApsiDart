@@ -1,6 +1,7 @@
 {
     "name": "ROULET",
     "firstname": "Quentin",
-    "ratio": "1/1",
+    "win": "3",
+    "loose": "7",
     "rank": "10"
 }
