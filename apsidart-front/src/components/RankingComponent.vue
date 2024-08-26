@@ -10,15 +10,14 @@ const seeRanking = () => {
     <div class="ranking-container">
         <div class="header">
             <h2>Classement</h2>
-            <select name="mode-type" id="mode-type">
+            <select name="mode-type-ranking" id="mode-type-ranking">
                 <option value="501">501</option>
                 <option value="301">301</option>
                 <option value="cricket">Cricket</option>
             </select>
         </div>
         
-        <div class="ranking-player">
-
+        <div class="ranking-content">
             <div class="podium">
                 <div class="place second">{{ User.pseudo }}</div>
                 <div class="place first">{{ User.pseudo }}</div>
@@ -53,10 +52,11 @@ const seeRanking = () => {
         select {
             border: none;
             outline: none;
+            background-color: transparent;
         }
     }
 
-    .ranking-player {
+    .ranking-content {
 
         .podium {
             display: flex;
@@ -108,6 +108,7 @@ const seeRanking = () => {
                 display: flex;
                 font-family: "Kanit", sans-serif;
                 font-size: 1rem;
+                justify-content: flex-end;
 
                 .arrow::after {
                     content: "";

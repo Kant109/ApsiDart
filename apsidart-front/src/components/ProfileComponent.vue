@@ -1,30 +1,11 @@
 <script setup lang="ts">
 import { ref } from "vue";
-import gsap from "gsap";
 import User from "../assets/mock/user.json";
-import { Flip } from "gsap/Flip";
-
-gsap.registerPlugin(Flip)
 
 const seeMore = ref(false);
 
 const seeProfile = () => {
     seeMore.value = !seeMore.value;
-}
-
-const beforeEnter = (el: any) => {
-    el.style.transform = 'translateY(-60px)'
-    el.style.opacity = 0
-}
-
-const enter = (el: any, done: any) => {
-    gsap.to(el, {
-        duration: 1,
-        y: 0,
-        opacity: 1,
-        ease: 'bounce.out',
-        onComplete: done
-    })
 }
 
 const saveUser = () => {
@@ -49,43 +30,35 @@ const saveUser = () => {
             </div>
         </div>
     </div>
-    <transition
-        v-if="seeMore"
-        appear
-        @before-enter="beforeEnter"
-        @enter="enter"
-        :css="false"
-    >
-        <div class="user-profile-container">
-            <div class="user-profile-box">
-                <div class="cancel" @click.prevent="seeProfile">
-                    <img src="../assets/images/close-cross.svg" alt="Fermer">
-                </div>
-                <div class="user-picture">
-                    <img src="../assets/mock/user-picture.svg" alt="Photo de profil">
-                </div>
-                <div class="input name">
-                    <label for="name">Nom</label>
-                    <input type="text" id="name" name="name" v-model="User.name"/>
-                </div>
-                <div class="input firstname">
-                    <label for="firstname">Prénom</label>
-                    <input type="text" id="firstname" name="firstname" v-model="User.firstname"/>
-                </div>
-                <div class="input birthdate">
-                    <label for="birthdate">Date de naissance</label>
-                    <input type="text" id="birthdate" name="birthdate" v-model="User.birthdate"/>
-                </div>
-                <div class="input mail">
-                    <label for="mail">Email</label>
-                    <input type="text" id="mail" name="mail" v-model="User.mail"/>
-                </div>
-                <div class="save">
-                    <a @click.prevent="saveUser">Sauvegarder</a>
-                </div>
+    <div class="user-profile-container" v-if="seeMore">
+        <div class="user-profile-box">
+            <div class="cancel" @click.prevent="seeProfile">
+                <img src="../assets/images/close-cross.svg" alt="Fermer">
+            </div>
+            <div class="user-picture">
+                <img src="../assets/mock/user-picture.svg" alt="Photo de profil">
+            </div>
+            <div class="input name">
+                <label for="name">Nom</label>
+                <input type="text" id="name" name="name" v-model="User.name"/>
+            </div>
+            <div class="input firstname">
+                <label for="firstname">Prénom</label>
+                <input type="text" id="firstname" name="firstname" v-model="User.firstname"/>
+            </div>
+            <div class="input birthdate">
+                <label for="birthdate">Date de naissance</label>
+                <input type="text" id="birthdate" name="birthdate" v-model="User.birthdate"/>
+            </div>
+            <div class="input mail">
+                <label for="mail">Email</label>
+                <input type="text" id="mail" name="mail" v-model="User.mail"/>
+            </div>
+            <div class="save">
+                <a @click.prevent="saveUser">Sauvegarder</a>
             </div>
         </div>
-    </transition>
+    </div>
 </template>
 
 <style lang="scss">
