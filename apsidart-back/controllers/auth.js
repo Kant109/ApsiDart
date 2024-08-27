@@ -18,7 +18,7 @@ exports.signup = (req, res, next)=>{
 };
 
 exports.login = (req, res, next)=>{
-    User.findOne({email: req.body.email})
+    findWithFirebase({email: req.body.email})
     .then(user => {
         if (!user){
             return res.status(401).json({message : "email ou mot de passe incorrect 1"})
@@ -46,3 +46,21 @@ exports.login = (req, res, next)=>{
         console.error(error);
         res.status(500).json({error})})
     };
+
+
+function findWithFirebase(email) {
+
+    db.collection('user').doc('2srFwIG3bQLbXrnWKfwY').get()
+    .then(doc => {
+    if (doc.exists) {
+        console.log('Document data:', doc.data());
+        return doc;
+    } else {
+        console.log('No such document!');
+    }
+    })
+    .catch(error => {
+        console.error('Error getting document:', error);
+    });
+
+}
