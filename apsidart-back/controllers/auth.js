@@ -1,12 +1,13 @@
 const User = require('../models/user');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
+const db = require('../firebaseConfig');
 
 exports.signup = (req, res, next)=>{
     bcrypt.hash(req.body.password, 10)
     .then( hashPwd => {
-        const user = new User({email: req.body.email, password: hashPwd, role:req.body.role});
-        user.save()
+        const user = new User({email: req.body.email, password: hashPwd});
+        saveWithFirebase(user)
         .then(res.status(201).json({message :"Enregistrement de l'utilisateur terminé !"}))
         .catch(res.status(400).json({message :"Un problème est apparu lors de l'enregistrement de l'utilisateur..."}))
     })
@@ -64,3 +65,11 @@ function findWithFirebase(email) {
     });
 
 }
+
+function saveWithFirebase(user){
+
+    const usersRef = db.ref('user');
+    return usersRef.child("1234").set(user);
+
+}
+
