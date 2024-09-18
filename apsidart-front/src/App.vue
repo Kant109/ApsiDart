@@ -23,3 +23,9 @@ onMounted(() => {
   <RouterView v-else />
   
 </template>
+
+<style lang="scss">
+#app {
+  background-color: #FFEFBD;
+}
+</style>
