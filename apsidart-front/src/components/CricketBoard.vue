@@ -1,4 +1,21 @@
 <script setup lang="ts">
+import { ref } from 'vue';
+
+const double = ref(false);
+const triple = ref(false);
+
+const selectDouble = () => {
+    double.value = !double.value;
+}
+
+const selectTriple = () => {
+    triple.value = !triple.value;
+}
+
+const reset = () => {
+    double.value = false;
+    triple.value = false;
+}
 
 </script>
 
@@ -6,19 +23,19 @@
     <div class="points-container">
         <div class="points-content">
             <div class="points-line">
-                <div class="points">20</div>
-                <div class="points">19</div>
-                <div class="points">18</div>
-                <div class="points">17</div>
-                <div class="points">16</div>
-                <div class="points">15</div>
-                <div class="points">25</div>
+                <div class="points" @click.prevent="reset">20</div>
+                <div class="points" @click.prevent="reset">19</div>
+                <div class="points" @click.prevent="reset">18</div>
+                <div class="points" @click.prevent="reset">17</div>
+                <div class="points" @click.prevent="reset">16</div>
+                <div class="points" @click.prevent="reset">15</div>
+                <div class="points" :class="{'isDisable': triple}" @click.prevent="reset">25</div>
             </div>
             <div class="instructions">
-                <div class="points zero">0</div>
+                <div class="points zero" :class="{'isDisable': double || triple}">0</div>
                 <div class="specific">
-                    <div class="points double">DOUBLE</div>
-                    <div class="points triple">TRIPLE</div>
+                    <div class="points double" :class="{'isActive': double && !triple}" @click.prevent="selectDouble">DOUBLE</div>
+                    <div class="points triple" :class="{'isActive': triple && !double}" @click.prevent="selectTriple">TRIPLE</div>
                     <div class="points back">RETOUR</div>
                 </div>
             </div>
@@ -75,6 +92,11 @@
                     &.double, &.triple, &.back {
                         width: 100%;
                         padding: 0 .5rem 5px 0.5rem;
+
+                        &.isActive {
+                            color: rgba(black, .25);
+                            box-shadow: none;
+                        }
                     }
                 }
             }

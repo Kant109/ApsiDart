@@ -32,4 +32,9 @@
         color: rgba(black, .25);
         box-shadow: none;
     }
+
+    &.isDisable {
+        pointer-events: none;
+        background-color: red;
+    }
 }

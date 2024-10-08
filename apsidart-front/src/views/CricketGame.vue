@@ -1,10 +1,16 @@
 <script setup lang="ts">
+import { ref } from 'vue';
 import CricketBoard from '@/components/CricketBoard.vue';
+import CricketPlayer from '@/components/CricketPlayer.vue';
+
+const players = ref(['Kant1','Mati', 'ROM1']);
 </script>
 
 <template>
     <div class="title">CRICKET</div>
-
+    <div class="players">
+        <CricketPlayer v-for="player in players" :player="player"/>
+    </div>
     <CricketBoard />
 </template>
 
