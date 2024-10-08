@@ -66,8 +66,8 @@ const reset = () => {
             gap: 0.45rem;
 
             .points {
-                @include points();
                 aspect-ratio: 1/1;
+                @include points();
             }
         }
 
@@ -78,8 +78,8 @@ const reset = () => {
             gap: 0.45rem;
 
             .points {
-                @include points();
                 aspect-ratio: 1/1;
+                @include points();
             }
 
             .specific {
