@@ -3,7 +3,7 @@ import CricketBoard from '@/components/CricketBoard.vue';
 </script>
 
 <template>
-    <div class="title">APSIDART</div>
+    <div class="title">CRICKET</div>
 
     <CricketBoard />
 </template>
@@ -15,5 +15,6 @@ import CricketBoard from '@/components/CricketBoard.vue';
     font-family: "Monoton", sans-serif;
     font-size: 3.25rem;
     padding: 2rem;
+    color: #F0F2EF;
 }
 </style>
