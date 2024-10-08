@@ -5,10 +5,16 @@ const double = ref(false);
 const triple = ref(false);
 
 const selectDouble = () => {
+    if(triple.value) {
+        triple.value = false;
+    }
     double.value = !double.value;
 }
 
 const selectTriple = () => {
+    if(double.value) {
+        double.value = false;
+    }
     triple.value = !triple.value;
 }
 

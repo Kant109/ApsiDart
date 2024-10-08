@@ -30,6 +30,7 @@
 
     &:active {
         color: rgba(black, .25);
+        transform: translateY(5px);
         box-shadow: none;
     }
 
