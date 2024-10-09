@@ -30,19 +30,36 @@ const openStat = () => {
     <div class="full-content" :style="'background-color:' + topBgColor() + ';'">
         <div class="player-content" :style="'background-color:' + bgColors[bgColor] + ';'" @click.prevent="openStat">
             <div class="player-name">{{ player }}</div>
-            <div class="doors">
-                <div class="door"></div>
-                <div class="door"></div>
-                <div class="door"></div>
-                <div class="door"></div>
-                <div class="door"></div>
-                <div class="door"></div>
-                <div class="door"></div>
+            <div class="recap">
+                <div class="doors">
+                    <div class="door"></div>
+                    <div class="door"></div>
+                    <div class="door"></div>
+                    <div class="door"></div>
+                    <div class="door"></div>
+                    <div class="door"></div>
+                    <div class="door"></div>
+                </div>
+                <div class="current-points">
+                    <div class="points"></div>
+                    <div class="points"></div>
+                    <div class="points"></div>
+                </div>
             </div>
             <div class="points-taken">540</div>
         </div>
         <div class="player-stats" :style="'background-color:' + bgColors[bgColor] + ';'" v-if="isStatOpen">
-            COUCOU
+            <div class="points-recap">
+                <div class="doors">
+                    <div class="door">20</div>
+                    <div class="door">19</div>
+                    <div class="door">18</div>
+                    <div class="door">17</div>
+                    <div class="door">16</div>
+                    <div class="door">15</div>
+                    <div class="door">25</div>
+                </div>
+            </div>
         </div>
     </div>
 </template>
@@ -54,7 +71,7 @@ const openStat = () => {
     grid-template-rows: 1fr;
     grid-column-gap: 0px;
     grid-row-gap: 0px;
-    height: 60px;
+    height: 80px;
     border-radius: 1rem 1rem 0 0;
     padding: 0 1rem;
     --tw-shadow: inset 0 5px 0 0 rgba(0, 0, 0, .25);
@@ -79,21 +96,73 @@ const openStat = () => {
         }
     }
 
-    .doors {
+    .recap {
         display: flex;
-        align-items: center;
-        gap: .5rem;
+        justify-content: center;
+        flex-direction: column;
         grid-area: 1 / 2 / 2 / 5;
+        gap: .5rem;
+        padding-top: 5px;
 
-        .door {
+        .doors {
             display: flex;
-            justify-content: center;
             align-items: center;
-            border: 2px solid rgba(black, .5);
-            border-radius: 50%;
-            height: 1.5rem;
-            width: 1.5rem;
+            gap: .5rem;
+            
+            .door {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                border: 2px solid #F0F2EF;
+                border-radius: 50%;
+                height: 1.5rem;
+                width: 1.5rem;
+                position: relative;
+
+                &::before, &::after {
+                    content: '';
+                    position: absolute;
+                    width: 100%;
+                    background-color: #F0F2EF;
+                    height: 2px;
+                }
+
+                &::before {
+                    transform: rotate(45deg);
+                }
+                &::after {
+                    transform: rotate(-45deg);
+                }
+
+                &::after {
+                    content: '';
+                    position: absolute;
+                    width: 100%;
+                    background-color: #F0F2EF;
+                    height: 2px;
+                }
+            }
+        }
+
+        .current-points {
+            display: flex;
+            justify-content: space-evenly;
+
+            .points {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                border-radius: 8px;
+                width: 2rem;
+                aspect-ratio: 1/1;
+                background-color: #F0F2EF;
+            }
         }
     }
+}
+
+.player-stats {
+    display: flex;
+    justify-content: center;
 }
 </style>
