@@ -31,6 +31,9 @@ onMounted(() => {
 
 <style lang="scss">
 #app {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   background-color: #0a1e30;
 }
 </style>
