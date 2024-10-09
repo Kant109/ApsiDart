@@ -28,11 +28,11 @@ const openStat = () => {
 
 <template>
     <div class="full-content" :style="'background-color:' + topBgColor() + ';'">
-        <div class="player-content" :style="'background-color:' + bgColors[bgColor] + ';'" @click.prevent="openStat">
+        <div class="player-content" :style="'background-color:' + bgColors[props.bgColor] + ';'" @click.prevent="openStat">
             <div class="player-name">{{ player }}</div>
             <div class="recap">
                 <div class="doors">
-                    <div class="door"></div>
+                    <div class="door" :class="{'first': true, 'second': true, 'full': false}"></div>
                     <div class="door"></div>
                     <div class="door"></div>
                     <div class="door"></div>
@@ -164,5 +164,6 @@ const openStat = () => {
 .player-stats {
     display: flex;
     justify-content: center;
+    padding-top: .5rem;
 }
 </style>
