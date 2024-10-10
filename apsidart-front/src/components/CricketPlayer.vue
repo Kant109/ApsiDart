@@ -34,19 +34,19 @@ const openStat = () => {
         </div>
         <div class="player-stats" :class="{'isPlayerActive': player.isActive}" v-if="isStatOpen">
             <div class="current-points">
-                <div class="points">T20</div>
-                <div class="points"></div>
-                <div class="points"></div>
+                <div class="points">{{ player.volleys.length > 0 ? player.volleys[player.volleys.length - 1][0] : "" }}</div>
+                <div class="points">{{ player.volleys.length > 0 ? player.volleys[player.volleys.length - 1][1] : "" }}</div>
+                <div class="points">{{ player.volleys.length > 0 ? player.volleys[player.volleys.length - 1][2] : "" }}</div>
             </div>
             <div class="points-recap" :class="{'isPlayerActive': player.isActive}">
                 <div class="doors">
-                    <div class="door"><div class="base">20</div><div class="taken">999</div></div>
-                    <div class="door"><div class="base">19</div><div class="taken">999</div></div>
-                    <div class="door"><div class="base">18</div><div class="taken">999</div></div>
-                    <div class="door"><div class="base">17</div><div class="taken">999</div></div>
-                    <div class="door"><div class="base">16</div><div class="taken">999</div></div>
-                    <div class="door"><div class="base">15</div><div class="taken">999</div></div>
-                    <div class="door"><div class="base">25</div><div class="taken">999</div></div>
+                    <div class="door"><div class="base">20</div><div class="taken">{{ player.points[20] }}</div></div>
+                    <div class="door"><div class="base">19</div><div class="taken">{{ player.points[19] }}</div></div>
+                    <div class="door"><div class="base">18</div><div class="taken">{{ player.points[18] }}</div></div>
+                    <div class="door"><div class="base">17</div><div class="taken">{{ player.points[17] }}</div></div>
+                    <div class="door"><div class="base">16</div><div class="taken">{{ player.points[16] }}</div></div>
+                    <div class="door"><div class="base">15</div><div class="taken">{{ player.points[15] }}</div></div>
+                    <div class="door"><div class="base">25</div><div class="taken">{{ player.points[25] }}</div></div>
                 </div>
             </div>
         </div>
