@@ -1,6 +1,7 @@
 interface Player {
     id: string,
     pseudo: string,
+    isActive: boolean,
     points: {
         20: number,
         19: number,

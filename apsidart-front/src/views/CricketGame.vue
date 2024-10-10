@@ -3,7 +3,137 @@ import { ref } from 'vue';
 import CricketBoard from '@/components/CricketBoard.vue';
 import CricketPlayer from '@/components/CricketPlayer.vue';
 
-const players = ref(['Kant1','Mati', 'ROM1', 'PHILO', 'ZIM']);
+const Kant1: Player = {
+    "id": "1",
+    "pseudo": "Kant1",
+    "isActive": false,
+    "points": {
+        "20": 0,
+        "19": 0,
+        "18": 0,
+        "17": 0,
+        "16": 0,
+        "15": 0,
+        "25": 0,
+        "total": 0
+    },
+    "doors": {
+        "20": [false, false, false],
+        "19": [false, false, false],
+        "18": [false, false, false],
+        "17": [false, false, false],
+        "16": [false, false, false],
+        "15": [false, false, false],
+        "25": [false, false, false]
+    },
+    "volleys": []
+};
+
+const Mati: Player = {
+    "id": "2",
+    "pseudo": "Mati",
+    "isActive": false,
+    "points": {
+        "20": 0,
+        "19": 0,
+        "18": 0,
+        "17": 0,
+        "16": 0,
+        "15": 0,
+        "25": 0,
+        "total": 0
+    },
+    "doors": {
+        "20": [false, false, false],
+        "19": [false, false, false],
+        "18": [false, false, false],
+        "17": [false, false, false],
+        "16": [false, false, false],
+        "15": [false, false, false],
+        "25": [false, false, false]
+    },
+    "volleys": []
+};
+
+const Rom1: Player = {
+    "id": "3",
+    "pseudo": "Rom1",
+    "isActive": true,
+    "points": {
+        "20": 0,
+        "19": 0,
+        "18": 0,
+        "17": 0,
+        "16": 0,
+        "15": 0,
+        "25": 0,
+        "total": 0
+    },
+    "doors": {
+        "20": [false, false, false],
+        "19": [false, false, false],
+        "18": [false, false, false],
+        "17": [false, false, false],
+        "16": [false, false, false],
+        "15": [false, false, false],
+        "25": [false, false, false]
+    },
+    "volleys": []
+};
+
+const Phil: Player = {
+    "id": "4",
+    "pseudo": "Phil",
+    "isActive": false,
+    "points": {
+        "20": 0,
+        "19": 0,
+        "18": 0,
+        "17": 0,
+        "16": 0,
+        "15": 0,
+        "25": 0,
+        "total": 0
+    },
+    "doors": {
+        "20": [false, false, false],
+        "19": [false, false, false],
+        "18": [false, false, false],
+        "17": [false, false, false],
+        "16": [false, false, false],
+        "15": [false, false, false],
+        "25": [false, false, false]
+    },
+    "volleys": []
+};
+
+const Zim: Player = {
+    "id": "5",
+    "pseudo": "Zim",
+    "isActive": false,
+    "points": {
+        "20": 0,
+        "19": 0,
+        "18": 0,
+        "17": 0,
+        "16": 0,
+        "15": 0,
+        "25": 0,
+        "total": 0
+    },
+    "doors": {
+        "20": [false, false, false],
+        "19": [false, false, false],
+        "18": [false, false, false],
+        "17": [false, false, false],
+        "16": [false, false, false],
+        "15": [false, false, false],
+        "25": [false, false, false]
+    },
+    "volleys": []
+};
+
+const players = ref([Kant1, Mati, Rom1, Phil, Zim]);
 </script>
 
 <template>
@@ -24,8 +154,8 @@ const players = ref(['Kant1','Mati', 'ROM1', 'PHILO', 'ZIM']);
                 <CricketPlayer
                     v-for="player in players"
                     :player="player"
-                    :bg-color="(players.indexOf(player) % (players.length - 1))"
                     :is-top-bg-active="players.indexOf(player) !== 0"
+                    :is-top-bg-player-active="players[players.indexOf(player) - 1 > 0 ? players.indexOf(player) - 1 : 0].isActive === true"
                 />
         </div>
     </div>

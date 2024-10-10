@@ -1,24 +1,13 @@
 <script setup lang="ts">
 import { ref } from 'vue';
 
-const isStatOpen = ref(false);
-const bgColors = ['#f9cd61', '#694cf1', '#eb5851', '#aad5ff'];
-
 const props = defineProps<{
-  player?: string
-  bgColor: number
+  player: Player
   isTopBgActive: boolean
+  isTopBgPlayerActive: boolean
 }>()
 
-const topBgColor = (): string => {
-    if(props.isTopBgActive) {
-        if(props.bgColor - 1 < 0) {
-            return bgColors[bgColors.length - 1];
-        }
-        return bgColors[props.bgColor - 1];
-    }
-    return 'transparent';
-}
+const isStatOpen = ref(props.player.isActive);
 
 const openStat = () => {
     isStatOpen.value = !isStatOpen.value;
@@ -27,9 +16,9 @@ const openStat = () => {
 </script>
 
 <template>
-    <div class="full-content" :style="'background-color:' + topBgColor() + ';'">
-        <div class="player-content" :style="'background-color:' + bgColors[props.bgColor] + ';'" @click.prevent="openStat">
-            <div class="player-name">{{ player }}</div>
+    <div class="full-content" :class="{'top-bg': props.isTopBgActive, 'top-bg-active': isTopBgPlayerActive}">
+        <div class="player-content" :class="{'isPlayerActive': player.isActive}" @click.prevent="openStat">
+            <div class="player-name">{{ player.pseudo }}</div>
             <div class="recap">
                 <div class="doors">
                     <div class="door" :class="{'first': true, 'second': true, 'full': false}"></div>
@@ -40,15 +29,15 @@ const openStat = () => {
                     <div class="door"></div>
                     <div class="door"></div>
                 </div>
-                <div class="current-points">
-                    <div class="points"></div>
-                    <div class="points"></div>
-                    <div class="points"></div>
-                </div>
             </div>
-            <div class="points-taken">540</div>
+            <div class="points-taken">{{ player.points.total }}</div>
         </div>
-        <div class="player-stats" :style="'background-color:' + bgColors[bgColor] + ';'" v-if="isStatOpen">
+        <div class="player-stats" :class="{'isPlayerActive': player.isActive}" v-if="isStatOpen">
+            <div class="current-points">
+                <div class="points"></div>
+                <div class="points"></div>
+                <div class="points"></div>
+            </div>
             <div class="points-recap">
                 <div class="doors">
                     <div class="door">20</div>
@@ -65,18 +54,31 @@ const openStat = () => {
 </template>
 
 <style lang="scss">
+.top-bg {
+    background-color: #F0F2EF;
+}
+
+.top-bg-active {
+    background-color: #f9cd61;
+}
+
 .player-content {
     display: grid;
     grid-template-columns: repeat(5, 1fr);
     grid-template-rows: 1fr;
     grid-column-gap: 0px;
     grid-row-gap: 0px;
-    height: 80px;
+    height: 60px;
+    background-color: #F0F2EF;
     border-radius: 1rem 1rem 0 0;
     padding: 0 1rem;
     --tw-shadow: inset 0 5px 0 0 rgba(0, 0, 0, .25);
     --tw-shadow-colored: inset 0 -5px 0 0 var(--tw-shadow-color);
     box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
+
+    &.isPlayerActive {
+        background-color: #f9cd61;
+    }
 
     .player-name, .points-taken {
         display: flex;
@@ -113,7 +115,7 @@ const openStat = () => {
                 display: flex;
                 justify-content: center;
                 align-items: center;
-                border: 2px solid #F0F2EF;
+                border: 2px solid rgba(black, .75);
                 border-radius: 50%;
                 height: 1.5rem;
                 width: 1.5rem;
@@ -123,7 +125,7 @@ const openStat = () => {
                     content: '';
                     position: absolute;
                     width: 100%;
-                    background-color: #F0F2EF;
+                    background-color: rgba(black, .75);
                     height: 2px;
                 }
 
@@ -133,29 +135,6 @@ const openStat = () => {
                 &::after {
                     transform: rotate(-45deg);
                 }
-
-                &::after {
-                    content: '';
-                    position: absolute;
-                    width: 100%;
-                    background-color: #F0F2EF;
-                    height: 2px;
-                }
-            }
-        }
-
-        .current-points {
-            display: flex;
-            justify-content: space-evenly;
-
-            .points {
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                border-radius: 8px;
-                width: 2rem;
-                aspect-ratio: 1/1;
-                background-color: #F0F2EF;
             }
         }
     }
@@ -163,7 +142,37 @@ const openStat = () => {
 
 .player-stats {
     display: flex;
+    flex-direction: column;
     justify-content: center;
-    padding-top: .5rem;
+    gap: 1rem;
+    background-color: #F0F2EF;
+
+    &.isPlayerActive {
+        background-color: #f9cd61;
+    }
+
+    .current-points {
+        display: flex;
+        justify-content: center;
+        gap: 2rem;
+
+        .points {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 8px;
+            width: 2rem;
+            aspect-ratio: 1/1;
+            background-color: #F0F2EF;
+            border: 1px solid rgba(0, 0, 0, .25);
+            --tw-shadow: inset 0 -5px 0 0 rgba(0, 0, 0, .25);
+            --tw-shadow-colored: inset 0 -5px 0 0 var(--tw-shadow-color);
+            box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
+        }
+    }
+
+    .points-recap .doors .door {
+        border: 1px solid rgba(0, 0, 0, .25);
+    }
 }
 </style>
