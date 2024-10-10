@@ -59,6 +59,9 @@ const reset = () => {
     bottom: 0;
     width: 100%;
     background-color: #F0F2EF;
+    --tw-shadow: inset 0 5px 0 0 rgba(0, 0, 0, .25);
+    --tw-shadow-colored: inset 0 -5px 0 0 var(--tw-shadow-color);
+    box-shadow: var(--tw-ring-offset-shadow, 0 0 rgba(0, 0, 0, 0)), var(--tw-ring-shadow, 0 0 rgba(0, 0, 0, 0)), var(--tw-shadow);
 
     .points-content {
         display: flex;

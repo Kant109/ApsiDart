@@ -16,37 +16,37 @@ const openStat = () => {
 </script>
 
 <template>
-    <div class="full-content" :class="{'top-bg': props.isTopBgActive, 'top-bg-active': isTopBgPlayerActive}">
+    <div class="full-content" :class="{'top-bg': props.isTopBgActive, 'top-bg-active': props.isTopBgPlayerActive && props.isTopBgActive}">
         <div class="player-content" :class="{'isPlayerActive': player.isActive}" @click.prevent="openStat">
             <div class="player-name">{{ player.pseudo }}</div>
             <div class="recap">
                 <div class="doors">
-                    <div class="door" :class="{'first': true, 'second': true, 'full': false}"></div>
-                    <div class="door"></div>
-                    <div class="door"></div>
-                    <div class="door"></div>
-                    <div class="door"></div>
-                    <div class="door"></div>
-                    <div class="door"></div>
+                    <div class="door" :class="{'first': player.doors[20][0], 'second': player.doors[20][1], 'full': player.doors[20][2]}"></div>
+                    <div class="door" :class="{'first': player.doors[19][0], 'second': player.doors[19][1], 'full': player.doors[19][2]}"></div>
+                    <div class="door" :class="{'first': player.doors[18][0], 'second': player.doors[18][1], 'full': player.doors[18][2]}"></div>
+                    <div class="door" :class="{'first': player.doors[17][0], 'second': player.doors[17][1], 'full': player.doors[17][2]}"></div>
+                    <div class="door" :class="{'first': player.doors[16][0], 'second': player.doors[16][1], 'full': player.doors[16][2]}"></div>
+                    <div class="door" :class="{'first': player.doors[15][0], 'second': player.doors[15][1], 'full': player.doors[15][2]}"></div>
+                    <div class="door" :class="{'first': player.doors[25][0], 'second': player.doors[25][1], 'full': player.doors[25][2]}"></div>
                 </div>
             </div>
             <div class="points-taken">{{ player.points.total }}</div>
         </div>
         <div class="player-stats" :class="{'isPlayerActive': player.isActive}" v-if="isStatOpen">
             <div class="current-points">
-                <div class="points"></div>
+                <div class="points">T20</div>
                 <div class="points"></div>
                 <div class="points"></div>
             </div>
-            <div class="points-recap">
+            <div class="points-recap" :class="{'isPlayerActive': player.isActive}">
                 <div class="doors">
-                    <div class="door">20</div>
-                    <div class="door">19</div>
-                    <div class="door">18</div>
-                    <div class="door">17</div>
-                    <div class="door">16</div>
-                    <div class="door">15</div>
-                    <div class="door">25</div>
+                    <div class="door"><div class="base">20</div><div class="taken">999</div></div>
+                    <div class="door"><div class="base">19</div><div class="taken">999</div></div>
+                    <div class="door"><div class="base">18</div><div class="taken">999</div></div>
+                    <div class="door"><div class="base">17</div><div class="taken">999</div></div>
+                    <div class="door"><div class="base">16</div><div class="taken">999</div></div>
+                    <div class="door"><div class="base">15</div><div class="taken">999</div></div>
+                    <div class="door"><div class="base">25</div><div class="taken">999</div></div>
                 </div>
             </div>
         </div>
@@ -85,7 +85,7 @@ const openStat = () => {
         align-items: center;
         font-family: "Tilt Warp", sans-serif;
         font-size: 1rem;
-        color: rgba(black, .75);
+        color: black;
 
         &:is(.player-name) {
             min-width: 55px;
@@ -115,7 +115,7 @@ const openStat = () => {
                 display: flex;
                 justify-content: center;
                 align-items: center;
-                border: 2px solid rgba(black, .75);
+                border: 2px solid rgba(black, .1);
                 border-radius: 50%;
                 height: 1.5rem;
                 width: 1.5rem;
@@ -125,7 +125,7 @@ const openStat = () => {
                     content: '';
                     position: absolute;
                     width: 100%;
-                    background-color: rgba(black, .75);
+                    background-color: rgba(black, .1);
                     height: 2px;
                 }
 
@@ -134,6 +134,20 @@ const openStat = () => {
                 }
                 &::after {
                     transform: rotate(-45deg);
+                }
+
+                &.first {
+                    &::after {
+                        background-color: black;
+                    }
+                }
+                &.second {
+                    &::before {
+                        background-color: black;
+                    }
+                }
+                &.full {
+                    border: 2px solid black;
                 }
             }
         }
@@ -160,8 +174,11 @@ const openStat = () => {
             display: flex;
             align-items: center;
             justify-content: center;
+            font-family: "Tilt Warp", sans-serif;
+            font-size: 1rem;
+            padding-bottom: 5px;
             border-radius: 8px;
-            width: 2rem;
+            width: 2.5rem;
             aspect-ratio: 1/1;
             background-color: #F0F2EF;
             border: 1px solid rgba(0, 0, 0, .25);
@@ -171,8 +188,42 @@ const openStat = () => {
         }
     }
 
-    .points-recap .doors .door {
-        border: 1px solid rgba(0, 0, 0, .25);
+    .points-recap {
+        background-color: #F0F2EF;
+
+        &.isPlayerActive {
+            background-color: #f9cd61;
+        }
+
+        .doors {
+            display: flex;
+            gap: .5rem;
+            font-family: "Tilt Warp", sans-serif;
+            font-size: 1rem;
+
+            .door {
+                border-radius: 5px;
+                border: 1px solid rgba(0, 0, 0, .25);
+
+                .base, .taken {
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    width: 2rem;
+                    border-radius: 5px;
+                    aspect-ratio: 1/1;
+                    
+                    &:is(.base) {
+                        border-bottom: none;
+                        padding-bottom: 5px;
+                        background-color: #F0F2EF;
+                        --tw-shadow: inset 0 -5px 0 0 rgba(0, 0, 0, .25);
+                        --tw-shadow-colored: inset 0 -5px 0 0 var(--tw-shadow-color);
+                        box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
+                    }
+                }
+            }
+        }
     }
 }
 </style>

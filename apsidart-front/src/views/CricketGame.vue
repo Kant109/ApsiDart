@@ -1,152 +1,25 @@
 <script setup lang="ts">
-import { ref } from 'vue';
+import { computed, ref } from 'vue';
 import CricketBoard from '@/components/CricketBoard.vue';
 import CricketPlayer from '@/components/CricketPlayer.vue';
+import { useGameStore } from '@/stores/GameStore';
 
-const Kant1: Player = {
-    "id": "1",
-    "pseudo": "Kant1",
-    "isActive": false,
-    "points": {
-        "20": 0,
-        "19": 0,
-        "18": 0,
-        "17": 0,
-        "16": 0,
-        "15": 0,
-        "25": 0,
-        "total": 0
-    },
-    "doors": {
-        "20": [false, false, false],
-        "19": [false, false, false],
-        "18": [false, false, false],
-        "17": [false, false, false],
-        "16": [false, false, false],
-        "15": [false, false, false],
-        "25": [false, false, false]
-    },
-    "volleys": []
-};
+const gameStore = useGameStore();
 
-const Mati: Player = {
-    "id": "2",
-    "pseudo": "Mati",
-    "isActive": false,
-    "points": {
-        "20": 0,
-        "19": 0,
-        "18": 0,
-        "17": 0,
-        "16": 0,
-        "15": 0,
-        "25": 0,
-        "total": 0
-    },
-    "doors": {
-        "20": [false, false, false],
-        "19": [false, false, false],
-        "18": [false, false, false],
-        "17": [false, false, false],
-        "16": [false, false, false],
-        "15": [false, false, false],
-        "25": [false, false, false]
-    },
-    "volleys": []
-};
-
-const Rom1: Player = {
-    "id": "3",
-    "pseudo": "Rom1",
-    "isActive": true,
-    "points": {
-        "20": 0,
-        "19": 0,
-        "18": 0,
-        "17": 0,
-        "16": 0,
-        "15": 0,
-        "25": 0,
-        "total": 0
-    },
-    "doors": {
-        "20": [false, false, false],
-        "19": [false, false, false],
-        "18": [false, false, false],
-        "17": [false, false, false],
-        "16": [false, false, false],
-        "15": [false, false, false],
-        "25": [false, false, false]
-    },
-    "volleys": []
-};
-
-const Phil: Player = {
-    "id": "4",
-    "pseudo": "Phil",
-    "isActive": false,
-    "points": {
-        "20": 0,
-        "19": 0,
-        "18": 0,
-        "17": 0,
-        "16": 0,
-        "15": 0,
-        "25": 0,
-        "total": 0
-    },
-    "doors": {
-        "20": [false, false, false],
-        "19": [false, false, false],
-        "18": [false, false, false],
-        "17": [false, false, false],
-        "16": [false, false, false],
-        "15": [false, false, false],
-        "25": [false, false, false]
-    },
-    "volleys": []
-};
-
-const Zim: Player = {
-    "id": "5",
-    "pseudo": "Zim",
-    "isActive": false,
-    "points": {
-        "20": 0,
-        "19": 0,
-        "18": 0,
-        "17": 0,
-        "16": 0,
-        "15": 0,
-        "25": 0,
-        "total": 0
-    },
-    "doors": {
-        "20": [false, false, false],
-        "19": [false, false, false],
-        "18": [false, false, false],
-        "17": [false, false, false],
-        "16": [false, false, false],
-        "15": [false, false, false],
-        "25": [false, false, false]
-    },
-    "volleys": []
-};
-
-const players = ref([Kant1, Mati, Rom1, Phil, Zim]);
+const players = computed(() => gameStore.players);
 </script>
 
 <template>
     <div class="title">CRICKET</div>
     <div class="points-recap">
-        <div class="doors">
-            <div class="door">20</div>
-            <div class="door">19</div>
-            <div class="door">18</div>
-            <div class="door">17</div>
-            <div class="door">16</div>
-            <div class="door">15</div>
-            <div class="door">25</div>
+        <div class="recap-doors">
+            <div class="recap-door">20</div>
+            <div class="recap-door">19</div>
+            <div class="recap-door">18</div>
+            <div class="recap-door">17</div>
+            <div class="recap-door">16</div>
+            <div class="recap-door">15</div>
+            <div class="recap-door">25</div>
         </div>
     </div>
     <div class="players-container">
@@ -179,13 +52,13 @@ const players = ref([Kant1, Mati, Rom1, Phil, Zim]);
     width: 390px;
     margin-bottom: 1rem;
     
-    .doors {
+    .recap-doors {
         display: flex;
         gap: .5rem;
         font-family: "Tilt Warp", sans-serif;
         font-size: 1rem;
 
-        .door {
+        .recap-door {
             display: flex;
             align-items: center;
             justify-content: center;
@@ -201,6 +74,8 @@ const players = ref([Kant1, Mati, Rom1, Phil, Zim]);
     display: flex;
     justify-content: center;
     width: 100%;
+    padding-bottom: 200px;
+    background-color: #0a1e30;
 
     .players-content {
         display: flex;
