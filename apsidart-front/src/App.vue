@@ -25,7 +25,7 @@ const isAppLoaded = computed(() => managementAppStore.isAppLoaded);
 const Kant1: Player = {
     "id": "1",
     "pseudo": "Kant1",
-    "isActive": false,
+    "isActive": true,
     "points": {
         "20": 0,
         "19": 0,
@@ -37,15 +37,15 @@ const Kant1: Player = {
         "total": 0
     },
     "doors": {
-        "20": [true, true, true],
-        "19": [true, true, false],
+        "20": [false, false, false],
+        "19": [false, false, false],
         "18": [false, false, false],
-        "17": [true, true, false],
-        "16": [true, false, false],
-        "15": [true, false, false],
+        "17": [false, false, false],
+        "16": [false, false, false],
+        "15": [false, false, false],
         "25": [false, false, false]
     },
-    "volleys": []
+    "volleys": [['', '', '']]
 };
 
 const Mati: Player = {
@@ -71,13 +71,13 @@ const Mati: Player = {
         "15": [false, false, false],
         "25": [false, false, false]
     },
-    "volleys": []
+    "volleys": [['', '', '']]
 };
 
 const Rom1: Player = {
     "id": "3",
     "pseudo": "Rom1",
-    "isActive": true,
+    "isActive": false,
     "points": {
         "20": 0,
         "19": 0,
@@ -97,7 +97,7 @@ const Rom1: Player = {
         "15": [false, false, false],
         "25": [false, false, false]
     },
-    "volleys": []
+    "volleys": [['', '', '']]
 };
 
 const Phil: Player = {
@@ -123,7 +123,7 @@ const Phil: Player = {
         "15": [false, false, false],
         "25": [false, false, false]
     },
-    "volleys": []
+    "volleys": [['', '', '']]
 };
 
 const Zim: Player = {
@@ -149,7 +149,7 @@ const Zim: Player = {
         "15": [false, false, false],
         "25": [false, false, false]
     },
-    "volleys": []
+    "volleys": [['', '', '']]
 };
 
 const Bast1: Player = {
@@ -175,7 +175,7 @@ const Bast1: Player = {
         "15": [false, false, false],
         "25": [false, false, false]
     },
-    "volleys": []
+    "volleys": [['', '', '']]
 };
 
 onMounted(() => {

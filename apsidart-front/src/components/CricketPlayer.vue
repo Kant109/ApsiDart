@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref } from 'vue';
+import { ref, watch } from 'vue';
 
 const props = defineProps<{
   player: Player
@@ -7,11 +7,20 @@ const props = defineProps<{
   isTopBgPlayerActive: boolean
 }>()
 
-const isStatOpen = ref(props.player.isActive);
+const isStatOpen = ref(false);
 
 const openStat = () => {
     isStatOpen.value = !isStatOpen.value;
 }
+
+watch(
+    () => props.player.isActive,
+    () => {
+        if(props.player.isActive) {
+            props.player.volleys.push(['', '', '']);
+        }
+    }
+)
 
 </script>
 
@@ -32,7 +41,7 @@ const openStat = () => {
             </div>
             <div class="points-taken">{{ player.points.total }}</div>
         </div>
-        <div class="player-stats" :class="{'isPlayerActive': player.isActive}" v-if="isStatOpen">
+        <div class="player-stats" :class="{'isPlayerActive': player.isActive}" v-if="player.isActive || isStatOpen">
             <div class="current-points">
                 <div class="points">{{ player.volleys.length > 0 ? player.volleys[player.volleys.length - 1][0] : "" }}</div>
                 <div class="points">{{ player.volleys.length > 0 ? player.volleys[player.volleys.length - 1][1] : "" }}</div>
@@ -189,7 +198,11 @@ const openStat = () => {
     }
 
     .points-recap {
+        display: flex;
+        justify-content: center;
+        align-items: center;
         background-color: #F0F2EF;
+        margin-bottom: 1rem;
 
         &.isPlayerActive {
             background-color: #f9cd61;

@@ -1,6 +1,10 @@
 <script setup lang="ts">
-import { ref } from 'vue';
+import { computed, ref } from 'vue';
+import { useGameStore } from '@/stores/GameStore';
 
+const gameStore = useGameStore();
+
+const players = computed(() => gameStore.players);
 const double = ref(false);
 const triple = ref(false);
 
@@ -18,6 +22,123 @@ const selectTriple = () => {
     triple.value = !triple.value;
 }
 
+const setPoints = (points: number) => {
+    players.value.forEach(player => {
+        if(!player.isActive) {
+            switch(points) {
+                case 20:
+                    if(player.doors[20].includes(false)) {
+                        player.points[20] += 20;
+                        player.points.total += 20;
+                    }
+                    break;
+                case 19:
+                    if(player.doors[19].includes(false)) {
+                        player.points[19] += 19;
+                        player.points.total += 19;
+                    }
+                    break;
+                case 18:
+                    if(player.doors[18].includes(false)) {
+                        player.points[18] += 18;
+                        player.points.total += 18;
+                    }
+                    break;
+                case 17:
+                    if(player.doors[17].includes(false)) {
+                        player.points[17] += 17;
+                        player.points.total += 17;
+                    }
+                    break;
+                case 16:
+                    if(player.doors[16].includes(false)) {
+                        player.points[16] += 16;
+                        player.points.total += 16;
+                    }
+                    break;
+                case 15:
+                    if(player.doors[15].includes(false)) {
+                        player.points[15] += 15;
+                        player.points.total += 15;
+                    }
+                    break;
+                case 25:
+                    if(player.doors[25].includes(false)) {
+                        player.points[25] += 25;
+                        player.points.total += 25;
+                    }
+                    break;
+            }
+        }
+    })
+}
+
+const setPointsActivePlayer = (points: number) => {
+    const value = double.value ? 2 : triple.value ? 3 : 1;
+    let activePlayerPointsVolley = true;
+
+    players.value.forEach(player => {
+        if(player.isActive && activePlayerPointsVolley) {
+            const currentPointValue = value === 2 ? "D" + points.toString() : value === 3 ? "T" + points.toString() : points.toString();
+
+            switch(points) {
+                case 20:
+                    for (let index = 0; index < value; index++) {
+                        !player.doors[20].includes(false) ? setPoints(20) : player.doors[20][player.doors[20].indexOf(false)] = true;
+                    }
+
+                    break;
+                case 19:
+                    for (let index = 0; index < value; index++) {
+                        !player.doors[19].includes(false) ? setPoints(19) : player.doors[19][player.doors[19].indexOf(false)] = true;
+                    }
+                    break;
+                case 18:
+                    for (let index = 0; index < value; index++) {
+                        !player.doors[18].includes(false) ? setPoints(18) : player.doors[18][player.doors[18].indexOf(false)] = true;
+                    }
+                    break;
+                case 17:
+                    for (let index = 0; index < value; index++) {
+                        !player.doors[17].includes(false) ? setPoints(17) : player.doors[17][player.doors[17].indexOf(false)] = true;
+                    }
+                    break;
+                case 16:
+                    for (let index = 0; index < value; index++) {
+                        !player.doors[16].includes(false) ? setPoints(16) : player.doors[16][player.doors[16].indexOf(false)] = true;
+                    }
+                    break;
+                case 15:
+                    for (let index = 0; index < value; index++) {
+                        !player.doors[15].includes(false) ? setPoints(15) : player.doors[15][player.doors[15].indexOf(false)] = true;
+                    }
+                    break;
+                case 25:
+                    for (let index = 0; index < value; index++) {
+                        !player.doors[25].includes(false) ? setPoints(25) : player.doors[25][player.doors[25].indexOf(false)] = true;
+                    }
+                    break;
+            }
+
+            if(player.volleys[player.volleys.length - 1][0] === "") {
+                player.volleys[player.volleys.length - 1][0] = currentPointValue;
+            } else if(player.volleys[player.volleys.length - 1][1] === "") {
+                player.volleys[player.volleys.length - 1][1] = currentPointValue;
+            } else if(player.volleys[player.volleys.length - 1][2] === "") {
+                player.volleys[player.volleys.length - 1][2] = currentPointValue;
+                setTimeout(() => {
+                    player.isActive = false;
+                    players.value.indexOf(player) + 1 === players.value.length ? players.value[0].isActive = true : players.value[players.value.indexOf(player) + 1].isActive = true;
+                    activePlayerPointsVolley = false;
+                }, 750);
+            } else {
+                player.volleys.push([currentPointValue, '', '']);
+            }
+        }
+    });
+    reset();
+}
+
 const reset = () => {
     double.value = false;
     triple.value = false;
@@ -29,13 +150,13 @@ const reset = () => {
     <div class="points-container">
         <div class="points-content">
             <div class="points-line">
-                <div class="points" @click.prevent="reset">20</div>
-                <div class="points" @click.prevent="reset">19</div>
-                <div class="points" @click.prevent="reset">18</div>
-                <div class="points" @click.prevent="reset">17</div>
-                <div class="points" @click.prevent="reset">16</div>
-                <div class="points" @click.prevent="reset">15</div>
-                <div class="points" :class="{'isDisable': triple}" @click.prevent="reset">25</div>
+                <div class="points" @click.prevent="setPointsActivePlayer(20)">20</div>
+                <div class="points" @click.prevent="setPointsActivePlayer(19)">19</div>
+                <div class="points" @click.prevent="setPointsActivePlayer(18)">18</div>
+                <div class="points" @click.prevent="setPointsActivePlayer(17)">17</div>
+                <div class="points" @click.prevent="setPointsActivePlayer(16)">16</div>
+                <div class="points" @click.prevent="setPointsActivePlayer(15)">15</div>
+                <div class="points" :class="{'isDisable': triple}" @click.prevent="setPointsActivePlayer(25)">25</div>
             </div>
             <div class="instructions">
                 <div class="points zero" :class="{'isDisable': double || triple}">0</div>
@@ -68,11 +189,12 @@ const reset = () => {
         flex-direction: column;
         padding: 1rem;
         max-width: 390px;
+        width: 100%;
 
         .points-line {
             display: flex;
             justify-content: space-between;
-            gap: 0.45rem;
+            // gap: 0.45rem;
 
             .points {
                 aspect-ratio: 1/1;
@@ -82,7 +204,7 @@ const reset = () => {
 
         .instructions {
             display: flex;
-            justify-content: space-between;
+            // justify-content: space-between;
             margin-top: .5rem;
             gap: 0.45rem;
 

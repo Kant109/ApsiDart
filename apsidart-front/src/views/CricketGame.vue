@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, ref } from 'vue';
+import { computed } from 'vue';
 import CricketBoard from '@/components/CricketBoard.vue';
 import CricketPlayer from '@/components/CricketPlayer.vue';
 import { useGameStore } from '@/stores/GameStore';
@@ -11,7 +11,7 @@ const players = computed(() => gameStore.players);
 
 <template>
     <div class="title">CRICKET</div>
-    <div class="points-recap">
+    <div class="points-recap-doors">
         <div class="recap-doors">
             <div class="recap-door">20</div>
             <div class="recap-door">19</div>
@@ -45,7 +45,7 @@ const players = computed(() => gameStore.players);
     color: #F0F2EF;
 }
 
-.points-recap {
+.points-recap-doors {
     display: flex;
     align-items: center;
     justify-content: center;
