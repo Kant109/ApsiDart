@@ -1,7 +1,7 @@
 <template>
     <div class="nav-bar">
         <div class="stats" @click.prevent="goToStats"><img src="../assets/images/stats.svg" alt="stats"></div>
-        <div class="game" @click.prevent="goToGame"><img src="../assets/images/target.svg" alt="target"></div>
+        <div class="game" @click.prevent="goToGame"><img src="../assets/images/target.png" alt="target"></div>
         <div class="profile" @click.prevent="goToProfile"><img src="../assets/images/profile.svg" alt="profile"></div>
     </div>
 </template>
@@ -30,16 +30,18 @@ const goToProfile = () => {
     display: flex;
     justify-content: space-evenly;
     background-color: white;
-    border-radius: 2rem 2rem 0 0;
-    padding: .5rem 0;
+    padding: 13px 0 .5rem 0;
     position: fixed;
     bottom: 0;
     width: 100vw;
+    --tw-shadow: inset 0 5px 0 0 rgba(0, 0, 0, .25);
+    --tw-shadow-colored: inset 0 -5px 0 0 var(--tw-shadow-color);
+    box-shadow: var(--tw-ring-offset-shadow, 0 0 rgba(0, 0, 0, 0)), var(--tw-ring-shadow, 0 0 rgba(0, 0, 0, 0)), var(--tw-shadow);
 
     .stats, .game, .profile {
         img {
-            min-width: 2.5rem;
-            min-height: 2.5rem;
+            width: 2.5rem;
+            height: 2.5rem;
         }
     }
 }
