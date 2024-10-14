@@ -73,6 +73,10 @@ const setPoints = async (points: number) => {
     })
 }
 
+const isGameFinish = async (activePlayer: Player) => {
+    
+}
+
 const setPointsActivePlayer = async (points: number) => {
     const value = double.value ? 2 : triple.value ? 3 : 1;
     let activePlayerPointsVolley = true;
@@ -156,6 +160,9 @@ const setPointsActivePlayer = async (points: number) => {
                     players.value[players.value.indexOf(player) + 1].volleys.push(['', '', '']);
                 }
                 activePlayerPointsVolley = false;
+            }
+            if(player.doors[20] >= 3 && player.doors[19] >= 3 && player.doors[18] >= 3 && player.doors[17] >= 3 && player.doors[16] >= 3 && player.doors[15] >= 3 && player.doors[25] >= 3) {
+                await isGameFinish(player);
             }
         }
     });
