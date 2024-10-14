@@ -364,7 +364,7 @@ const reset = () => {
     .points-content {
         display: flex;
         flex-direction: column;
-        padding: 1rem;
+        padding: 1rem 1rem 1.5rem 1rem;
         max-width: 390px;
         width: 100%;
 
