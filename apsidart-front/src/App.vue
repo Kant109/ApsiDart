@@ -37,13 +37,13 @@ const Kant1: Player = {
         "total": 0
     },
     "doors": {
-        "20": [false, false, false],
-        "19": [false, false, false],
-        "18": [false, false, false],
-        "17": [false, false, false],
-        "16": [false, false, false],
-        "15": [false, false, false],
-        "25": [false, false, false]
+        "20": 0,
+        "19": 0,
+        "18": 0,
+        "17": 0,
+        "16": 0,
+        "15": 0,
+        "25": 0
     },
     "volleys": [['', '', '']]
 };
@@ -63,15 +63,15 @@ const Mati: Player = {
         "total": 0
     },
     "doors": {
-        "20": [false, false, false],
-        "19": [false, false, false],
-        "18": [false, false, false],
-        "17": [false, false, false],
-        "16": [false, false, false],
-        "15": [false, false, false],
-        "25": [false, false, false]
+        "20": 0,
+        "19": 0,
+        "18": 0,
+        "17": 0,
+        "16": 0,
+        "15": 0,
+        "25": 0
     },
-    "volleys": [['', '', '']]
+    "volleys": []
 };
 
 const Rom1: Player = {
@@ -89,15 +89,15 @@ const Rom1: Player = {
         "total": 0
     },
     "doors": {
-        "20": [false, false, false],
-        "19": [false, false, false],
-        "18": [false, false, false],
-        "17": [false, false, false],
-        "16": [false, false, false],
-        "15": [false, false, false],
-        "25": [false, false, false]
+        "20": 0,
+        "19": 0,
+        "18": 0,
+        "17": 0,
+        "16": 0,
+        "15": 0,
+        "25": 0
     },
-    "volleys": [['', '', '']]
+    "volleys": []
 };
 
 const Phil: Player = {
@@ -115,15 +115,15 @@ const Phil: Player = {
         "total": 0
     },
     "doors": {
-        "20": [false, false, false],
-        "19": [false, false, false],
-        "18": [false, false, false],
-        "17": [false, false, false],
-        "16": [false, false, false],
-        "15": [false, false, false],
-        "25": [false, false, false]
+        "20": 0,
+        "19": 0,
+        "18": 0,
+        "17": 0,
+        "16": 0,
+        "15": 0,
+        "25": 0
     },
-    "volleys": [['', '', '']]
+    "volleys": []
 };
 
 const Zim: Player = {
@@ -141,15 +141,15 @@ const Zim: Player = {
         "total": 0
     },
     "doors": {
-        "20": [false, false, false],
-        "19": [false, false, false],
-        "18": [false, false, false],
-        "17": [false, false, false],
-        "16": [false, false, false],
-        "15": [false, false, false],
-        "25": [false, false, false]
+        "20": 0,
+        "19": 0,
+        "18": 0,
+        "17": 0,
+        "16": 0,
+        "15": 0,
+        "25": 0
     },
-    "volleys": [['', '', '']]
+    "volleys": []
 };
 
 const Bast1: Player = {
@@ -167,15 +167,15 @@ const Bast1: Player = {
         "total": 0
     },
     "doors": {
-        "20": [false, false, false],
-        "19": [false, false, false],
-        "18": [false, false, false],
-        "17": [false, false, false],
-        "16": [false, false, false],
-        "15": [false, false, false],
-        "25": [false, false, false]
+        "20": 0,
+        "19": 0,
+        "18": 0,
+        "17": 0,
+        "16": 0,
+        "15": 0,
+        "25": 0
     },
-    "volleys": [['', '', '']]
+    "volleys": []
 };
 
 onMounted(() => {

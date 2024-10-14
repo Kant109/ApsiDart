@@ -13,15 +13,6 @@ const openStat = () => {
     isStatOpen.value = !isStatOpen.value;
 }
 
-watch(
-    () => props.player.isActive,
-    () => {
-        if(props.player.isActive) {
-            props.player.volleys.push(['', '', '']);
-        }
-    }
-)
-
 </script>
 
 <template>
@@ -30,13 +21,13 @@ watch(
             <div class="player-name">{{ player.pseudo }}</div>
             <div class="recap">
                 <div class="doors">
-                    <div class="door" :class="{'first': player.doors[20][0], 'second': player.doors[20][1], 'full': player.doors[20][2]}"></div>
-                    <div class="door" :class="{'first': player.doors[19][0], 'second': player.doors[19][1], 'full': player.doors[19][2]}"></div>
-                    <div class="door" :class="{'first': player.doors[18][0], 'second': player.doors[18][1], 'full': player.doors[18][2]}"></div>
-                    <div class="door" :class="{'first': player.doors[17][0], 'second': player.doors[17][1], 'full': player.doors[17][2]}"></div>
-                    <div class="door" :class="{'first': player.doors[16][0], 'second': player.doors[16][1], 'full': player.doors[16][2]}"></div>
-                    <div class="door" :class="{'first': player.doors[15][0], 'second': player.doors[15][1], 'full': player.doors[15][2]}"></div>
-                    <div class="door" :class="{'first': player.doors[25][0], 'second': player.doors[25][1], 'full': player.doors[25][2]}"></div>
+                    <div class="door" :class="{'first': player.doors[20] !== 0, 'second': player.doors[20] >= 2, 'full': player.doors[20] >= 3}"></div>
+                    <div class="door" :class="{'first': player.doors[19] !== 0, 'second': player.doors[19] >= 2, 'full': player.doors[19] >= 3}"></div>
+                    <div class="door" :class="{'first': player.doors[18] !== 0, 'second': player.doors[18] >= 2, 'full': player.doors[18] >= 3}"></div>
+                    <div class="door" :class="{'first': player.doors[17] !== 0, 'second': player.doors[17] >= 2, 'full': player.doors[17] >= 3}"></div>
+                    <div class="door" :class="{'first': player.doors[16] !== 0, 'second': player.doors[16] >= 2, 'full': player.doors[16] >= 3}"></div>
+                    <div class="door" :class="{'first': player.doors[15] !== 0, 'second': player.doors[15] >= 2, 'full': player.doors[15] >= 3}"></div>
+                    <div class="door" :class="{'first': player.doors[25] !== 0, 'second': player.doors[25] >= 2, 'full': player.doors[25] >= 3}"></div>
                 </div>
             </div>
             <div class="points-taken">{{ player.points.total }}</div>

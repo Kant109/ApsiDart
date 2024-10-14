@@ -27,43 +27,43 @@ const setPoints = (points: number) => {
         if(!player.isActive) {
             switch(points) {
                 case 20:
-                    if(player.doors[20].includes(false)) {
+                    if(player.doors[20] < 3) {
                         player.points[20] += 20;
                         player.points.total += 20;
                     }
                     break;
                 case 19:
-                    if(player.doors[19].includes(false)) {
+                    if(player.doors[19] < 3) {
                         player.points[19] += 19;
                         player.points.total += 19;
                     }
                     break;
                 case 18:
-                    if(player.doors[18].includes(false)) {
+                    if(player.doors[18] < 3) {
                         player.points[18] += 18;
                         player.points.total += 18;
                     }
                     break;
                 case 17:
-                    if(player.doors[17].includes(false)) {
+                    if(player.doors[17] < 3) {
                         player.points[17] += 17;
                         player.points.total += 17;
                     }
                     break;
                 case 16:
-                    if(player.doors[16].includes(false)) {
+                    if(player.doors[16] < 3) {
                         player.points[16] += 16;
                         player.points.total += 16;
                     }
                     break;
                 case 15:
-                    if(player.doors[15].includes(false)) {
+                    if(player.doors[15] < 3) {
                         player.points[15] += 15;
                         player.points.total += 15;
                     }
                     break;
                 case 25:
-                    if(player.doors[25].includes(false)) {
+                    if(player.doors[25] < 3) {
                         player.points[25] += 25;
                         player.points.total += 25;
                     }
@@ -84,38 +84,58 @@ const setPointsActivePlayer = (points: number) => {
             switch(points) {
                 case 20:
                     for (let index = 0; index < value; index++) {
-                        !player.doors[20].includes(false) ? setPoints(20) : player.doors[20][player.doors[20].indexOf(false)] = true;
+                        player.doors[20] += 1;
+                        if(player.doors[20] > 3) {
+                            setPoints(20);
+                        }
                     }
-
                     break;
                 case 19:
                     for (let index = 0; index < value; index++) {
-                        !player.doors[19].includes(false) ? setPoints(19) : player.doors[19][player.doors[19].indexOf(false)] = true;
+                        player.doors[19] += 1;
+                        if(player.doors[19] > 3) {
+                            setPoints(19);
+                        }
                     }
                     break;
                 case 18:
                     for (let index = 0; index < value; index++) {
-                        !player.doors[18].includes(false) ? setPoints(18) : player.doors[18][player.doors[18].indexOf(false)] = true;
+                        player.doors[18] += 1;
+                        if(player.doors[18] > 3) {
+                            setPoints(18);
+                        }
                     }
                     break;
                 case 17:
                     for (let index = 0; index < value; index++) {
-                        !player.doors[17].includes(false) ? setPoints(17) : player.doors[17][player.doors[17].indexOf(false)] = true;
+                        player.doors[17] += 1;
+                        if(player.doors[17] > 3) {
+                            setPoints(17);
+                        }
                     }
                     break;
                 case 16:
                     for (let index = 0; index < value; index++) {
-                        !player.doors[16].includes(false) ? setPoints(16) : player.doors[16][player.doors[16].indexOf(false)] = true;
+                        player.doors[16] += 1;
+                        if(player.doors[16] > 3) {
+                            setPoints(16);
+                        }
                     }
                     break;
                 case 15:
                     for (let index = 0; index < value; index++) {
-                        !player.doors[15].includes(false) ? setPoints(15) : player.doors[15][player.doors[15].indexOf(false)] = true;
+                        player.doors[15] += 1;
+                        if(player.doors[15] > 3) {
+                            setPoints(15);
+                        }
                     }
                     break;
                 case 25:
                     for (let index = 0; index < value; index++) {
-                        !player.doors[25].includes(false) ? setPoints(25) : player.doors[25][player.doors[25].indexOf(false)] = true;
+                        player.doors[25] += 1;
+                        if(player.doors[25] > 3) {
+                            setPoints(25);
+                        }
                     }
                     break;
             }
@@ -128,15 +148,172 @@ const setPointsActivePlayer = (points: number) => {
                 player.volleys[player.volleys.length - 1][2] = currentPointValue;
                 setTimeout(() => {
                     player.isActive = false;
-                    players.value.indexOf(player) + 1 === players.value.length ? players.value[0].isActive = true : players.value[players.value.indexOf(player) + 1].isActive = true;
+                    if(players.value.indexOf(player) + 1 === players.value.length) {
+                        players.value[0].isActive = true;
+                        players.value[0].volleys.push(['', '', '']);
+                    } else {
+                        players.value[players.value.indexOf(player) + 1].isActive = true;
+                        players.value[players.value.indexOf(player) + 1].volleys.push(['', '', '']);
+                    }
                     activePlayerPointsVolley = false;
                 }, 750);
-            } else {
-                player.volleys.push([currentPointValue, '', '']);
             }
         }
     });
     reset();
+}
+
+const removePoints = (points: number) => {
+    players.value.forEach(player => {
+        if(!player.isActive) {
+            switch(points) {
+                case 20:
+                    if(player.doors[20] < 3) {
+                        player.points[20] -= 20;
+                        player.points.total -= 20;
+                    }
+                    break;
+                case 19:
+                    if(player.doors[19] < 3) {
+                        player.points[19] -= 19;
+                        player.points.total -= 19;
+                    }
+                    break;
+                case 18:
+                    if(player.doors[18] < 3) {
+                        player.points[18] -= 18;
+                        player.points.total -= 18;
+                    }
+                    break;
+                case 17:
+                    if(player.doors[17] < 3) {
+                        player.points[17] -= 17;
+                        player.points.total -= 17;
+                    }
+                    break;
+                case 16:
+                    if(player.doors[16] < 3) {
+                        player.points[16] -= 16;
+                        player.points.total -= 16;
+                    }
+                    break;
+                case 15:
+                    if(player.doors[15] < 3) {
+                        player.points[15] -= 15;
+                        player.points.total -= 15;
+                    }
+                    break;
+                case 25:
+                    if(player.doors[25] < 3) {
+                        player.points[25] -= 25;
+                        player.points.total -= 25;
+                    }
+                    break;
+            }
+        }
+    })
+}
+
+const cancelPoints = async (previousDart: string, player: Player) => {
+    const value = previousDart.includes('T') ? 3 : previousDart.includes('D') ? 2 : 1;
+
+    if(previousDart.includes('20')) {
+        const nbDartsInPoints = player.doors[20];
+
+        for (let index = nbDartsInPoints; index > nbDartsInPoints - value; index--) {
+            player.doors[20] -= 1;
+            if(index > 3) {
+                removePoints(20);
+            }
+        }
+    } else if(previousDart.includes('19')) {
+        const nbDartsInPoints = player.doors[19];
+
+        for (let index = nbDartsInPoints; index > nbDartsInPoints - value; index--) {
+            player.doors[19] -= 1;
+            if(index > 3) {
+                removePoints(19);
+            }
+        }
+    } else if(previousDart.includes('18')) {
+        const nbDartsInPoints = player.doors[18];
+
+        for (let index = nbDartsInPoints; index > nbDartsInPoints - value; index--) {
+            player.doors[18] -= 1;
+            if(index > 3) {
+                removePoints(18);
+            }
+        }
+    } else if(previousDart.includes('17')) {
+        const nbDartsInPoints = player.doors[17];
+
+        for (let index = nbDartsInPoints; index > nbDartsInPoints - value; index--) {
+            player.doors[17] -= 1;
+            if(index > 3) {
+                removePoints(17);
+            }
+        }
+    } else if(previousDart.includes('16')) {
+        const nbDartsInPoints = player.doors[16];
+
+        for (let index = nbDartsInPoints; index > nbDartsInPoints - value; index--) {
+            player.doors[16] -= 1;
+            if(index > 3) {
+                removePoints(16);
+            }
+        }
+    } else if(previousDart.includes('15')) {
+        const nbDartsInPoints = player.doors[15];
+
+        for (let index = nbDartsInPoints; index > nbDartsInPoints - value; index--) {
+            player.doors[15] -= 1;
+            if(index > 3) {
+                removePoints(15);
+            }
+        }
+    } else if(previousDart.includes('25')) {
+        const nbDartsInPoints = player.doors[25];
+
+        for (let index = nbDartsInPoints; index > nbDartsInPoints - value; index--) {
+            player.doors[25] -= 1;
+            if(index > 3) {
+                removePoints(25);
+            }
+        }
+    }
+}
+
+const removePreviousDart = async (player: Player, isCancel: boolean) => {
+    for (let index = 3; index > 0; index--) {
+        const previousDart = player.volleys[player.volleys.length - 1][index - 1];
+
+        if(previousDart !== "" && !isCancel) {
+            await cancelPoints(previousDart, player);
+
+            player.volleys[player.volleys.length - 1][index - 1] = "";
+            isCancel = true;
+        }
+    }
+}
+
+const cancel = () => {
+    players.value.forEach(player => {
+        if(player.isActive) {
+            let isCancel = false;
+            if(!(player.volleys[player.volleys.length - 1][0] === "" && player.volleys[player.volleys.length - 1][1] === "" && player.volleys[player.volleys.length - 1][2] === "")) {
+                removePreviousDart(player, isCancel);
+            } else {
+                player.isActive = false;
+                if((players.value.indexOf(player) - 1) >= 0) {
+                    players.value[players.value.indexOf(player) - 1].isActive = true;
+                    removePreviousDart(players.value[players.value.indexOf(player) - 1], isCancel);
+                } else {
+                    players.value[players.value.length - 1].isActive = true;
+                    removePreviousDart(players.value[players.value.length - 1], isCancel);
+                }
+            }
+        }
+    });
 }
 
 const reset = () => {
@@ -159,11 +336,11 @@ const reset = () => {
                 <div class="points" :class="{'isDisable': triple}" @click.prevent="setPointsActivePlayer(25)">25</div>
             </div>
             <div class="instructions">
-                <div class="points zero" :class="{'isDisable': double || triple}">0</div>
+                <div class="points zero" :class="{'isDisable': double || triple}" @click.prevent="setPointsActivePlayer(0)">0</div>
                 <div class="specific">
                     <div class="points double" :class="{'isActive': double && !triple}" @click.prevent="selectDouble">DOUBLE</div>
                     <div class="points triple" :class="{'isActive': triple && !double}" @click.prevent="selectTriple">TRIPLE</div>
-                    <div class="points back">RETOUR</div>
+                    <div class="points back" @click.prevent="cancel">RETOUR</div>
                 </div>
             </div>
         </div>
@@ -194,7 +371,6 @@ const reset = () => {
         .points-line {
             display: flex;
             justify-content: space-between;
-            // gap: 0.45rem;
 
             .points {
                 aspect-ratio: 1/1;
@@ -204,7 +380,6 @@ const reset = () => {
 
         .instructions {
             display: flex;
-            // justify-content: space-between;
             margin-top: .5rem;
             gap: 0.45rem;
 

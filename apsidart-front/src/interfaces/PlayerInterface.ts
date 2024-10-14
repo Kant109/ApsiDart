@@ -13,13 +13,13 @@ interface Player {
         total: number
     },
     doors: {
-        20: [boolean, boolean, boolean],
-        19: [boolean, boolean, boolean],
-        18: [boolean, boolean, boolean],
-        17: [boolean, boolean, boolean],
-        16: [boolean, boolean, boolean],
-        15: [boolean, boolean, boolean],
-        25: [boolean, boolean, boolean],
+        20: number,
+        19: number,
+        18: number,
+        17: number,
+        16: number,
+        15: number,
+        25: number
     },
     volleys: Array<Array<string>>
 }
