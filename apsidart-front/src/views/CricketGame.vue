@@ -40,7 +40,7 @@ const players = computed(() => gameStore.players);
     display: flex;
     justify-content: center;
     font-family: "Monoton", sans-serif;
-    font-size: 3.25rem;
+    font-size: 2.5rem;
     padding: 2rem;
     color: #F0F2EF;
 }
