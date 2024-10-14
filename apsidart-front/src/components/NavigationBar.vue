@@ -30,7 +30,7 @@ const goToProfile = () => {
     display: flex;
     justify-content: space-evenly;
     background-color: white;
-    padding: 13px 0 .5rem 0;
+    padding: 13px 0 1rem 0;
     position: fixed;
     bottom: 0;
     width: 100vw;

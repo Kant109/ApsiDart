@@ -146,17 +146,16 @@ const setPointsActivePlayer = async (points: number) => {
                 player.volleys[player.volleys.length - 1][1] = currentPointValue;
             } else if(player.volleys[player.volleys.length - 1][2] === "") {
                 player.volleys[player.volleys.length - 1][2] = currentPointValue;
-                setTimeout(() => {
-                    player.isActive = false;
-                    if(players.value.indexOf(player) + 1 === players.value.length) {
-                        players.value[0].isActive = true;
-                        players.value[0].volleys.push(['', '', '']);
-                    } else {
-                        players.value[players.value.indexOf(player) + 1].isActive = true;
-                        players.value[players.value.indexOf(player) + 1].volleys.push(['', '', '']);
-                    }
-                    activePlayerPointsVolley = false;
-                }, 750);
+
+                player.isActive = false;
+                if(players.value.indexOf(player) + 1 === players.value.length) {
+                    players.value[0].isActive = true;
+                    players.value[0].volleys.push(['', '', '']);
+                } else {
+                    players.value[players.value.indexOf(player) + 1].isActive = true;
+                    players.value[players.value.indexOf(player) + 1].volleys.push(['', '', '']);
+                }
+                activePlayerPointsVolley = false;
             }
         }
     });

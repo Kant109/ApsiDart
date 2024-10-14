@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, watch } from 'vue';
+import { ref } from 'vue';
 
 const props = defineProps<{
   player: Player
@@ -17,7 +17,7 @@ const openStat = () => {
 
 <template>
     <div class="full-content" :class="{'top-bg': props.isTopBgActive, 'top-bg-active': props.isTopBgPlayerActive && props.isTopBgActive}">
-        <div class="player-content" :class="{'isPlayerActive': player.isActive}" @click.prevent="openStat">
+        <div class="player-content" :class="{'isPlayerActive': player.isActive }" @click.prevent="openStat">
             <div class="player-name">{{ player.pseudo }}</div>
             <div class="recap">
                 <div class="doors">
