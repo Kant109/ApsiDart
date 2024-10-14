@@ -16,7 +16,7 @@ const goToStats = () => {
 }
 
 const goToGame = () => {
-    router.push({ name: "game"});
+    router.push({ name: "cricket"});
 }
 
 const goToProfile = () => {
