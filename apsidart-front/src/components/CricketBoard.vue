@@ -22,7 +22,7 @@ const selectTriple = () => {
     triple.value = !triple.value;
 }
 
-const setPoints = (points: number) => {
+const setPoints = async (points: number) => {
     players.value.forEach(player => {
         if(!player.isActive) {
             switch(points) {
@@ -73,11 +73,11 @@ const setPoints = (points: number) => {
     })
 }
 
-const setPointsActivePlayer = (points: number) => {
+const setPointsActivePlayer = async (points: number) => {
     const value = double.value ? 2 : triple.value ? 3 : 1;
     let activePlayerPointsVolley = true;
 
-    players.value.forEach(player => {
+    players.value.forEach(async player => {
         if(player.isActive && activePlayerPointsVolley) {
             const currentPointValue = value === 2 ? "D" + points.toString() : value === 3 ? "T" + points.toString() : points.toString();
 
@@ -86,7 +86,7 @@ const setPointsActivePlayer = (points: number) => {
                     for (let index = 0; index < value; index++) {
                         player.doors[20] += 1;
                         if(player.doors[20] > 3) {
-                            setPoints(20);
+                            await setPoints(20);
                         }
                     }
                     break;
@@ -94,7 +94,7 @@ const setPointsActivePlayer = (points: number) => {
                     for (let index = 0; index < value; index++) {
                         player.doors[19] += 1;
                         if(player.doors[19] > 3) {
-                            setPoints(19);
+                            await setPoints(19);
                         }
                     }
                     break;
@@ -102,7 +102,7 @@ const setPointsActivePlayer = (points: number) => {
                     for (let index = 0; index < value; index++) {
                         player.doors[18] += 1;
                         if(player.doors[18] > 3) {
-                            setPoints(18);
+                            await setPoints(18);
                         }
                     }
                     break;
@@ -110,7 +110,7 @@ const setPointsActivePlayer = (points: number) => {
                     for (let index = 0; index < value; index++) {
                         player.doors[17] += 1;
                         if(player.doors[17] > 3) {
-                            setPoints(17);
+                            await setPoints(17);
                         }
                     }
                     break;
@@ -118,7 +118,7 @@ const setPointsActivePlayer = (points: number) => {
                     for (let index = 0; index < value; index++) {
                         player.doors[16] += 1;
                         if(player.doors[16] > 3) {
-                            setPoints(16);
+                            await setPoints(16);
                         }
                     }
                     break;
@@ -126,7 +126,7 @@ const setPointsActivePlayer = (points: number) => {
                     for (let index = 0; index < value; index++) {
                         player.doors[15] += 1;
                         if(player.doors[15] > 3) {
-                            setPoints(15);
+                            await setPoints(15);
                         }
                     }
                     break;
@@ -134,7 +134,7 @@ const setPointsActivePlayer = (points: number) => {
                     for (let index = 0; index < value; index++) {
                         player.doors[25] += 1;
                         if(player.doors[25] > 3) {
-                            setPoints(25);
+                            await setPoints(25);
                         }
                     }
                     break;
@@ -163,7 +163,7 @@ const setPointsActivePlayer = (points: number) => {
     reset();
 }
 
-const removePoints = (points: number) => {
+const removePoints = async (points: number) => {
     players.value.forEach(player => {
         if(!player.isActive) {
             switch(points) {
@@ -223,7 +223,7 @@ const cancelPoints = async (previousDart: string, player: Player) => {
         for (let index = nbDartsInPoints; index > nbDartsInPoints - value; index--) {
             player.doors[20] -= 1;
             if(index > 3) {
-                removePoints(20);
+                await removePoints(20);
             }
         }
     } else if(previousDart.includes('19')) {
@@ -232,7 +232,7 @@ const cancelPoints = async (previousDart: string, player: Player) => {
         for (let index = nbDartsInPoints; index > nbDartsInPoints - value; index--) {
             player.doors[19] -= 1;
             if(index > 3) {
-                removePoints(19);
+                await removePoints(19);
             }
         }
     } else if(previousDart.includes('18')) {
@@ -241,7 +241,7 @@ const cancelPoints = async (previousDart: string, player: Player) => {
         for (let index = nbDartsInPoints; index > nbDartsInPoints - value; index--) {
             player.doors[18] -= 1;
             if(index > 3) {
-                removePoints(18);
+                await removePoints(18);
             }
         }
     } else if(previousDart.includes('17')) {
@@ -250,7 +250,7 @@ const cancelPoints = async (previousDart: string, player: Player) => {
         for (let index = nbDartsInPoints; index > nbDartsInPoints - value; index--) {
             player.doors[17] -= 1;
             if(index > 3) {
-                removePoints(17);
+                await removePoints(17);
             }
         }
     } else if(previousDart.includes('16')) {
@@ -259,7 +259,7 @@ const cancelPoints = async (previousDart: string, player: Player) => {
         for (let index = nbDartsInPoints; index > nbDartsInPoints - value; index--) {
             player.doors[16] -= 1;
             if(index > 3) {
-                removePoints(16);
+                await removePoints(16);
             }
         }
     } else if(previousDart.includes('15')) {
@@ -268,7 +268,7 @@ const cancelPoints = async (previousDart: string, player: Player) => {
         for (let index = nbDartsInPoints; index > nbDartsInPoints - value; index--) {
             player.doors[15] -= 1;
             if(index > 3) {
-                removePoints(15);
+                await removePoints(15);
             }
         }
     } else if(previousDart.includes('25')) {
@@ -277,7 +277,7 @@ const cancelPoints = async (previousDart: string, player: Player) => {
         for (let index = nbDartsInPoints; index > nbDartsInPoints - value; index--) {
             player.doors[25] -= 1;
             if(index > 3) {
-                removePoints(25);
+                await removePoints(25);
             }
         }
     }
