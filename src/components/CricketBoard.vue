@@ -73,8 +73,19 @@ const setPoints = async (points: number) => {
     })
 }
 
-const isGameFinish = async (activePlayer: Player) => {
-    
+const isGameFinish = async () => {
+    players.value.forEach(player => {
+        if(player.doors[20] >= 3 && player.doors[19] >= 3 && player.doors[18] >= 3 && player.doors[17] >= 3 && player.doors[16] >= 3 && player.doors[15] >= 3 && player.doors[25] >= 3) {
+            let playerPoints = player.points.total;
+            players.value.forEach(otherPlayer => {
+                if(player !== otherPlayer) {
+                    if(playerPoints > otherPlayer.points.total) {
+                        isGameFinish = true;
+                    }
+                }
+            });
+        }
+    });
 }
 
 const setPointsActivePlayer = async (points: number) => {
@@ -161,11 +172,9 @@ const setPointsActivePlayer = async (points: number) => {
                 }
                 activePlayerPointsVolley = false;
             }
-            if(player.doors[20] >= 3 && player.doors[19] >= 3 && player.doors[18] >= 3 && player.doors[17] >= 3 && player.doors[16] >= 3 && player.doors[15] >= 3 && player.doors[25] >= 3) {
-                await isGameFinish(player);
-            }
         }
     });
+    await isGameFinish();
     reset();
 }
 
@@ -364,7 +373,6 @@ const reset = () => {
     width: 100%;
     background-color: #F0F2EF;
     --tw-shadow: inset 0 5px 0 0 rgba(0, 0, 0, .25);
-    --tw-shadow-colored: inset 0 -5px 0 0 var(--tw-shadow-color);
     box-shadow: var(--tw-ring-offset-shadow, 0 0 rgba(0, 0, 0, 0)), var(--tw-ring-shadow, 0 0 rgba(0, 0, 0, 0)), var(--tw-shadow);
 
     .points-content {

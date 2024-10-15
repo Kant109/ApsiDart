@@ -73,7 +73,6 @@ const openStat = () => {
     border-radius: 1rem 1rem 0 0;
     padding: 0 1rem;
     --tw-shadow: inset 0 5px 0 0 rgba(0, 0, 0, .25);
-    --tw-shadow-colored: inset 0 -5px 0 0 var(--tw-shadow-color);
     box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
 
     &.isPlayerActive {
@@ -183,7 +182,6 @@ const openStat = () => {
             background-color: #F0F2EF;
             border: 1px solid rgba(0, 0, 0, .25);
             --tw-shadow: inset 0 -5px 0 0 rgba(0, 0, 0, .25);
-            --tw-shadow-colored: inset 0 -5px 0 0 var(--tw-shadow-color);
             box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
         }
     }
@@ -222,7 +220,6 @@ const openStat = () => {
                         padding-bottom: 5px;
                         background-color: #F0F2EF;
                         --tw-shadow: inset 0 -5px 0 0 rgba(0, 0, 0, .25);
-                        --tw-shadow-colored: inset 0 -5px 0 0 var(--tw-shadow-color);
                         box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
                     }
                 }

@@ -72,7 +72,8 @@ const players = computed(() => gameStore.players);
 
 .players-container {
     display: flex;
-    justify-content: center;
+    flex-direction: column;
+    align-items: center;
     width: 100%;
     padding-bottom: 200px;
     background-color: #0a1e30;
