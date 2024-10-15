@@ -2,7 +2,7 @@
 import { ref } from 'vue';
 
 const props = defineProps<{
-  player: Player
+  player: CricketPlayer
   isTopBgActive: boolean
   isTopBgPlayerActive: boolean
 }>()
@@ -53,7 +53,7 @@ const openStat = () => {
     </div>
 </template>
 
-<style lang="scss">
+<style lang="scss" scoped>
 .top-bg {
     background-color: #F0F2EF;
 }

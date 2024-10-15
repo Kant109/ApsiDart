@@ -1,12 +1,12 @@
 import { defineStore } from "pinia";
 import { ref } from "vue";
 
-export const useGameStore = defineStore('Game', () => {
-    const players = ref([] as Array<Player>);
+export const useCricketGameStore = defineStore('CricketGame', () => {
+    const players = ref([] as Array<CricketPlayer>);
     const isGameFinish = ref(false);
-    const isGameWinner = ref({} as Player);
+    const isGameWinner = ref({} as CricketPlayer);
 
-    function setPlayer(player: Player) {
+    function setPlayer(player: CricketPlayer) {
         players.value.push(player);
     }
 
@@ -15,7 +15,7 @@ export const useGameStore = defineStore('Game', () => {
         isGameFinish.value = newIsGameFinish;
     }
 
-    function setIsGameWinner(newIsGameWinner: Player) {
+    function setIsGameWinner(newIsGameWinner: CricketPlayer) {
         isGameWinner.value = newIsGameWinner;
     }
 

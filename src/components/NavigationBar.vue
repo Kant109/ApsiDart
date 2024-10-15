@@ -24,7 +24,7 @@ const goToProfile = () => {
 }
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 
 .nav-bar {
     display: flex;

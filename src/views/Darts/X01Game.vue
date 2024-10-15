@@ -1,10 +1,10 @@
 <script setup lang="ts">
 import { computed } from 'vue';
-import CricketBoard from '@/components/CricketBoard.vue';
-import CricketPlayer from '@/components/CricketPlayer.vue';
-import { useGameStore } from '@/stores/GameStore';
+import X01Board from '@/components/X01/X01Board.vue';
+import X01Player from '@/components/X01/X01Player.vue';
+import { useX01GameStore } from '@/stores/X01GameStore';
 
-const gameStore = useGameStore();
+const gameStore = useX01GameStore();
 
 const players = computed(() => gameStore.players);
 const isGameFinish = computed(() => gameStore.isGameFinish);
@@ -13,21 +13,10 @@ const isGameWinner = computed(() => gameStore.isGameWinner);
 </script>
 
 <template>
-    <div class="title">CRICKET</div>
-    <div class="points-recap-doors" v-if="!isGameFinish">
-        <div class="recap-doors">
-            <div class="recap-door">20</div>
-            <div class="recap-door">19</div>
-            <div class="recap-door">18</div>
-            <div class="recap-door">17</div>
-            <div class="recap-door">16</div>
-            <div class="recap-door">15</div>
-            <div class="recap-door">25</div>
-        </div>
-    </div>
+    <div class="title">301</div>
     <div class="players-container" v-if="!isGameFinish">
         <div class="players-content">
-                <CricketPlayer
+                <X01Player
                     v-for="player in players"
                     :player="player"
                     :is-top-bg-active="players.indexOf(player) !== 0"
@@ -35,14 +24,14 @@ const isGameWinner = computed(() => gameStore.isGameWinner);
                 />
         </div>
     </div>
-    <CricketBoard v-if="!isGameFinish"/>
+    <X01Board v-if="!isGameFinish"/>
     <div v-if="isGameFinish">
         GAME IS FINISH
         {{ isGameWinner.pseudo }}
     </div>
 </template>
 
-<style lang="scss">
+<style lang="scss" scoped>
 .title {
     display: flex;
     justify-content: center;
@@ -100,7 +89,7 @@ const isGameWinner = computed(() => gameStore.isGameWinner);
         width: 100%;
 
         &::after {
-            content: " ";
+            content: "";
             height: .75rem;
             border-radius: 0 0 1rem 1rem;
             --tw-shadow: inset 0 -5px 0 0 rgba(0, 0, 0, .25);

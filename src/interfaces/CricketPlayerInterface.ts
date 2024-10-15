@@ -1,4 +1,4 @@
-interface Player {
+interface CricketPlayer {
     id: string,
     pseudo: string,
     isActive: boolean,

@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue';
-import { useGameStore } from '@/stores/GameStore';
+import { useCricketGameStore } from '@/stores/CricketGameStore';
 
-const gameStore = useGameStore();
+const gameStore = useCricketGameStore();
 
 const players = computed(() => gameStore.players);
 const double = ref(false);
@@ -74,11 +74,11 @@ const setPoints = async (points: number) => {
     })
 }
 
-const playerCloseAllDoors = (player: Player): boolean => {
+const playerCloseAllDoors = (player: CricketPlayer): boolean => {
     return player.doors[20] >= 3 && player.doors[19] >= 3 && player.doors[18] >= 3 && player.doors[17] >= 3 && player.doors[16] >= 3 && player.doors[15] >= 3 && player.doors[25] >= 3;
 }
 
-const playerBestScore = (player: Player): boolean => {
+const playerBestScore = (player: CricketPlayer): boolean => {
     let isPlayerLeastPoints = true;
 
     players.value.forEach(otherPlayer => {
@@ -242,7 +242,7 @@ const removePoints = async (points: number) => {
     })
 }
 
-const cancelPoints = async (previousDart: string, player: Player) => {
+const cancelPoints = async (previousDart: string, player: CricketPlayer) => {
     const value = previousDart.includes('T') ? 3 : previousDart.includes('D') ? 2 : 1;
 
     if(previousDart.includes('20')) {
@@ -311,7 +311,7 @@ const cancelPoints = async (previousDart: string, player: Player) => {
     }
 }
 
-const removePreviousDart = async (player: Player, isCancel: boolean) => {
+const removePreviousDart = async (player: CricketPlayer, isCancel: boolean) => {
     for (let index = 3; index > 0; index--) {
         const previousDart = player.volleys[player.volleys.length - 1][index - 1];
 
@@ -375,7 +375,7 @@ const reset = () => {
     </div>
 </template>
 
-<style lang="scss">
+<style lang="scss" scoped>
 @import "@/assets/mixins/buttons.scss";
 
 .points-container {
