@@ -7,6 +7,7 @@ const gameStore = useGameStore();
 const players = computed(() => gameStore.players);
 const double = ref(false);
 const triple = ref(false);
+const isGameFinish = computed(() => gameStore.isGameFinish);
 
 const selectDouble = () => {
     if(triple.value) {
@@ -73,17 +74,32 @@ const setPoints = async (points: number) => {
     })
 }
 
-const isGameFinish = async () => {
-    players.value.forEach(player => {
-        if(player.doors[20] >= 3 && player.doors[19] >= 3 && player.doors[18] >= 3 && player.doors[17] >= 3 && player.doors[16] >= 3 && player.doors[15] >= 3 && player.doors[25] >= 3) {
-            let playerPoints = player.points.total;
-            players.value.forEach(otherPlayer => {
-                if(player !== otherPlayer) {
-                    if(playerPoints > otherPlayer.points.total) {
-                        isGameFinish = true;
-                    }
-                }
-            });
+const playerCloseAllDoors = (player: Player): boolean => {
+    return player.doors[20] >= 3 && player.doors[19] >= 3 && player.doors[18] >= 3 && player.doors[17] >= 3 && player.doors[16] >= 3 && player.doors[15] >= 3 && player.doors[25] >= 3;
+}
+
+const playerBestScore = (player: Player): boolean => {
+    let isPlayerLeastPoints = true;
+
+    players.value.forEach(otherPlayer => {
+        if((player !== otherPlayer) && playerCloseAllDoors(otherPlayer)) {
+            if(otherPlayer.points.total < player.points.total) {
+                isPlayerLeastPoints = false;
+            }
+        }
+    })
+
+    return isPlayerLeastPoints;
+}
+
+const checkIsGameFinish = async () => {
+    players.value.forEach(async player => {
+        if(!isGameFinish.value) {
+            console.log(player);
+            console.log(playerCloseAllDoors(player));
+            console.log(playerBestScore(player));
+            gameStore.setIsGameFinish(playerCloseAllDoors(player) && playerBestScore(player));
+            gameStore.setIsGameWinner(player);
         }
     });
 }
@@ -174,7 +190,7 @@ const setPointsActivePlayer = async (points: number) => {
             }
         }
     });
-    await isGameFinish();
+    await checkIsGameFinish();
     reset();
 }
 

@@ -7,11 +7,14 @@ import { useGameStore } from '@/stores/GameStore';
 const gameStore = useGameStore();
 
 const players = computed(() => gameStore.players);
+const isGameFinish = computed(() => gameStore.isGameFinish);
+const isGameWinner = computed(() => gameStore.isGameWinner);
+
 </script>
 
 <template>
     <div class="title">CRICKET</div>
-    <div class="points-recap-doors">
+    <div class="points-recap-doors" v-if="!isGameFinish">
         <div class="recap-doors">
             <div class="recap-door">20</div>
             <div class="recap-door">19</div>
@@ -22,7 +25,7 @@ const players = computed(() => gameStore.players);
             <div class="recap-door">25</div>
         </div>
     </div>
-    <div class="players-container">
+    <div class="players-container" v-if="!isGameFinish">
         <div class="players-content">
                 <CricketPlayer
                     v-for="player in players"
@@ -32,7 +35,11 @@ const players = computed(() => gameStore.players);
                 />
         </div>
     </div>
-    <CricketBoard />
+    <CricketBoard v-if="!isGameFinish"/>
+    <div v-if="isGameFinish">
+        GAME IS FINISH
+        {{ isGameWinner.pseudo }}
+    </div>
 </template>
 
 <style lang="scss">

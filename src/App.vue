@@ -182,9 +182,9 @@ onMounted(() => {
   gameStore.setPlayer(Kant1);
   gameStore.setPlayer(Mati);
   gameStore.setPlayer(Rom1);
-  gameStore.setPlayer(Phil);
-  gameStore.setPlayer(Zim);
-  gameStore.setPlayer(Bast1);
+//   gameStore.setPlayer(Phil);
+//   gameStore.setPlayer(Zim);
+//   gameStore.setPlayer(Bast1);
   // GET profil
   setTimeout(() => {
     managementAppStore.isAppLoaded = true;
