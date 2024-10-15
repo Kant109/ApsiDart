@@ -95,9 +95,6 @@ const playerBestScore = (player: Player): boolean => {
 const checkIsGameFinish = async () => {
     players.value.forEach(async player => {
         if(!isGameFinish.value) {
-            console.log(player);
-            console.log(playerCloseAllDoors(player));
-            console.log(playerBestScore(player));
             gameStore.setIsGameFinish(playerCloseAllDoors(player) && playerBestScore(player));
             gameStore.setIsGameWinner(player);
         }

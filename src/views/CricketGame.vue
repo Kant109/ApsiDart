@@ -48,7 +48,7 @@ const isGameWinner = computed(() => gameStore.isGameWinner);
     justify-content: center;
     font-family: "Monoton", sans-serif;
     font-size: 2.5rem;
-    padding: 2rem;
+    padding: 2rem 2rem 1rem 2rem;
     color: #F0F2EF;
 }
 
@@ -82,14 +82,31 @@ const isGameWinner = computed(() => gameStore.isGameWinner);
     flex-direction: column;
     align-items: center;
     width: 100%;
-    padding-bottom: 200px;
+    height: calc(100% - 287px);
     background-color: #0a1e30;
+    overflow: scroll;
+    -ms-overflow-style: none;  /* IE and Edge */
+    scrollbar-width: none;  /* Firefox */
+
+    /* Hide scrollbar for Chrome, Safari and Opera */
+    &::-webkit-scrollbar {
+        display: none;
+    }
 
     .players-content {
         display: flex;
         flex-direction: column;
         max-width: 390px;
         width: 100%;
+
+        &::after {
+            content: " ";
+            height: .75rem;
+            border-radius: 0 0 1rem 1rem;
+            --tw-shadow: inset 0 -5px 0 0 rgba(0, 0, 0, .25);
+            box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
+            background-color: #F0F2EF;
+        }
     }
 }
 </style>
