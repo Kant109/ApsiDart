@@ -100,10 +100,24 @@ const openStat = () => {
                 border-radius: 8px;
                 width: 2.5rem;
                 aspect-ratio: 1/1;
-                background-color: $light-mode-primary;
+                background-color: white;
                 border: 1px solid rgba(0, 0, 0, .25);
                 --tw-shadow: inset 0 -5px 0 0 rgba(0, 0, 0, .25);
                 box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
+            }
+        }
+    }
+}
+
+@media screen and (max-width: 390px) {
+    .player-content {
+        .recap {
+            .doors {
+                gap: .3rem;
+                .door {
+                    width: 1.3rem;
+                    height: 1.3rem;
+                }
             }
         }
     }

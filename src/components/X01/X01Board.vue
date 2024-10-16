@@ -219,4 +219,14 @@ const reset = () => {
     }
 }
 
+@media screen and (max-width: 390px) {
+    .points-container {
+        .points-content {
+            max-width: 320px;
+            width: 100%;
+            padding: 1rem .5rem 1.5rem .5rem;
+        }
+    }
+}
+
 </style>

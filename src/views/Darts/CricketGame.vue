@@ -65,7 +65,7 @@ const setIsLastPlayerActive = (isCurrentPlayerLast: boolean) => {
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 390px;
+    max-width: 390px;
     margin-bottom: 1rem;
     
     .recap-doors {
@@ -91,7 +91,8 @@ const setIsLastPlayerActive = (isCurrentPlayerLast: boolean) => {
     flex-direction: column;
     align-items: center;
     width: 100%;
-    height: calc(100% - 287px);
+    max-height: calc(100vh - 287px);
+    height: 100%;
     background-color: $dark-mode-primary;
     overflow: scroll;
     -ms-overflow-style: none;  /* IE and Edge */
@@ -122,6 +123,12 @@ const setIsLastPlayerActive = (isCurrentPlayerLast: boolean) => {
                 background-color: $active-player;
             }
         }
+    }
+}
+
+@media screen and (max-width: 390px) {
+    .players-container {
+        max-height: calc(100vh - 278px);
     }
 }
 </style>

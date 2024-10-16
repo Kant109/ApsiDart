@@ -247,4 +247,18 @@ const openStat = () => {
         }
     }
 }
+
+@media screen and (max-width: 390px) {
+    .player-content {
+        .recap {
+            .doors {
+                gap: .3rem;
+                .door {
+                    width: 1.3rem;
+                    height: 1.3rem;
+                }
+            }
+        }
+    }
+}
 </style>

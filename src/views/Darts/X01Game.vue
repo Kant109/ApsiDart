@@ -40,7 +40,7 @@ const isGameWinner = computed(() => gameStore.isGameWinner);
     font-family: "Monoton", sans-serif;
     font-size: 2.5rem;
     padding: 2rem 2rem 1rem 2rem;
-    color: $light-mode-primary;
+    color: white;
 }
 
 .points-recap-doors {
@@ -98,6 +98,12 @@ const isGameWinner = computed(() => gameStore.isGameWinner);
             box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
             background-color: $light-mode-primary;
         }
+    }
+}
+
+@media screen and (max-width: 390px) {
+    .players-container {
+        max-height: calc(100vh - 278px);
     }
 }
 </style>
