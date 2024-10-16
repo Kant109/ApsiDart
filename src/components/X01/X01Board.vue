@@ -157,7 +157,8 @@ const reset = () => {
 </template>
 
 <style lang="scss" scoped>
-@import "@/assets/mixins/buttons.scss";
+@import "@/assets/helpers/variables.scss";
+@import "@/assets/helpers/mixins.scss";
 
 .points-container {
     display: flex;
@@ -165,7 +166,7 @@ const reset = () => {
     position: fixed;
     bottom: 0;
     width: 100%;
-    background-color: #F0F2EF;
+    background-color: $light-mode-primary;
     --tw-shadow: inset 0 5px 0 0 rgba(0, 0, 0, .25);
     box-shadow: var(--tw-ring-offset-shadow, 0 0 rgba(0, 0, 0, 0)), var(--tw-ring-shadow, 0 0 rgba(0, 0, 0, 0)), var(--tw-shadow);
 

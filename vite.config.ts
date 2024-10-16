@@ -19,7 +19,7 @@ export default defineConfig({
         theme_color: '#ffffff',
         icons: [
           {
-            src: 'icons/target.png',
+            src: 'icons/darts.png',
             sizes: '512x512',
             type: 'image/png',
           },

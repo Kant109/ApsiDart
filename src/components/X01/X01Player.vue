@@ -32,12 +32,14 @@ const openStat = () => {
 </template>
 
 <style lang="scss" scoped>
+@import "@/assets/helpers/variables.scss";
+
 .top-bg {
-    background-color: #F0F2EF;
+    background-color: $light-mode-primary;
 }
 
 .top-bg-active {
-    background-color: #f9cd61;
+    background-color: $active-player;
 }
 
 .player-content {
@@ -47,14 +49,14 @@ const openStat = () => {
     grid-column-gap: 0px;
     grid-row-gap: 0px;
     height: 60px;
-    background-color: #F0F2EF;
+    background-color: $light-mode-primary;
     border-radius: 1rem 1rem 0 0;
     padding: 0 1rem;
     --tw-shadow: inset 0 5px 0 0 rgba(0, 0, 0, .25);
     box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
 
     &.isPlayerActive {
-        background-color: #f9cd61;
+        background-color: $active-player;
     }
 
     .player-name, .points-taken {
@@ -98,7 +100,7 @@ const openStat = () => {
                 border-radius: 8px;
                 width: 2.5rem;
                 aspect-ratio: 1/1;
-                background-color: #F0F2EF;
+                background-color: $light-mode-primary;
                 border: 1px solid rgba(0, 0, 0, .25);
                 --tw-shadow: inset 0 -5px 0 0 rgba(0, 0, 0, .25);
                 box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);

@@ -11,7 +11,6 @@ export const useCricketGameStore = defineStore('CricketGame', () => {
     }
 
     function setIsGameFinish(newIsGameFinish: boolean) {
-        console.log('in set')
         isGameFinish.value = newIsGameFinish;
     }
 

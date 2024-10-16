@@ -1,7 +1,7 @@
 <template>
     <div class="nav-bar">
         <div class="stats" @click.prevent="goToStats"><img src="../assets/images/stats.svg" alt="stats"></div>
-        <div class="game" @click.prevent="goToGame"><img src="../assets/images/target.png" alt="target"></div>
+        <div class="game" @click.prevent="goToGame"><img src="../assets/images/darts.png" alt="darts"></div>
         <div class="profile" @click.prevent="goToProfile"><img src="../assets/images/profile.svg" alt="profile"></div>
     </div>
 </template>
@@ -25,11 +25,12 @@ const goToProfile = () => {
 </script>
 
 <style lang="scss" scoped>
+@import "@/assets/helpers/variables.scss";
 
 .nav-bar {
     display: flex;
     justify-content: space-evenly;
-    background-color: white;
+    background-color: $light-mode-primary;
     padding: 13px 0 1rem 0;
     position: fixed;
     bottom: 0;

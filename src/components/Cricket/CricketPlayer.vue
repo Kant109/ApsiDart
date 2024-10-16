@@ -1,11 +1,29 @@
 <script setup lang="ts">
-import { ref } from 'vue';
+import { useCricketGameStore } from '@/stores/CricketGameStore';
+import { computed, ref, watch } from 'vue';
 
 const props = defineProps<{
   player: CricketPlayer
   isTopBgActive: boolean
   isTopBgPlayerActive: boolean
 }>()
+
+const gameStore = useCricketGameStore();
+const players = computed(() => gameStore.players);
+
+const emit = defineEmits(['isLastPlayer']);
+
+watch(
+    () => props.player.isActive,
+    () => {
+        if(props.player.isActive && players.value.indexOf(props.player) === players.value.length - 1) {
+            emit('isLastPlayer', true);
+        }
+        if(!props.player.isActive && players.value.indexOf(props.player) === players.value.length - 1) {
+            emit('isLastPlayer', false);
+        }
+    }
+)
 
 const isStatOpen = ref(false);
 
@@ -54,12 +72,14 @@ const openStat = () => {
 </template>
 
 <style lang="scss" scoped>
+@import "@/assets/helpers/variables.scss";
+
 .top-bg {
-    background-color: #F0F2EF;
+    background-color: $light-mode-primary;
 }
 
 .top-bg-active {
-    background-color: #f9cd61;
+    background-color: $active-player;
 }
 
 .player-content {
@@ -69,14 +89,14 @@ const openStat = () => {
     grid-column-gap: 0px;
     grid-row-gap: 0px;
     height: 60px;
-    background-color: #F0F2EF;
+    background-color: $light-mode-primary;
     border-radius: 1rem 1rem 0 0;
     padding: 0 1rem;
     --tw-shadow: inset 0 5px 0 0 rgba(0, 0, 0, .25);
     box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
 
     &.isPlayerActive {
-        background-color: #f9cd61;
+        background-color: $active-player;
     }
 
     .player-name, .points-taken {
@@ -158,10 +178,10 @@ const openStat = () => {
     flex-direction: column;
     justify-content: center;
     gap: 1rem;
-    background-color: #F0F2EF;
+    background-color: $light-mode-primary;
 
     &.isPlayerActive {
-        background-color: #f9cd61;
+        background-color: $active-player;
     }
 
     .current-points {
@@ -179,7 +199,7 @@ const openStat = () => {
             border-radius: 8px;
             width: 2.5rem;
             aspect-ratio: 1/1;
-            background-color: #F0F2EF;
+            background-color: white;
             border: 1px solid rgba(0, 0, 0, .25);
             --tw-shadow: inset 0 -5px 0 0 rgba(0, 0, 0, .25);
             box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
@@ -190,11 +210,11 @@ const openStat = () => {
         display: flex;
         justify-content: center;
         align-items: center;
-        background-color: #F0F2EF;
+        background-color: $light-mode-primary;
         margin-bottom: 1rem;
 
         &.isPlayerActive {
-            background-color: #f9cd61;
+            background-color: $active-player;
         }
 
         .doors {
@@ -218,7 +238,7 @@ const openStat = () => {
                     &:is(.base) {
                         border-bottom: none;
                         padding-bottom: 5px;
-                        background-color: #F0F2EF;
+                        background-color: white;
                         --tw-shadow: inset 0 -5px 0 0 rgba(0, 0, 0, .25);
                         box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
                     }

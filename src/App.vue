@@ -3,7 +3,7 @@
   <WaitingPage v-if="!isAppLoaded" />
   <RouterView v-else />
 
-  <NavigationBar v-if="!showNavBar()"/>
+  <NavigationBar v-if="showNavBar()"/>
   
 </template>
 
@@ -25,7 +25,7 @@ const x01GameStore = useX01GameStore();
 const isAppLoaded = computed(() => managementAppStore.isAppLoaded);
 
 const showNavBar = () => {
-    return (router.currentRoute.value.name === 'cricket' || router.currentRoute.value.name === 'x01') && isAppLoaded;
+    return router.currentRoute.value.name !== 'cricket' && router.currentRoute.value.name !== 'x01' && isAppLoaded.value;
 }
 
 const Kant1: CricketPlayer = {
@@ -220,10 +220,12 @@ onMounted(() => {
 </script>
 
 <style lang="scss">
+@import "@/assets/helpers/variables.scss";
+
 #app {
   display: flex;
   flex-direction: column;
   align-items: center;
-  background-color: #0a1e30;
+  background-color: $dark-mode-primary;
 }
 </style>

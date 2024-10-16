@@ -32,13 +32,15 @@ const isGameWinner = computed(() => gameStore.isGameWinner);
 </template>
 
 <style lang="scss" scoped>
+@import "@/assets/helpers/variables.scss";
+
 .title {
     display: flex;
     justify-content: center;
     font-family: "Monoton", sans-serif;
     font-size: 2.5rem;
     padding: 2rem 2rem 1rem 2rem;
-    color: #F0F2EF;
+    color: $light-mode-primary;
 }
 
 .points-recap-doors {
@@ -59,7 +61,7 @@ const isGameWinner = computed(() => gameStore.isGameWinner);
             align-items: center;
             justify-content: center;
             border-radius: 5px;
-            background-color: #F0F2EF;
+            background-color: $light-mode-primary;
             width: 1.5rem;
             aspect-ratio: 1/1;
         }
@@ -72,7 +74,7 @@ const isGameWinner = computed(() => gameStore.isGameWinner);
     align-items: center;
     width: 100%;
     height: calc(100% - 287px);
-    background-color: #0a1e30;
+    background-color: $dark-mode-primary;
     overflow: scroll;
     -ms-overflow-style: none;  /* IE and Edge */
     scrollbar-width: none;  /* Firefox */
@@ -94,7 +96,7 @@ const isGameWinner = computed(() => gameStore.isGameWinner);
             border-radius: 0 0 1rem 1rem;
             --tw-shadow: inset 0 -5px 0 0 rgba(0, 0, 0, .25);
             box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
-            background-color: #F0F2EF;
+            background-color: $light-mode-primary;
         }
     }
 }
