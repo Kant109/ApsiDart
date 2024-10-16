@@ -128,6 +128,7 @@ const openStat = () => {
         .doors {
             display: flex;
             align-items: center;
+            justify-content: center;
             gap: .5rem;
             
             .door {

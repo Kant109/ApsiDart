@@ -94,6 +94,7 @@ const setIsLastPlayerActive = (isCurrentPlayerLast: boolean) => {
     max-height: calc(100vh - 287px);
     height: 100%;
     background-color: $dark-mode-primary;
+    padding-bottom: 2rem;
     overflow: scroll;
     -ms-overflow-style: none;  /* IE and Edge */
     scrollbar-width: none;  /* Firefox */

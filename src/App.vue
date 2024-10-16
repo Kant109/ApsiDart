@@ -2,8 +2,6 @@
 
   <WaitingPage v-if="!isAppLoaded" />
   <RouterView v-else />
-
-  <NavigationBar v-if="showNavBar()"/>
   
 </template>
 
@@ -11,22 +9,16 @@
 import { computed, onMounted } from 'vue';
 import { useManagementAppStore } from './stores/ManagementAppStore';
 import WaitingPage from './views/WaitingPage.vue';
-import { RouterView, useRouter } from 'vue-router';
+import { RouterView } from 'vue-router';
 import NavigationBar from './components/NavigationBar.vue';
 import { useCricketGameStore } from './stores/CricketGameStore';
 import { useX01GameStore } from './stores/X01GameStore';
-
-const router = useRouter();
 
 const managementAppStore = useManagementAppStore();
 const cricketGameStore = useCricketGameStore();
 const x01GameStore = useX01GameStore();
 
 const isAppLoaded = computed(() => managementAppStore.isAppLoaded);
-
-const showNavBar = () => {
-    return router.currentRoute.value.name !== 'cricket' && router.currentRoute.value.name !== 'x01' && isAppLoaded.value;
-}
 
 const Kant1: CricketPlayer = {
     "id": "1",

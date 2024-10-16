@@ -75,6 +75,7 @@ const isGameWinner = computed(() => gameStore.isGameWinner);
     width: 100%;
     height: calc(100% - 287px);
     background-color: $dark-mode-primary;
+    padding-bottom: 2rem;
     overflow: scroll;
     -ms-overflow-style: none;  /* IE and Edge */
     scrollbar-width: none;  /* Firefox */
