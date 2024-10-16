@@ -248,7 +248,7 @@ const openStat = () => {
     }
 }
 
-@media screen and (max-width: 390px) {
+@media screen and (max-width: 389px) {
     .player-content {
         .recap {
             .doors {

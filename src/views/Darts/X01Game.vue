@@ -101,7 +101,7 @@ const isGameWinner = computed(() => gameStore.isGameWinner);
     }
 }
 
-@media screen and (max-width: 390px) {
+@media screen and (max-width: 389px) {
     .players-container {
         max-height: calc(100vh - 278px);
     }

@@ -438,7 +438,7 @@ const reset = () => {
     }
 }
 
-@media screen and (max-width: 390px) {
+@media screen and (max-width: 389px) {
     .points-container {
         .points-content {
             max-width: 320px;
