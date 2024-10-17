@@ -35,7 +35,7 @@ const openStat = () => {
 @import "@/assets/helpers/variables.scss";
 
 .top-bg {
-    background-color: $light-mode-primary;
+    background-color: var(--bg-color);
 }
 
 .top-bg-active {
@@ -49,7 +49,7 @@ const openStat = () => {
     grid-column-gap: 0px;
     grid-row-gap: 0px;
     height: 60px;
-    background-color: $light-mode-primary;
+    background-color: var(--bg-color);
     border-radius: 1rem 1rem 0 0;
     padding: 0 1rem;
     --tw-shadow: inset 0 5px 0 0 rgba(0, 0, 0, .25);

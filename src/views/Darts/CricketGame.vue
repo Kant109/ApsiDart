@@ -93,7 +93,7 @@ const setIsLastPlayerActive = (isCurrentPlayerLast: boolean) => {
     width: 100%;
     max-height: calc(100vh - 287px);
     height: 100%;
-    background-color: $dark-mode-primary;
+    background-color: var(--bg-color);
     padding-bottom: 2rem;
     overflow: scroll;
     -ms-overflow-style: none;  /* IE and Edge */
@@ -116,7 +116,7 @@ const setIsLastPlayerActive = (isCurrentPlayerLast: boolean) => {
             border-radius: 0 0 1rem 1rem;
             --tw-shadow: inset 0 -5px 0 0 rgba(0, 0, 0, .25);
             box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
-            background-color: $light-mode-primary;
+            background-color: var(--bg-color);
         }
         
         &.lastPlayerActive {

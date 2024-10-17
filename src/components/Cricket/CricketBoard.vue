@@ -385,7 +385,7 @@ const reset = () => {
     position: fixed;
     bottom: 0;
     width: 100%;
-    background-color: $light-mode-primary;
+    background-color: var(--bg-color);
     --tw-shadow: inset 0 5px 0 0 rgba(0, 0, 0, .25);
     box-shadow: var(--tw-ring-offset-shadow, 0 0 rgba(0, 0, 0, 0)), var(--tw-ring-shadow, 0 0 rgba(0, 0, 0, 0)), var(--tw-shadow);
 

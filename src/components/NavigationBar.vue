@@ -30,7 +30,7 @@ const goToProfile = () => {
 .nav-bar {
     display: flex;
     justify-content: space-evenly;
-    background-color: $light-mode-primary;
+    background-color: var(--bg-color);
     padding: 13px 0 1rem 0;
     position: fixed;
     bottom: 0;

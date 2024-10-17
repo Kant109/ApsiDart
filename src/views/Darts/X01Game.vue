@@ -61,7 +61,7 @@ const isGameWinner = computed(() => gameStore.isGameWinner);
             align-items: center;
             justify-content: center;
             border-radius: 5px;
-            background-color: $light-mode-primary;
+            background-color: var(--bg-color);
             width: 1.5rem;
             aspect-ratio: 1/1;
         }
@@ -74,7 +74,7 @@ const isGameWinner = computed(() => gameStore.isGameWinner);
     align-items: center;
     width: 100%;
     height: calc(100% - 287px);
-    background-color: $dark-mode-primary;
+    background-color: var(--bg-color);
     padding-bottom: 2rem;
     overflow: scroll;
     -ms-overflow-style: none;  /* IE and Edge */
@@ -97,7 +97,7 @@ const isGameWinner = computed(() => gameStore.isGameWinner);
             border-radius: 0 0 1rem 1rem;
             --tw-shadow: inset 0 -5px 0 0 rgba(0, 0, 0, .25);
             box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
-            background-color: $light-mode-primary;
+            background-color: var(--bg-color);
         }
     }
 }

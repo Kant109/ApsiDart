@@ -2,7 +2,12 @@
     box-sizing: border-box;
 }
 
-html, body, #app {
+:root {
+    --bg-color: #FFECD1;
+    --text-color: #001524;
+}
+
+html, body, #app, main {
     margin: 0;
     padding: 0;
     height: 100%;

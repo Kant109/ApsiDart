@@ -1,31 +1,43 @@
 <script setup lang="ts">
+import { computed } from 'vue';
 import { useRouter } from 'vue-router';
+import { useManagementAppStore } from '@/stores/ManagementAppStore';
+
+const managementAppStore = useManagementAppStore();
 
 const router = useRouter();
+
+const isDarkMode = computed(() => managementAppStore.isDarkMode);
 
 const goToProfile = () => {
     router.push({ name: "profile"});
 }
 
+const setDarkMode = () => {
+    managementAppStore.isDarkMode = !isDarkMode.value;
+}
 </script>
 
 <template>
     <div class="header">
         <div class="profile" @click.prevent="goToProfile"></div>
         <div class="title"></div>
-        <div class="dark-mode">
-            <input id="toggle" class="toggle" type="checkbox">
+        <div class="dark-mode" @click.prevent="setDarkMode">
+            <input id="toggle" class="toggle" :class="{'darkmode': isDarkMode}" type="checkbox">
         </div>
     </div>
 </template>
 
 <style lang="scss" scoped>
+@import "@/assets/helpers/variables.scss";
+
 .header {
     display: flex;
     align-items: center;
     justify-content: space-between;
     width: 100%;
     padding: 1rem;
+    background-color: var(--bg-color);
 
     .profile {
         height: 2rem;
@@ -66,7 +78,7 @@ const goToProfile = () => {
             
             transition: all 500ms;
             
-            &:checked {
+            &.darkmode {
                 transform: scale(0.75);
 
                 box-shadow: inset calc(var(--size) * 0.33) calc(var(--size) * -0.25) 0;
@@ -75,5 +87,4 @@ const goToProfile = () => {
         }
     }
 }
-// https://pixelswap.fr/entry/building-a-dark-mode-theme-switcher-in-scss/
 </style>

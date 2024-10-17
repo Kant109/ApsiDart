@@ -1,7 +1,8 @@
 <template>
-
-  <WaitingPage v-if="!isAppLoaded" />
-  <RouterView v-else />
+    <main :class="{'darkmode': isDarkMode}">
+        <WaitingPage v-if="!isAppLoaded" />
+        <RouterView v-else />
+    </main>
   
 </template>
 
@@ -10,7 +11,6 @@ import { computed, onMounted } from 'vue';
 import { useManagementAppStore } from './stores/ManagementAppStore';
 import WaitingPage from './views/WaitingPage.vue';
 import { RouterView } from 'vue-router';
-import NavigationBar from './components/NavigationBar.vue';
 import { useCricketGameStore } from './stores/CricketGameStore';
 import { useX01GameStore } from './stores/X01GameStore';
 
@@ -19,6 +19,7 @@ const cricketGameStore = useCricketGameStore();
 const x01GameStore = useX01GameStore();
 
 const isAppLoaded = computed(() => managementAppStore.isAppLoaded);
+const isDarkMode = computed(() => managementAppStore.isDarkMode);
 
 const Kant1: CricketPlayer = {
     "id": "1",
@@ -214,10 +215,15 @@ onMounted(() => {
 <style lang="scss">
 @import "@/assets/helpers/variables.scss";
 
-#app {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  background-color: $dark-mode-primary;
+main {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: var(--bg-color);
+
+    &.darkmode {
+        --bg-color: #001524;
+        --text-color: white;
+    }
 }
 </style>
