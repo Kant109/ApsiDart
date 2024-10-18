@@ -2,6 +2,7 @@
 import { computed, ref } from 'vue';
 import { useRouter } from 'vue-router';
 import { useManagementAppStore } from '@/stores/ManagementAppStore';
+import GameContainer from '@/components/GameContainer.vue';
 
 const managementAppStore = useManagementAppStore();
 
@@ -27,6 +28,18 @@ const setDarkMode = () => {
             <input id="toggle" class="toggle" :class="{'darkmode': isDarkMode}" type="checkbox">
         </div>
     </div>
+    <div class="all-games-container">
+        <GameContainer
+            img="darts"
+            title="Fléchettes"
+            route-name="darts"
+        />
+        <GameContainer
+            img="darts"
+            title="Fléchettes"
+            route-name="darts"
+        />
+    </div>
 </template>
 
 <style lang="scss" scoped>
@@ -51,7 +64,7 @@ const setDarkMode = () => {
         display: flex;
         justify-content: center;
         font-family: "Monoton", sans-serif;
-        font-size: 2.5rem;
+        font-size: 2rem;
         color: var(--text-color);
     }
 
@@ -95,5 +108,13 @@ const setDarkMode = () => {
             }
         }
     }
+}
+
+.all-games-container {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    width: 100%;
+    padding: 0 .5rem;
 }
 </style>
