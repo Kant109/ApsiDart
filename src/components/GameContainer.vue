@@ -1,5 +1,7 @@
 <script setup lang="ts">
 import router from '@/router';
+import { useManagementAppStore } from '@/stores/ManagementAppStore';
+import { computed } from 'vue';
 
 
 const props = defineProps<{
@@ -8,6 +10,10 @@ const props = defineProps<{
   routeName: string
 }>()
 
+const managementAppStore = useManagementAppStore();
+
+const isDarkMode = computed(() => managementAppStore.isDarkMode);
+
 const goToDarts = () => {
     router.push({name: props.routeName});
 }
@@ -15,7 +21,7 @@ const goToDarts = () => {
 </script>
 
 <template>
-    <div class="game-container" @click.prevent="goToDarts">
+    <div class="game-container" :class="{'darkMode': isDarkMode}" @click.prevent="goToDarts">
         <div class="game-content">
             <img :src="'/src/assets/images/' + props.img + '.png'" alt="Image Game">
             <div class="game-text">
@@ -65,7 +71,13 @@ const goToDarts = () => {
         right: 1rem;
         width: 1.5rem;
         height: 1.5rem;
-        background-image: url("@/assets/images/right-arrow.svg");
+        background-image: url("@/assets/images/black-right-arrow.svg");
+    }
+
+    &.darkMode {
+        &::after {
+            background-image: url("@/assets/images/white-right-arrow.svg");
+        }
     }
 }
 
