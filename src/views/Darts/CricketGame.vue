@@ -12,7 +12,6 @@ const isGameWinner = computed(() => gameStore.isGameWinner);
 const isLastPlayerActive = ref(false);
 
 const setIsLastPlayerActive = (isCurrentPlayerLast: boolean) => {
-    console.log('in emit')
     isLastPlayerActive.value = isCurrentPlayerLast;
 }
 
@@ -58,7 +57,7 @@ const setIsLastPlayerActive = (isCurrentPlayerLast: boolean) => {
     font-family: "Monoton", sans-serif;
     font-size: 2.5rem;
     padding: 2rem 2rem 1rem 2rem;
-    color: white;
+    color: var(--text-color);
 }
 
 .points-recap-doors {
@@ -116,7 +115,7 @@ const setIsLastPlayerActive = (isCurrentPlayerLast: boolean) => {
             border-radius: 0 0 1rem 1rem;
             --tw-shadow: inset 0 -5px 0 0 rgba(0, 0, 0, .25);
             box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
-            background-color: var(--bg-color);
+            background-color: var(--bg-element-primary);
         }
         
         &.lastPlayerActive {

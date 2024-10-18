@@ -1,5 +1,6 @@
 <script setup lang="ts">
-import { ref } from 'vue';
+import { useX01GameStore } from '@/stores/X01GameStore';
+import { computed, watch } from 'vue';
 
 const props = defineProps<{
   player: X01Player
@@ -7,17 +8,28 @@ const props = defineProps<{
   isTopBgPlayerActive: boolean
 }>()
 
-const isStatOpen = ref(false);
+const gameStore = useX01GameStore();
+const players = computed(() => gameStore.players);
 
-const openStat = () => {
-    isStatOpen.value = !isStatOpen.value;
-}
+const emit = defineEmits(['isLastPlayer']);
+
+watch(
+    () => props.player.isActive,
+    () => {
+        if(props.player.isActive && players.value.indexOf(props.player) === players.value.length - 1) {
+            emit('isLastPlayer', true);
+        }
+        if(!props.player.isActive && players.value.indexOf(props.player) === players.value.length - 1) {
+            emit('isLastPlayer', false);
+        }
+    }
+)
 
 </script>
 
 <template>
     <div class="full-content" :class="{'top-bg': props.isTopBgActive, 'top-bg-active': props.isTopBgPlayerActive && props.isTopBgActive}">
-        <div class="player-content" :class="{'isPlayerActive': player.isActive }" @click.prevent="openStat">
+        <div class="player-content" :class="{'isPlayerActive': player.isActive }">
             <div class="player-name">{{ player.pseudo }}</div>
                 <div class="recap">
                     <div class="current-points">
@@ -35,7 +47,7 @@ const openStat = () => {
 @import "@/assets/helpers/variables.scss";
 
 .top-bg {
-    background-color: var(--bg-color);
+    background-color: var(--bg-element-primary);
 }
 
 .top-bg-active {
@@ -49,7 +61,7 @@ const openStat = () => {
     grid-column-gap: 0px;
     grid-row-gap: 0px;
     height: 60px;
-    background-color: var(--bg-color);
+    background-color: var(--bg-element-primary);
     border-radius: 1rem 1rem 0 0;
     padding: 0 1rem;
     --tw-shadow: inset 0 5px 0 0 rgba(0, 0, 0, .25);

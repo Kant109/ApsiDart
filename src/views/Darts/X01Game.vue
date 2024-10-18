@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed } from 'vue';
+import { computed, ref } from 'vue';
 import X01Board from '@/components/X01/X01Board.vue';
 import X01Player from '@/components/X01/X01Player.vue';
 import { useX01GameStore } from '@/stores/X01GameStore';
@@ -9,18 +9,24 @@ const gameStore = useX01GameStore();
 const players = computed(() => gameStore.players);
 const isGameFinish = computed(() => gameStore.isGameFinish);
 const isGameWinner = computed(() => gameStore.isGameWinner);
+const isLastPlayerActive = ref(false);
+
+const setIsLastPlayerActive = (isCurrentPlayerLast: boolean) => {
+    isLastPlayerActive.value = isCurrentPlayerLast;
+}
 
 </script>
 
 <template>
     <div class="title">301</div>
     <div class="players-container" v-if="!isGameFinish">
-        <div class="players-content">
+        <div class="players-content" :class="{'lastPlayerActive': isLastPlayerActive}">
                 <X01Player
                     v-for="player in players"
                     :player="player"
                     :is-top-bg-active="players.indexOf(player) !== 0"
                     :is-top-bg-player-active="players[players.indexOf(player) - 1 > 0 ? players.indexOf(player) - 1 : 0].isActive === true"
+                    @isLastPlayer="setIsLastPlayerActive"
                 />
         </div>
     </div>
@@ -40,7 +46,7 @@ const isGameWinner = computed(() => gameStore.isGameWinner);
     font-family: "Monoton", sans-serif;
     font-size: 2.5rem;
     padding: 2rem 2rem 1rem 2rem;
-    color: white;
+    color: var(--text-color);
 }
 
 .points-recap-doors {
@@ -97,7 +103,13 @@ const isGameWinner = computed(() => gameStore.isGameWinner);
             border-radius: 0 0 1rem 1rem;
             --tw-shadow: inset 0 -5px 0 0 rgba(0, 0, 0, .25);
             box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
-            background-color: var(--bg-color);
+            background-color: var(--bg-element-primary);
+        }
+
+        &.lastPlayerActive {
+            &::after {
+                background-color: $active-player;
+            }
         }
     }
 }

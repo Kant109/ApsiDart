@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed } from 'vue';
+import { computed, ref } from 'vue';
 import { useRouter } from 'vue-router';
 import { useManagementAppStore } from '@/stores/ManagementAppStore';
 
@@ -15,6 +15,7 @@ const goToProfile = () => {
 
 const setDarkMode = () => {
     managementAppStore.isDarkMode = !isDarkMode.value;
+    localStorage.setItem('darkmode-apsidart', managementAppStore.isDarkMode ? 'active' : 'disable');
 }
 </script>
 

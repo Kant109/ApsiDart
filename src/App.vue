@@ -7,7 +7,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, onMounted } from 'vue';
+import { computed, onBeforeMount, onMounted } from 'vue';
 import { useManagementAppStore } from './stores/ManagementAppStore';
 import WaitingPage from './views/WaitingPage.vue';
 import { RouterView } from 'vue-router';
@@ -193,6 +193,10 @@ const MatiX01: X01Player = {
     "volleys": []
 }
 
+onBeforeMount(() => {
+    managementAppStore.isDarkMode = localStorage.getItem('darkmode-apsidart') === 'active';
+})
+
 onMounted(() => {
   cricketGameStore.setPlayer(Kant1);
   cricketGameStore.setPlayer(Mati);
@@ -223,6 +227,7 @@ main {
 
     &.darkmode {
         --bg-color: #001524;
+        --bg-element-primary: #76ABAE;
         --text-color: white;
     }
 }
