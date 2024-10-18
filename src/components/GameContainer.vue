@@ -23,7 +23,7 @@ const goToDarts = () => {
 <template>
     <div class="game-container" :class="{'darkMode': isDarkMode}" @click.prevent="goToDarts">
         <div class="game-content">
-            <img :src="'/src/assets/images/' + props.img + '.png'" alt="Image Game">
+            <img :src="'/public/icons/' + props.img + '.png'" alt="Image Game">
             <div class="game-text">
                 <div class="game-name">{{ props.title }}</div>
             </div>
