@@ -75,7 +75,7 @@ const openStat = () => {
 @import "@/assets/helpers/variables.scss";
 
 .top-bg {
-    background-color: var(--bg-element-primary);
+    background-color: var(--bg-color-secondary);
 }
 
 .top-bg-active {
@@ -89,22 +89,18 @@ const openStat = () => {
     grid-column-gap: 0px;
     grid-row-gap: 0px;
     height: 60px;
-    background-color: var(--bg-element-primary);
+    background-color: var(--bg-color-secondary);
     border-radius: 1rem 1rem 0 0;
     padding: 0 1rem;
     --tw-shadow: inset 0 5px 0 0 rgba(0, 0, 0, .25);
     box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
-
-    &.isPlayerActive {
-        background-color: $active-player;
-    }
 
     .player-name, .points-taken {
         display: flex;
         align-items: center;
         font-family: "Tilt Warp", sans-serif;
         font-size: 1rem;
-        color: black;
+        color: var(--text-color);
 
         &:is(.player-name) {
             min-width: 55px;
@@ -135,7 +131,7 @@ const openStat = () => {
                 display: flex;
                 justify-content: center;
                 align-items: center;
-                border: 2px solid rgba(black, .1);
+                border: 2px solid var(--cricket-door-disable);
                 border-radius: 50%;
                 height: 1.5rem;
                 width: 1.5rem;
@@ -145,7 +141,7 @@ const openStat = () => {
                     content: '';
                     position: absolute;
                     width: 100%;
-                    background-color: rgba(black, .1);
+                    background-color: var(--cricket-door-disable);
                     height: 2px;
                 }
 
@@ -158,16 +154,36 @@ const openStat = () => {
 
                 &.first {
                     &::after {
-                        background-color: black;
+                        background-color: $cricket-door;
                     }
                 }
                 &.second {
                     &::before {
-                        background-color: black;
+                        background-color: $cricket-door;
                     }
                 }
                 &.full {
-                    border: 2px solid black;
+                    border: 2px solid $cricket-door;
+                }
+            }
+        }
+    }
+
+    &.isPlayerActive {
+        background-color: $active-player;
+
+        .player-name, .points-taken {
+            color: #121212;
+        }
+
+        .recap {
+            .doors {
+                .door {
+                    border: 2px solid rgba(0, 0, 0, 0.1);
+
+                    &::before, &::after {
+                        background-color: rgba(0, 0, 0, 0.1);
+                    }
                 }
             }
         }
@@ -179,7 +195,7 @@ const openStat = () => {
     flex-direction: column;
     justify-content: center;
     gap: 1rem;
-    background-color: var(--bg-element-primary);
+    background-color: var(--bg-color-secondary);
 
     &.isPlayerActive {
         background-color: $active-player;
@@ -213,10 +229,6 @@ const openStat = () => {
         align-items: center;
         margin-bottom: 1rem;
 
-        &.isPlayerActive {
-            background-color: $active-player;
-        }
-
         .doors {
             display: flex;
             gap: .5rem;
@@ -241,6 +253,22 @@ const openStat = () => {
                         background-color: white;
                         --tw-shadow: inset 0 -5px 0 0 rgba(0, 0, 0, .25);
                         box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
+                    }
+
+                    &:is(.taken) {
+                        color: var(--text-color);
+                    }
+                }
+            }
+        }
+
+        &.isPlayerActive {
+            background-color: $active-player;
+
+            .doors {
+                .door {
+                    .taken {
+                        color: #121212;
                     }
                 }
             }

@@ -67,7 +67,7 @@ const setIsLastPlayerActive = (isCurrentPlayerLast: boolean) => {
             align-items: center;
             justify-content: center;
             border-radius: 5px;
-            background-color: var(--bg-color);
+            background-color: var(--bg-color-primary);
             width: 1.5rem;
             aspect-ratio: 1/1;
         }
@@ -80,7 +80,7 @@ const setIsLastPlayerActive = (isCurrentPlayerLast: boolean) => {
     align-items: center;
     width: 100%;
     height: calc(100% - 287px);
-    background-color: var(--bg-color);
+    background-color: var(--bg-color-primary);
     padding-bottom: 2rem;
     overflow: scroll;
     -ms-overflow-style: none;  /* IE and Edge */
@@ -103,7 +103,7 @@ const setIsLastPlayerActive = (isCurrentPlayerLast: boolean) => {
             border-radius: 0 0 1rem 1rem;
             --tw-shadow: inset 0 -5px 0 0 rgba(0, 0, 0, .25);
             box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
-            background-color: var(--bg-element-primary);
+            background-color: var(--bg-color-secondary);
         }
 
         &.lastPlayerActive {

@@ -3,9 +3,11 @@
 }
 
 :root {
-    --bg-color: #FFECD1;
-    --bg-element-primary: #fff;
-    --text-color: #001524;
+    --bg-color-primary: #FFECD1;
+    --bg-color-secondary: white;
+    --button-primary: white;
+    --text-color: #121212;
+    --cricket-door-disable: rgba(0, 0, 0, 0.1);
 }
 
 html, body, #app, main {

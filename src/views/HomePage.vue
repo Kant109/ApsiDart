@@ -38,7 +38,7 @@ const setDarkMode = () => {
     justify-content: space-between;
     width: 100%;
     padding: 1rem;
-    background-color: var(--bg-color);
+    background-color: var(--bg-color-primary);
 
     .profile {
         height: 2rem;
@@ -50,7 +50,7 @@ const setDarkMode = () => {
     .dark-mode {
         // magic
         .toggle {
-            --size: 2rem;
+            --size: 1.5rem;
             
             appearance: none;
             outline: none;
@@ -80,7 +80,7 @@ const setDarkMode = () => {
             transition: all 500ms;
             
             &.darkmode {
-                transform: scale(0.75);
+                transform: scale(1.35);
 
                 box-shadow: inset calc(var(--size) * 0.33) calc(var(--size) * -0.25) 0;
                 color: hsl(240, 100%, 95%);

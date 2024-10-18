@@ -223,12 +223,14 @@ main {
     display: flex;
     flex-direction: column;
     align-items: center;
-    background-color: var(--bg-color);
+    background-color: var(--bg-color-primary);
 
     &.darkmode {
-        --bg-color: #001524;
-        --bg-element-primary: #76ABAE;
+        --bg-color-primary: #121212;
+        --bg-color-secondary: #3f3f3f;
+        --button-primary: #ffe8b9;
         --text-color: white;
+        --cricket-door-disable: rgba(255, 255, 255, 0.1);
     }
 }
 </style>
