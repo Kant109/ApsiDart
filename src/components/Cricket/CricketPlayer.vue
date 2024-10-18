@@ -94,6 +94,7 @@ const openStat = () => {
     padding: 0 1rem;
     --tw-shadow: inset 0 5px 0 0 rgba(0, 0, 0, .25);
     box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
+    cursor: pointer;
 
     .player-name, .points-taken {
         display: flex;

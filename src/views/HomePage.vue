@@ -32,12 +32,7 @@ const setDarkMode = () => {
         <GameContainer
             img="darts"
             title="Fléchettes"
-            route-name="darts"
-        />
-        <GameContainer
-            img="darts"
-            title="Fléchettes"
-            route-name="darts"
+            route-name="darts-home"
         />
     </div>
 </template>
@@ -58,6 +53,7 @@ const setDarkMode = () => {
         width: 2rem;
         border-radius: 50%;
         background-color: white;
+        cursor: pointer;
     }
 
     .title {

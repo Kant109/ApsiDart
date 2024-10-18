@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import router from '@/router';
+
 
 const props = defineProps<{
   img: string
@@ -6,10 +8,14 @@ const props = defineProps<{
   routeName: string
 }>()
 
+const goToDarts = () => {
+    router.push({name: props.routeName});
+}
+
 </script>
 
 <template>
-    <div class="game-container">
+    <div class="game-container" @click.prevent="goToDarts">
         <div class="game-content">
             <img :src="'/src/assets/images/' + props.img + '.png'" alt="Image Game">
             <div class="game-text">
@@ -27,6 +33,7 @@ const props = defineProps<{
     position: relative;
     background-color: var(--bg-color-secondary);
     border-radius: 8px;
+    cursor: pointer;
 
     .game-content {
         display: flex;
@@ -43,7 +50,7 @@ const props = defineProps<{
             height: 100%;
 
             .game-name {
-                font-family: "Monoton", sans-serif;
+                font-family: "Tilt Warp", sans-serif;
                 font-size: 1.5rem;
                 color: var(--text-color);
             }
