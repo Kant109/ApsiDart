@@ -22,7 +22,7 @@ const setDarkMode = () => {
 <template>
     <div class="header">
         <div class="profile" @click.prevent="goToProfile"></div>
-        <div class="title"></div>
+        <div class="title">GEORGE</div>
         <div class="dark-mode" @click.prevent="setDarkMode">
             <input id="toggle" class="toggle" :class="{'darkmode': isDarkMode}" type="checkbox">
         </div>
@@ -37,7 +37,7 @@ const setDarkMode = () => {
     align-items: center;
     justify-content: space-between;
     width: 100%;
-    padding: 1rem;
+    padding: 1rem .5rem;
     background-color: var(--bg-color-primary);
 
     .profile {
@@ -45,6 +45,14 @@ const setDarkMode = () => {
         width: 2rem;
         border-radius: 50%;
         background-color: white;
+    }
+
+    .title {
+        display: flex;
+        justify-content: center;
+        font-family: "Monoton", sans-serif;
+        font-size: 2.5rem;
+        color: var(--text-color);
     }
 
     .dark-mode {
