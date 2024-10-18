@@ -22,7 +22,7 @@ export default defineConfig({
             src: 'icons/darts.png',
             sizes: '512x512',
             type: 'image/png',
-          },
+          }
         ],
       },
     }),
