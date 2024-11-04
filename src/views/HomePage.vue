@@ -8,6 +8,10 @@ const managementAppStore = useManagementAppStore();
 
 const router = useRouter();
 
+const isAnimationLaunch = ref(false);
+const launchJelloAnimation = ref(false);
+const animationImg = ref('');
+
 const isDarkMode = computed(() => managementAppStore.isDarkMode);
 
 const goToProfile = () => {
@@ -18,22 +22,42 @@ const setDarkMode = () => {
     managementAppStore.isDarkMode = !isDarkMode.value;
     localStorage.setItem('darkmode-apsidart', managementAppStore.isDarkMode ? 'active' : 'disable');
 }
+
+const launchAnimation = (gameImg: string) => {
+    animationImg.value = gameImg;
+    isAnimationLaunch.value = true;
+    setTimeout(() => {
+        launchJelloAnimation.value = true;
+    }, 200);
+}
+
 </script>
 
 <template>
-    <div class="header">
+    <div class="header" :class="{'isAnimationLaunch': isAnimationLaunch}">
         <div class="profile" @click.prevent="goToProfile"></div>
         <div class="title">GEORGE</div>
         <div class="dark-mode" @click.prevent="setDarkMode">
             <input id="toggle" class="toggle" :class="{'darkmode': isDarkMode}" type="checkbox">
         </div>
     </div>
-    <div class="all-games-container">
+    <div class="all-games-container" :class="{'isAnimationLaunch': isAnimationLaunch}">
+        <GameContainer
+            img="darts"
+            title="Fléchettes"
+            route-name="darts-home"
+            @click.prevent="launchAnimation('darts')"
+        />
         <GameContainer
             img="darts"
             title="Fléchettes"
             route-name="darts-home"
         />
+    </div>
+    <div v-if="isAnimationLaunch" class="container-animation">
+        <div class="scale-animation" :class="{'jello-animation': launchJelloAnimation}">
+            <img :src="'/icons/' + animationImg + '.png'" alt="Image Game">
+        </div>
     </div>
 </template>
 
@@ -104,13 +128,99 @@ const setDarkMode = () => {
             }
         }
     }
+
+    &.isAnimationLaunch {
+        opacity: 0;
+        animation-duration: .2s;
+        animation-name: disapear;
+    }
 }
 
 .all-games-container {
     display: flex;
     flex-direction: column;
-    gap: 1.5rem;
+    gap: 1rem;
     width: 100%;
     padding: 0 .5rem;
+
+    &.isAnimationLaunch {
+        opacity: 0;
+        animation-duration: .2s;
+        animation-name: disapear;
+    }
 }
+
+.container-animation {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 9rem;
+    height: 9rem;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    .scale-animation {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background-color: var(--bg-color-secondary);
+        border-radius: .5rem;
+        animation: scale-up-center .2s cubic-bezier(0.390, 0.575, 0.565, 1.000) both;
+        
+        img {
+            width: 9rem;
+            height: 9rem;
+        }
+
+        &.jello-animation {
+            animation: jello-horizontal 0.9s both;
+        }
+    }
+}
+
+@keyframes scale-up-center {
+    0% {
+        transform: scale(0);
+    }
+    100% {
+        transform: scale(1);
+    }
+}
+
+@keyframes jello-horizontal {
+  0% {
+    transform: scale3d(1, 1, 1);
+  }
+  30% {
+    transform: scale3d(1.25, 0.75, 1);
+  }
+  40% {
+    transform: scale3d(0.75, 1.25, 1);
+  }
+  50% {
+    transform: scale3d(1.15, 0.85, 1);
+  }
+  65% {
+    transform: scale3d(0.95, 1.05, 1);
+  }
+  75% {
+    transform: scale3d(1.05, 0.95, 1);
+  }
+  100% {
+    transform: scale3d(1, 1, 1);
+  }
+}
+
+@keyframes disapear {
+    0% {
+        opacity: 1;
+    }
+    100% {
+        opacity: 0;
+    }
+}
+
 </style>
