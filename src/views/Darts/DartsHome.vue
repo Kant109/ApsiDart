@@ -2,6 +2,8 @@
 import { onMounted, ref } from 'vue';
 
 const isSlideTopAnimation = ref(false);
+const isCricketSelected = ref(false);
+const isX01Selected = ref(false);
 
 onMounted(() => {
     isSlideTopAnimation.value = true;
@@ -9,22 +11,34 @@ onMounted(() => {
         isSlideTopAnimation.value = false;
     }, 500);
 })
+
+const selectGamemode = (mode: string) => {
+    switch (mode) {
+        case "cricket":
+            isCricketSelected.value = true;
+            break;
+        case "x01":
+            isX01Selected.value = true;
+            break;
+    }
+}
+
 </script>
 
 <template>
     <div class="darts-game-container">
-        <div class="header">
+        <div class="header" :class="{'disappear-animation': isCricketSelected || isX01Selected}">
             <div class="title">DARTS</div>
         </div>
 
-        <div class="darts-img" :class="{'slide-top-animation': isSlideTopAnimation}">
+        <div class="darts-img" :class="{'slide-top-animation': isSlideTopAnimation, 'disappear-animation': isCricketSelected || isX01Selected}">
             <img src="/icons/darts.png" alt="Image Game">
         </div>
 
         <div class="darts-game-chose-mode">
             <div class="choices-container">
-                <div class="choice">Cricket</div>
-                <div class="choice">X01</div>
+                <div class="choice" :class="{'slide-top-cricket': isCricketSelected}" @click.prevent="selectGamemode('cricket')">Cricket</div>
+                <div class="choice" :class="{'slide-top-x01': isX01Selected}" @click.prevent="selectGamemode('x01')">X01</div>
             </div>
         </div>
     </div>
@@ -54,6 +68,11 @@ onMounted(() => {
             font-size: 3rem;
             color: var(--text-color);
         }
+
+        &.disappear-animation {
+            opacity: 0;
+            animation: disappear .2s;
+        }
     }
 
     .darts-img {
@@ -72,6 +91,11 @@ onMounted(() => {
             left: 50%;
             transform: translate(-50%, -50%);
             animation: slide-top 0.5s cubic-bezier(0.250, 0.460, 0.450, 0.940) both;
+        }
+
+        &.disappear-animation {
+            opacity: 0;
+            animation: disappear .2s;
         }
 
         img {
@@ -115,6 +139,10 @@ onMounted(() => {
                     transform: translateY(5px);
                     box-shadow: none;
                 }
+
+                &.slide-top-cricket {
+
+                }
             }
         }
     }
@@ -138,6 +166,15 @@ onMounted(() => {
     }
     100% {
         opacity: 1;
+    }
+}
+
+@keyframes disappear {
+    0% {
+        opacity: 1;
+    }
+    100% {
+        opacity: 0;
     }
 }
 
