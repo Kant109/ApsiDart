@@ -16,8 +16,8 @@ const isDarkMode = computed(() => managementAppStore.isDarkMode);
 
 const goToDarts = () => {
     setTimeout(() => {
-        // router.push({name: props.routeName});
-    }, 10000);
+        router.push({name: props.routeName});
+    }, 1100);
 }
 
 </script>

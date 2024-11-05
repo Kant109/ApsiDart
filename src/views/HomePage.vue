@@ -44,7 +44,7 @@ const launchAnimation = (gameImg: string) => {
     <div class="all-games-container" :class="{'isAnimationLaunch': isAnimationLaunch}">
         <GameContainer
             img="darts"
-            title="Fléchettes"
+            title="Darts"
             route-name="darts-home"
             @click.prevent="launchAnimation('darts')"
         />

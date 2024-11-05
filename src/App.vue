@@ -209,9 +209,9 @@ onMounted(() => {
   x01GameStore.setPlayer(MatiX01);
   
   // GET profil
-  setTimeout(() => {
+//   setTimeout(() => {
     managementAppStore.isAppLoaded = true;
-  }, 2500)
+//   }, 2500)
 })
 
 </script>

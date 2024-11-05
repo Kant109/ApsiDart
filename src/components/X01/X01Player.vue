@@ -69,6 +69,10 @@ watch(
 
     &.isPlayerActive {
         background-color: $active-player;
+
+        .player-name, .points-taken {
+            color: #121212;
+        }
     }
 
     .player-name, .points-taken {
@@ -76,7 +80,7 @@ watch(
         align-items: center;
         font-family: "Tilt Warp", sans-serif;
         font-size: 1rem;
-        color: black;
+        color: var(--text-color);
 
         &:is(.player-name) {
             min-width: 55px;
