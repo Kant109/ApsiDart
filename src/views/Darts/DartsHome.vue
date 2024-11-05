@@ -47,7 +47,6 @@ onMounted(() => {
             font-family: "Monoton", sans-serif;
             font-size: 2rem;
             color: var(--text-color);
-            background-color: red;
         }
     }
 
