@@ -146,7 +146,7 @@ const launchAnimation = (gameImg: string) => {
     &.isAnimationLaunch {
         opacity: 0;
         animation-duration: .2s;
-        animation-name: disapear;
+        animation-name: disappear;
     }
 }
 
@@ -214,7 +214,7 @@ const launchAnimation = (gameImg: string) => {
   }
 }
 
-@keyframes disapear {
+@keyframes disappear {
     0% {
         opacity: 1;
     }
