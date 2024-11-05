@@ -125,7 +125,7 @@ onMounted(() => {
     transform: translateY(0) translate(-50%, -50%);
   }
   100% {
-    transform: translateY(calc( -1 * calc(50vh - (82px + 4.5rem)))) translate(-50%, -50%);
+    transform: translateY(calc( -1 * calc(50vh - (106px + 4.5rem)))) translate(-50%, -50%);
   }
 }
 
