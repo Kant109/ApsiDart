@@ -12,6 +12,9 @@ export default defineConfig({
     vueDevTools(),
     VitePWA({
       registerType: 'autoUpdate',
+      workbox: {
+        cleanupOutdatedCaches: false
+      },
       manifest: {
         name: 'ApsiDart',
         short_name: 'ApsiDart',
