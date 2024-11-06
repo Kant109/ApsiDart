@@ -1,9 +1,11 @@
 <script setup lang="ts">
 import { onMounted, ref } from 'vue';
 import { useRouter } from 'vue-router';
+
 const isSlideTopAnimation = ref(false);
 const isCricketSelected = ref(false);
 const isX01Selected = ref(false);
+const nextTitle = ref('');
 
 const router = useRouter();
 
@@ -17,14 +19,18 @@ onMounted(() => {
 const selectGamemode = (mode: string) => {
     switch (mode) {
         case "cricket":
+            nextTitle.value = "CRICKET";
             isCricketSelected.value = true;
             setTimeout(() => {
                 router.push({ name: "cricket"})
-            }, 2000);
+            }, 1900);
             break;
         case "x01":
+            nextTitle.value = "X01";
             isX01Selected.value = true;
-            router.push({ name: "x01"});
+            setTimeout(() => {
+                router.push({ name: "x01"});
+            }, 1900);
             break;
     }
 }
@@ -47,9 +53,9 @@ const selectGamemode = (mode: string) => {
                 <div class="choice" @click.prevent="selectGamemode('x01')">X01</div>
             </div>
         </div>
-        <div class="crickets-settings-container">
-            <div class="crickets-settings-container-header">
-                <div class="crickets-settings-container-header-title">CRICKET</div>
+        <div class="cricket-settings-title-animation">
+            <div class="header">
+                <div class="title">{{ nextTitle }}</div>
             </div>
         </div>
     </div>
@@ -151,20 +157,20 @@ const selectGamemode = (mode: string) => {
             }
         }
     }
-    
-    .crickets-settings-container {
+
+    .cricket-settings-title-animation {
         position: absolute;
         width: 100%;
         flex-direction: column;
         align-items: center;
         top: 100%;
     
-        .crickets-settings-container-header {
+        .header {
             width: 100%;
             padding: 1rem .5rem;
             background-color: var(--bg-color-primary);
     
-            .crickets-settings-container-header-title {
+            .title {
                 display: flex;
                 justify-content: center;
                 font-family: "Monoton", sans-serif;

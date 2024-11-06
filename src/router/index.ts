@@ -4,6 +4,7 @@ import CricketGame from '@/views/Darts/CricketGame.vue'
 import X01Game from '@/views/Darts/X01Game.vue'
 import DartsHome from '@/views/Darts/DartsHome.vue'
 import CricketSettings from '@/views/Darts/CricketSettings.vue'
+import X01Settings from '@/views/Darts/X01Settings.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -31,7 +32,7 @@ const router = createRouter({
     {
       path: '/darts/x01',
       name: 'x01',
-      component: CricketSettings
+      component: X01Settings
     },
     {
       path: '/darts/x01/game',

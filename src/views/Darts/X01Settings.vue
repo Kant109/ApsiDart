@@ -3,16 +3,16 @@
 </script>
 
 <template>
-    <div class="cricket-settings-container">
+    <div class="x01-settings-container">
         <div class="header">
-            <div class="title">CRICKET</div>
+            <div class="title">X01</div>
         </div>
     </div>
 </template>
 
 <style lang="scss" scoped>
 
-.cricket-settings-container {
+.x01-settings-container {
     display: flex;
     width: 100%;
     height: 100%;
