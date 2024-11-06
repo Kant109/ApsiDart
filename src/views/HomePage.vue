@@ -89,7 +89,6 @@ const launchAnimation = (gameImg: string) => {
     }
 
     .dark-mode {
-        // magic
         .toggle {
             --size: 1.5rem;
             
