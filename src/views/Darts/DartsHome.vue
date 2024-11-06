@@ -1,9 +1,11 @@
 <script setup lang="ts">
 import { onMounted, ref } from 'vue';
-
+import { useRouter } from 'vue-router';
 const isSlideTopAnimation = ref(false);
 const isCricketSelected = ref(false);
 const isX01Selected = ref(false);
+
+const router = useRouter();
 
 onMounted(() => {
     isSlideTopAnimation.value = true;
@@ -16,9 +18,13 @@ const selectGamemode = (mode: string) => {
     switch (mode) {
         case "cricket":
             isCricketSelected.value = true;
+            setTimeout(() => {
+                router.push({ name: "cricket"})
+            }, 2000);
             break;
         case "x01":
             isX01Selected.value = true;
+            router.push({ name: "x01"});
             break;
     }
 }
@@ -39,6 +45,11 @@ const selectGamemode = (mode: string) => {
             <div class="choices-container">
                 <div class="choice" @click.prevent="selectGamemode('cricket')">Cricket</div>
                 <div class="choice" @click.prevent="selectGamemode('x01')">X01</div>
+            </div>
+        </div>
+        <div class="crickets-settings-container">
+            <div class="crickets-settings-container-header">
+                <div class="crickets-settings-container-header-title">CRICKET</div>
             </div>
         </div>
     </div>
@@ -140,7 +151,30 @@ const selectGamemode = (mode: string) => {
             }
         }
     }
+    
+    .crickets-settings-container {
+        position: absolute;
+        width: 100%;
+        flex-direction: column;
+        align-items: center;
+        top: 100%;
+    
+        .crickets-settings-container-header {
+            width: 100%;
+            padding: 1rem .5rem;
+            background-color: var(--bg-color-primary);
+    
+            .crickets-settings-container-header-title {
+                display: flex;
+                justify-content: center;
+                font-family: "Monoton", sans-serif;
+                font-size: 3rem;
+                color: var(--text-color);
+            }
+        }
+    }
 }
+
 
 @keyframes slide-top-img {
   0% {
