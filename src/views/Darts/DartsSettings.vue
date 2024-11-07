@@ -1,18 +1,28 @@
 <script setup lang="ts">
+import { onMounted, ref } from 'vue';
+import { useRoute } from 'vue-router';
+
+const route = useRoute();
+
+const title = ref('');
+
+onMounted(() => {
+    title.value = (route.params.mode as string).toUpperCase();
+})
 
 </script>
 
 <template>
-    <div class="cricket-settings-container">
+    <div class="x01-settings-container">
         <div class="header">
-            <div class="title">CRICKET</div>
+            <div class="title">{{ title }}</div>
         </div>
     </div>
 </template>
 
 <style lang="scss" scoped>
 
-.cricket-settings-container {
+.x01-settings-container {
     display: flex;
     width: 100%;
     height: 100%;

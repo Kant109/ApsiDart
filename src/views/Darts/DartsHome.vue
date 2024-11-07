@@ -22,14 +22,14 @@ const selectGamemode = (mode: string) => {
             nextTitle.value = "CRICKET";
             isCricketSelected.value = true;
             setTimeout(() => {
-                router.push({ name: "cricket"})
+                router.push({ name: "darts-mode", params: {mode: 'cricket'}})
             }, 1900);
             break;
         case "x01":
             nextTitle.value = "X01";
             isX01Selected.value = true;
             setTimeout(() => {
-                router.push({ name: "x01"});
+                router.push({ name: "darts-mode", params: {mode: 'x01'}})
             }, 1900);
             break;
     }
