@@ -6,7 +6,8 @@
   --bg-color-secondary: white;
   --button-primary: white;
   --text-color: #121212;
-  --cricket-door-disable: rgba(0, 0, 0, 0.1); }
+  --cricket-door-disable: rgba(0, 0, 0, 0.1);
+  --cricket-door-confirm: #70e000; }
 
 html, body, #app, main {
   margin: 0;

@@ -155,16 +155,16 @@ const openStat = () => {
 
                 &.first {
                     &::after {
-                        background-color: $cricket-door;
+                        background-color: var(--cricket-door-confirm) !important;
                     }
                 }
                 &.second {
                     &::before {
-                        background-color: $cricket-door;
+                        background-color: var(--cricket-door-confirm) !important;
                     }
                 }
                 &.full {
-                    border: 2px solid $cricket-door;
+                    border: 2px solid var(--cricket-door-confirm) !important;
                 }
             }
         }

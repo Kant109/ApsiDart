@@ -90,17 +90,19 @@ const removePreviousDart = async (player: X01Player, isCancel: boolean) => {
 const cancel = () => {
     players.value.forEach(player => {
         if(player.isActive) {
-            let isCancel = false;
-            if(!(player.volleys[player.volleys.length - 1][0] === "" && player.volleys[player.volleys.length - 1][1] === "" && player.volleys[player.volleys.length - 1][2] === "")) {
-                removePreviousDart(player, isCancel);
-            } else {
-                player.isActive = false;
-                if((players.value.indexOf(player) - 1) >= 0) {
-                    players.value[players.value.indexOf(player) - 1].isActive = true;
-                    removePreviousDart(players.value[players.value.indexOf(player) - 1], isCancel);
+            if(!(players.value.indexOf(player) === 0 && player.volleys.length === 1 && player.volleys[0][0] === "")) {
+                let isCancel = false;
+                if(!(player.volleys[player.volleys.length - 1][0] === "" && player.volleys[player.volleys.length - 1][1] === "" && player.volleys[player.volleys.length - 1][2] === "")) {
+                    removePreviousDart(player, isCancel);
                 } else {
-                    players.value[players.value.length - 1].isActive = true;
-                    removePreviousDart(players.value[players.value.length - 1], isCancel);
+                    player.isActive = false;
+                    if((players.value.indexOf(player) - 1) >= 0) {
+                        players.value[players.value.indexOf(player) - 1].isActive = true;
+                        removePreviousDart(players.value[players.value.indexOf(player) - 1], isCancel);
+                    } else {
+                        players.value[players.value.length - 1].isActive = true;
+                        removePreviousDart(players.value[players.value.length - 1], isCancel);
+                    }
                 }
             }
         }
