@@ -11,6 +11,8 @@ const x01GameStore = useX01GameStore();
 
 const title = ref('');
 const players = computed(() => title.value === "CRICKET" ? cricketGameStore.players : x01GameStore.players);
+const time = ref(0);
+const removePlayer = ref(false);
 
 onMounted(() => {
     title.value = (route.params.mode as string).toUpperCase();
@@ -21,11 +23,12 @@ const addNewPlayer = () => {
 }
 
 const launchTime = () => {
-    
+    time.value = Date.now();
 }
 
 const stopTime = () => {
-    
+    const currentTime = Date.now();
+    removePlayer.value = currentTime - time.value > 1500;
 }
 
 </script>
@@ -40,7 +43,8 @@ const stopTime = () => {
                 <div
                     v-for="player in players"
                     class="player-container"
-                    @mousedown="launchTime"
+                    :class="{'remove-animation': removePlayer}"
+                    @mouseout="launchTime"
                     @mouseup="stopTime"
                 >
                     <div class="player-content">
@@ -83,6 +87,7 @@ const stopTime = () => {
         align-items: center;
         width: 100%;
         gap: 2rem;
+        animation: appear .5s;
 
         .adding-player-recap {
             display: grid;
@@ -127,6 +132,10 @@ const stopTime = () => {
                         color: var(--text-color);
                     }
                 }
+
+                &.remove-animation {
+                    animation: wobble-hor-bottom 0.8s infinite both;
+                }
             }
         }
 
@@ -155,6 +164,38 @@ const stopTime = () => {
             }
         }
     }
+}
+
+@keyframes appear {
+    0% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
+    }
+}
+
+@keyframes wobble-hor-bottom {
+  0%,
+  100% {
+    transform: translateX(0%);
+    transform-origin: 50% 50%;
+  }
+  15% {
+    transform: translateX(-30px) rotate(-6deg);
+  }
+  30% {
+    transform: translateX(15px) rotate(6deg);
+  }
+  45% {
+    transform: translateX(-15px) rotate(-3.6deg);
+  }
+  60% {
+    transform: translateX(9px) rotate(2.4deg);
+  }
+  75% {
+    transform: translateX(-6px) rotate(-1.2deg);
+  }
 }
 
 </style>
