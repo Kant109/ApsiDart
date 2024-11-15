@@ -11,24 +11,29 @@ const x01GameStore = useX01GameStore();
 
 const title = ref('');
 const players = computed(() => title.value === "CRICKET" ? cricketGameStore.players : x01GameStore.players);
-const time = ref(0);
-const removePlayer = ref(false);
+const allPlayers = ref([] as Array<Player>);
+const openSearchPlayer = ref(false);
 
 onMounted(() => {
     title.value = (route.params.mode as string).toUpperCase();
 })
 
-const addNewPlayer = () => {
-    console.log('in adding new player');
+const addNewPlayer = async () => {
+    openSearchPlayer.value = true;
+    const url = import.meta.env.VITE_BE_URL + "/players";
+    try {
+        const response = await fetch(url);
+        if (!response.ok) {
+            throw new Error(`Response status: ${response.status}`);
+        }
+        allPlayers.value = await response.json();
+    } catch (error: any) {
+        console.error(error.message);
+    }
 }
 
-const launchTime = () => {
-    time.value = Date.now();
-}
+const selectPlayer = (player: Player) => {
 
-const stopTime = () => {
-    const currentTime = Date.now();
-    removePlayer.value = currentTime - time.value > 1500;
 }
 
 </script>
@@ -39,13 +44,10 @@ const stopTime = () => {
             <div class="title">{{ title }}</div>
         </div>
         <div class="adding-player-container">
-            <div class="adding-player-recap">
+            <div class="adding-player-recap" v-if="players.length > 0">
                 <div
                     v-for="player in players"
                     class="player-container"
-                    :class="{'remove-animation': removePlayer}"
-                    @mouseout="launchTime"
-                    @mouseup="stopTime"
                 >
                     <div class="player-content">
                         <div class="player-img"></div>
@@ -53,7 +55,22 @@ const stopTime = () => {
                     </div>
                 </div>
             </div>
-            <div class="btn-add-player" @click.prevent="addNewPlayer">Ajouter des joueurs</div>            
+            <div class="btn-add-player" @click.prevent="addNewPlayer">Ajouter des joueurs</div>
+            <dialog :open="openSearchPlayer">
+                <div class="search-player">
+                    <div class="select-player-container" v-for="player in allPlayers">
+                        <div class="player-img"></div>
+                        <div class="player-name">
+                            <div class="player-name-pseudo">{{ player.pseudo }}</div>
+                            <div class="player-full-name">
+                                <div class="player-full-name-name">{{ player.lastName }}</div>
+                                <div class="player-full-name-firstname">{{ player.firstName }}</div>
+                            </div>
+                        </div>
+                        <div class="select-player" @click.prevent="selectPlayer(player)"></div>
+                    </div>
+                </div>   
+            </dialog>
         </div>
     </div>
 </template>
@@ -132,10 +149,6 @@ const stopTime = () => {
                         color: var(--text-color);
                     }
                 }
-
-                &.remove-animation {
-                    animation: wobble-hor-bottom 0.8s infinite both;
-                }
             }
         }
 
@@ -163,6 +176,63 @@ const stopTime = () => {
                 box-shadow: none;
             }
         }
+
+        dialog {
+            width: 90%;
+            border-radius: .5rem;
+            border: none;
+
+            .search-player {
+                display: flex;
+                flex-direction: column;
+                gap: .5rem;
+                
+                .select-player-container {
+                    display: grid;
+                    grid-template-columns: repeat(5, 1fr);
+                    grid-template-rows: 1fr;
+                    grid-column-gap: 0px;
+                    grid-row-gap: 0px;
+                    align-items: center;
+
+                    .player-img {
+                        height: 2rem;
+                        width: 2rem;
+                        border-radius: 50%;
+                        border: 1px solid black;
+                        background-color: white;
+                        cursor: pointer;
+                        grid-area: 1 / 1 / 2 / 2;
+                    }
+
+                    .player-name {
+                        display: flex;
+                        justify-content: center;
+                        flex-direction: column;
+                        font-family: "Tilt Warp", sans-serif;
+                        font-size: 1.5rem;
+                        color: var(--text-color);
+                        grid-area: 1 / 2 / 2 / 5;
+
+                        .player-full-name {
+                            display: flex;
+                            gap: .5rem;
+
+                            &-name, &-firstname {
+                                font-family: "Tilt Warp", sans-serif;
+                                font-size: 1rem;
+                                color: var(--text-color);
+                                opacity: .5;
+                            }
+                        }
+                    }
+                    
+                    .select-player {
+                        grid-area: 1 / 5 / 2 / 6;
+                    }
+                }
+            }
+        }
     }
 }
 
@@ -173,29 +243,6 @@ const stopTime = () => {
     100% {
         opacity: 1;
     }
-}
-
-@keyframes wobble-hor-bottom {
-  0%,
-  100% {
-    transform: translateX(0%);
-    transform-origin: 50% 50%;
-  }
-  15% {
-    transform: translateX(-30px) rotate(-6deg);
-  }
-  30% {
-    transform: translateX(15px) rotate(6deg);
-  }
-  45% {
-    transform: translateX(-15px) rotate(-3.6deg);
-  }
-  60% {
-    transform: translateX(9px) rotate(2.4deg);
-  }
-  75% {
-    transform: translateX(-6px) rotate(-1.2deg);
-  }
 }
 
 </style>

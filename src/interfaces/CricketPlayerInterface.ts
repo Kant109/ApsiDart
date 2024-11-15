@@ -1,5 +1,5 @@
 interface CricketPlayer {
-    id: string,
+    id: number,
     pseudo: string,
     isActive: boolean,
     points: {

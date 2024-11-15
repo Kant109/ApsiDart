@@ -22,7 +22,7 @@ const isAppLoaded = computed(() => managementAppStore.isAppLoaded);
 const isDarkMode = computed(() => managementAppStore.isDarkMode);
 
 const Kant1: CricketPlayer = {
-    "id": "1",
+    "id": 1,
     "pseudo": "Kant1",
     "isActive": true,
     "points": {
@@ -48,7 +48,7 @@ const Kant1: CricketPlayer = {
 };
 
 const Mati: CricketPlayer = {
-    "id": "2",
+    "id": 2,
     "pseudo": "Mati",
     "isActive": false,
     "points": {
@@ -74,7 +74,7 @@ const Mati: CricketPlayer = {
 };
 
 const Rom1: CricketPlayer = {
-    "id": "3",
+    "id": 3,
     "pseudo": "Rom1",
     "isActive": false,
     "points": {
@@ -100,7 +100,7 @@ const Rom1: CricketPlayer = {
 };
 
 const Phil: CricketPlayer = {
-    "id": "4",
+    "id": 4,
     "pseudo": "Phil",
     "isActive": false,
     "points": {
@@ -126,7 +126,7 @@ const Phil: CricketPlayer = {
 };
 
 const Zim: CricketPlayer = {
-    "id": "5",
+    "id": 5,
     "pseudo": "Zim",
     "isActive": false,
     "points": {
@@ -152,7 +152,7 @@ const Zim: CricketPlayer = {
 };
 
 const Bast1: CricketPlayer = {
-    "id": "6",
+    "id": 6,
     "pseudo": "Bast1",
     "isActive": false,
     "points": {
@@ -178,7 +178,7 @@ const Bast1: CricketPlayer = {
 };
 
 const Kant1X01: X01Player = {
-    "id": "1",
+    "id": 1,
     "pseudo": "Kant1",
     "isActive": true,
     "points": 301,
@@ -186,7 +186,7 @@ const Kant1X01: X01Player = {
 }
 
 const MatiX01: X01Player = {
-    "id": "1",
+    "id": 2,
     "pseudo": "Mati",
     "isActive": false,
     "points": 301,
@@ -198,20 +198,20 @@ onBeforeMount(() => {
 })
 
 onMounted(() => {
-  cricketGameStore.setPlayer(Kant1);
-  cricketGameStore.setPlayer(Mati);
-  cricketGameStore.setPlayer(Rom1);
-  cricketGameStore.setPlayer(Phil);
-  cricketGameStore.setPlayer(Zim);
-  cricketGameStore.setPlayer(Bast1);
+//   cricketGameStore.setPlayer(Kant1);
+//   cricketGameStore.setPlayer(Mati);
+//   cricketGameStore.setPlayer(Rom1);
+//   cricketGameStore.setPlayer(Phil);
+//   cricketGameStore.setPlayer(Zim);
+//   cricketGameStore.setPlayer(Bast1);
 
-  x01GameStore.setPlayer(Kant1X01);
-  x01GameStore.setPlayer(MatiX01);
+//   x01GameStore.setPlayer(Kant1X01);
+//   x01GameStore.setPlayer(MatiX01);
   
   // GET profil
-//   setTimeout(() => {
+  setTimeout(() => {
     managementAppStore.isAppLoaded = true;
-//   }, 2500)
+  }, 2500)
 })
 
 </script>

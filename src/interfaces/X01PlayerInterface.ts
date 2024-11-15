@@ -1,5 +1,5 @@
 interface X01Player {
-    id: string,
+    id: number,
     pseudo: string,
     isActive: boolean,
     points: number
