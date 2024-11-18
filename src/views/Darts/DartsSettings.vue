@@ -1,25 +1,27 @@
 <script setup lang="ts">
+import router from '@/router';
 import { useCricketGameStore } from '@/stores/CricketGameStore';
+import { useManagementAppStore } from '@/stores/ManagementAppStore';
 import { useX01GameStore } from '@/stores/X01GameStore';
 import { computed, onMounted, ref } from 'vue';
 import { useRoute } from 'vue-router';
 
 const route = useRoute();
 
+const managementAppStore = useManagementAppStore();
 const cricketGameStore = useCricketGameStore();
 const x01GameStore = useX01GameStore();
 
 const title = ref('');
 const players = computed(() => title.value === "CRICKET" ? cricketGameStore.players : x01GameStore.players);
 const allPlayers = ref([] as Array<Player>);
+const selectedPlayers = ref([] as Array<Player>);
 const openSearchPlayer = ref(false);
+const isDarkMode = computed(() => managementAppStore.isDarkMode);
+const isRemovePlayerMode = ref(false);
 
-onMounted(() => {
+onMounted(async () => {
     title.value = (route.params.mode as string).toUpperCase();
-})
-
-const addNewPlayer = async () => {
-    openSearchPlayer.value = true;
     const url = import.meta.env.VITE_BE_URL + "/players";
     try {
         const response = await fetch(url);
@@ -30,16 +32,85 @@ const addNewPlayer = async () => {
     } catch (error: any) {
         console.error(error.message);
     }
+})
+
+const addNewPlayer = async () => {
+    openSearchPlayer.value = true;
+}
+
+const closeModal = () => {
+    openSearchPlayer.value = false;
 }
 
 const selectPlayer = (player: Player) => {
+    const indexOfPlayer = allPlayers.value.indexOf(player);
+    selectedPlayers.value.push(player);
+    allPlayers.value.splice(indexOfPlayer, 1);
+    if(title.value === "CRICKET") {
+        const currentPlayer: CricketPlayer = {
+            id: player.id,
+            pseudo: player.pseudo,
+            isActive: false,
+            points: {
+                20: 0,
+                19: 0,
+                18: 0,
+                17: 0,
+                16: 0,
+                15: 0,
+                25: 0,
+                total: 0
+            },
+            doors: {
+                20: 0,
+                19: 0,
+                18: 0,
+                17: 0,
+                16: 0,
+                15: 0,
+                25: 0
+            },
+            volleys: []
+        };
 
+        cricketGameStore.setPlayer(currentPlayer);
+    } else {
+        const currentPlayer: X01Player = {
+            id: player.id,
+            pseudo: player.pseudo,
+            isActive: false,
+            points: 0,
+            volleys: []
+        };
+
+        x01GameStore.setPlayer(currentPlayer);
+    }
+}
+
+const removePlayer = (playerId: number) => {
+    
+}
+
+const startGame = () => {
+    if(title.value === "CRICKET") {
+        router.push({ name: "cricket-game" })
+    } else {
+        router.push({ name: "x01-game" })
+    }
+}
+
+const validPlayers = () => {
+    isRemovePlayerMode.value = false;
+}
+
+const removePlayers = () => {
+    isRemovePlayerMode.value = true;
 }
 
 </script>
 
 <template>
-    <div class="x01-settings-container">
+    <div class="settings-container" :class="{'blur': openSearchPlayer}">
         <div class="header">
             <div class="title">{{ title }}</div>
         </div>
@@ -48,6 +119,8 @@ const selectPlayer = (player: Player) => {
                 <div
                     v-for="player in players"
                     class="player-container"
+                    :class="{'remove-player': isRemovePlayerMode}"
+                    @click.prevent="removePlayer(player.id)"
                 >
                     <div class="player-content">
                         <div class="player-img"></div>
@@ -55,34 +128,41 @@ const selectPlayer = (player: Player) => {
                     </div>
                 </div>
             </div>
-            <div class="btn-add-player" @click.prevent="addNewPlayer">Ajouter des joueurs</div>
-            <dialog :open="openSearchPlayer">
-                <div class="search-player">
-                    <div class="select-player-container" v-for="player in allPlayers">
-                        <div class="player-img"></div>
-                        <div class="player-name">
-                            <div class="player-name-pseudo">{{ player.pseudo }}</div>
-                            <div class="player-full-name">
-                                <div class="player-full-name-name">{{ player.lastName }}</div>
-                                <div class="player-full-name-firstname">{{ player.firstName }}</div>
+            <div v-if="isRemovePlayerMode" class="btn-save-players" @click.prevent="validPlayers">Valider</div>
+            <div v-if="!isRemovePlayerMode" class="btn-add-player" @click.prevent="addNewPlayer">Ajouter des joueurs</div>
+            <div v-if="players.length > 0 && !isRemovePlayerMode" class="btn-remove-player" @click.prevent="removePlayers">Enlever des joueurs</div>
+            <div v-if="players.length > 0 && !isRemovePlayerMode" class="btn-start-game" @click.prevent="startGame">Commencer la partie</div>
+            <Teleport to="body">
+                <dialog :open="openSearchPlayer">
+                    <div class="search-player">
+                        <div class="select-player-container" v-for="player in allPlayers">
+                            <div class="player-img"></div>
+                            <div class="player-name">
+                                <div class="player-name-pseudo">{{ player.pseudo }}</div>
+                                <div class="player-full-name">{{ player.lastName }} {{ player.firstName }}</div>
                             </div>
+                            <div class="select-player" :class="{'darkmode': isDarkMode}" @click.prevent="selectPlayer(player)"></div>
                         </div>
-                        <div class="select-player" @click.prevent="selectPlayer(player)"></div>
-                    </div>
-                </div>   
-            </dialog>
+                        <div class="btn-close-modal" @click.prevent="closeModal">Annuler</div>
+                    </div>   
+                </dialog>
+            </Teleport>
         </div>
     </div>
 </template>
 
 <style lang="scss" scoped>
 
-.x01-settings-container {
+.settings-container {
     display: flex;
     width: 100%;
     height: 100%;
     flex-direction: column;
     align-items: center;
+    
+    &.blur {
+        filter: blur(10px);
+    }
 
     .header {
         width: 100%;
@@ -103,7 +183,7 @@ const selectPlayer = (player: Player) => {
         flex-direction: column;
         align-items: center;
         width: 100%;
-        gap: 2rem;
+        gap: 1rem;
         animation: appear .5s;
 
         .adding-player-recap {
@@ -116,6 +196,7 @@ const selectPlayer = (player: Player) => {
             border-radius: .5rem;
             width: 90%;
             padding: 1rem;
+            margin-bottom: 1rem;
             box-shadow: rgb(0, 0, 0, .25) 0px 5px 5px 0px inset;
 
             .player-container {
@@ -126,6 +207,12 @@ const selectPlayer = (player: Player) => {
                 background-color: var(--bg-color-primary);
                 width: 100%;
                 border-radius: .5rem;
+                border: 5px solid var(--bg-color-primary);
+
+                &.remove-player {
+                    border: 5px solid;
+                    animation: bounce-border-color 1s infinite;
+                }
 
                 .player-content {
                     display: flex;
@@ -136,8 +223,8 @@ const selectPlayer = (player: Player) => {
                     padding: .5rem 0;
 
                     .player-img {
-                        height: 2rem;
-                        width: 2rem;
+                        height: 3rem;
+                        width: 3rem;
                         border-radius: 50%;
                         background-color: white;
                         cursor: pointer;
@@ -152,7 +239,7 @@ const selectPlayer = (player: Player) => {
             }
         }
 
-        .btn-add-player {
+        .btn-add-player, .btn-start-game, .btn-save-players {
             display: flex;
             align-items: center;
             justify-content: center;
@@ -177,61 +264,14 @@ const selectPlayer = (player: Player) => {
             }
         }
 
-        dialog {
-            width: 90%;
-            border-radius: .5rem;
-            border: none;
-
-            .search-player {
-                display: flex;
-                flex-direction: column;
-                gap: .5rem;
-                
-                .select-player-container {
-                    display: grid;
-                    grid-template-columns: repeat(5, 1fr);
-                    grid-template-rows: 1fr;
-                    grid-column-gap: 0px;
-                    grid-row-gap: 0px;
-                    align-items: center;
-
-                    .player-img {
-                        height: 2rem;
-                        width: 2rem;
-                        border-radius: 50%;
-                        border: 1px solid black;
-                        background-color: white;
-                        cursor: pointer;
-                        grid-area: 1 / 1 / 2 / 2;
-                    }
-
-                    .player-name {
-                        display: flex;
-                        justify-content: center;
-                        flex-direction: column;
-                        font-family: "Tilt Warp", sans-serif;
-                        font-size: 1.5rem;
-                        color: var(--text-color);
-                        grid-area: 1 / 2 / 2 / 5;
-
-                        .player-full-name {
-                            display: flex;
-                            gap: .5rem;
-
-                            &-name, &-firstname {
-                                font-family: "Tilt Warp", sans-serif;
-                                font-size: 1rem;
-                                color: var(--text-color);
-                                opacity: .5;
-                            }
-                        }
-                    }
-                    
-                    .select-player {
-                        grid-area: 1 / 5 / 2 / 6;
-                    }
-                }
-            }
+        .btn-remove-player {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: "Tilt Warp", sans-serif;
+            font-size: 1rem;
+            color: var(--text-color);
+            text-decoration: underline;
         }
     }
 }
@@ -242,6 +282,15 @@ const selectPlayer = (player: Player) => {
     }
     100% {
         opacity: 1;
+    }
+}
+
+@keyframes bounce-border-color {
+    0%, 100% {
+        border-color: rgba(red, .25);
+    }
+    50% {
+        border-color: red;
     }
 }
 
