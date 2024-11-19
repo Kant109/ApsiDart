@@ -69,12 +69,12 @@ const launchAnimation = (gameImg: string) => {
     align-items: center;
     justify-content: space-between;
     width: 100%;
-    padding: 1rem .5rem;
+    padding: 1rem 1rem;
     background-color: var(--bg-color-primary);
 
     .profile {
-        height: 2rem;
-        width: 2rem;
+        height: 3rem;
+        width: 3rem;
         border-radius: 50%;
         background-color: white;
         cursor: pointer;
@@ -90,7 +90,7 @@ const launchAnimation = (gameImg: string) => {
 
     .dark-mode {
         .toggle {
-            --size: 1.5rem;
+            --size: 2rem;
             
             appearance: none;
             outline: none;

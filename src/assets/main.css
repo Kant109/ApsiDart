@@ -22,18 +22,29 @@ html, body, #app, main {
       background-color: var(--bg-color-secondary);
       position: absolute;
       top: 25vw; }
+      html:is(body) dialog .dialog-title, body:is(body) dialog .dialog-title, #app:is(body) dialog .dialog-title, main:is(body) dialog .dialog-title {
+        display: flex;
+        font-family: "Tilt Warp", sans-serif;
+        font-size: 1.5rem;
+        color: var(--text-color);
+        text-align: center;
+        justify-content: center;
+        align-items: center;
+        margin-bottom: 1.5rem; }
       html:is(body) dialog .search-player, body:is(body) dialog .search-player, #app:is(body) dialog .search-player, main:is(body) dialog .search-player {
         display: flex;
         flex-direction: column;
         gap: .5rem; }
-        html:is(body) dialog .search-player .select-player-container, body:is(body) dialog .search-player .select-player-container, #app:is(body) dialog .search-player .select-player-container, main:is(body) dialog .search-player .select-player-container {
+        html:is(body) dialog .search-player div.send-out, body:is(body) dialog .search-player div.send-out, #app:is(body) dialog .search-player div.send-out, main:is(body) dialog .search-player div.send-out {
+          animation: send-out 1s; }
+        html:is(body) dialog .search-player div .select-player-container, body:is(body) dialog .search-player div .select-player-container, #app:is(body) dialog .search-player div .select-player-container, main:is(body) dialog .search-player div .select-player-container {
           display: grid;
           grid-template-columns: repeat(5, 1fr);
           grid-template-rows: 1fr;
           grid-column-gap: 0px;
           grid-row-gap: 0px;
           align-items: center; }
-          html:is(body) dialog .search-player .select-player-container .player-img, body:is(body) dialog .search-player .select-player-container .player-img, #app:is(body) dialog .search-player .select-player-container .player-img, main:is(body) dialog .search-player .select-player-container .player-img {
+          html:is(body) dialog .search-player div .select-player-container .player-img, body:is(body) dialog .search-player div .select-player-container .player-img, #app:is(body) dialog .search-player div .select-player-container .player-img, main:is(body) dialog .search-player div .select-player-container .player-img {
             height: 2rem;
             width: 2rem;
             border-radius: 50%;
@@ -41,32 +52,32 @@ html, body, #app, main {
             background-color: white;
             cursor: pointer;
             grid-area: 1 / 1 / 2 / 2; }
-          html:is(body) dialog .search-player .select-player-container .player-name, body:is(body) dialog .search-player .select-player-container .player-name, #app:is(body) dialog .search-player .select-player-container .player-name, main:is(body) dialog .search-player .select-player-container .player-name {
+          html:is(body) dialog .search-player div .select-player-container .player-name, body:is(body) dialog .search-player div .select-player-container .player-name, #app:is(body) dialog .search-player div .select-player-container .player-name, main:is(body) dialog .search-player div .select-player-container .player-name {
             display: flex;
             justify-content: center;
             flex-direction: column;
             font-family: "Tilt Warp", sans-serif;
             font-size: 1.5rem;
             grid-area: 1 / 2 / 2 / 5; }
-            html:is(body) dialog .search-player .select-player-container .player-name .player-name-pseudo, html:is(body) dialog .search-player .select-player-container .player-name .player-full-name, body:is(body) dialog .search-player .select-player-container .player-name .player-name-pseudo, body:is(body) dialog .search-player .select-player-container .player-name .player-full-name, #app:is(body) dialog .search-player .select-player-container .player-name .player-name-pseudo, #app:is(body) dialog .search-player .select-player-container .player-name .player-full-name, main:is(body) dialog .search-player .select-player-container .player-name .player-name-pseudo, main:is(body) dialog .search-player .select-player-container .player-name .player-full-name {
+            html:is(body) dialog .search-player div .select-player-container .player-name .player-name-pseudo, html:is(body) dialog .search-player div .select-player-container .player-name .player-full-name, body:is(body) dialog .search-player div .select-player-container .player-name .player-name-pseudo, body:is(body) dialog .search-player div .select-player-container .player-name .player-full-name, #app:is(body) dialog .search-player div .select-player-container .player-name .player-name-pseudo, #app:is(body) dialog .search-player div .select-player-container .player-name .player-full-name, main:is(body) dialog .search-player div .select-player-container .player-name .player-name-pseudo, main:is(body) dialog .search-player div .select-player-container .player-name .player-full-name {
               display: flex;
               font-family: "Tilt Warp", sans-serif;
               font-size: 1rem;
               color: var(--text-color); }
-          html:is(body) dialog .search-player .select-player-container .select-player, body:is(body) dialog .search-player .select-player-container .select-player, #app:is(body) dialog .search-player .select-player-container .select-player, main:is(body) dialog .search-player .select-player-container .select-player {
-            position: relative;
-            background-color: black; }
-            html:is(body) dialog .search-player .select-player-container .select-player::after, body:is(body) dialog .search-player .select-player-container .select-player::after, #app:is(body) dialog .search-player .select-player-container .select-player::after, main:is(body) dialog .search-player .select-player-container .select-player::after {
-              content: "";
-              display: block;
-              position: absolute;
-              top: -.5rem;
-              right: .5rem;
-              width: 1.5rem;
-              height: 1.5rem;
-              background-image: url("@/assets/images/black-right-arrow.svg"); }
-            html:is(body) dialog .search-player .select-player-container .select-player.darkMode::after, body:is(body) dialog .search-player .select-player-container .select-player.darkMode::after, #app:is(body) dialog .search-player .select-player-container .select-player.darkMode::after, main:is(body) dialog .search-player .select-player-container .select-player.darkMode::after {
-              background-image: url("@/assets/images/white-right-arrow.svg"); }
+        html:is(body) dialog .search-player div .select-player, body:is(body) dialog .search-player div .select-player, #app:is(body) dialog .search-player div .select-player, main:is(body) dialog .search-player div .select-player {
+          position: relative;
+          background-color: black; }
+          html:is(body) dialog .search-player div .select-player::after, body:is(body) dialog .search-player div .select-player::after, #app:is(body) dialog .search-player div .select-player::after, main:is(body) dialog .search-player div .select-player::after {
+            content: "";
+            display: block;
+            position: absolute;
+            top: -1.5rem;
+            right: .5rem;
+            width: 1.5rem;
+            height: 1.5rem;
+            background-image: url("@/assets/images/black-right-arrow.svg"); }
+          html:is(body) dialog .search-player div .select-player.darkMode::after, body:is(body) dialog .search-player div .select-player.darkMode::after, #app:is(body) dialog .search-player div .select-player.darkMode::after, main:is(body) dialog .search-player div .select-player.darkMode::after {
+            background-image: url("@/assets/images/white-right-arrow.svg"); }
         html:is(body) dialog .search-player .btn-close-modal, body:is(body) dialog .search-player .btn-close-modal, #app:is(body) dialog .search-player .btn-close-modal, main:is(body) dialog .search-player .btn-close-modal {
           display: flex;
           align-items: center;
@@ -88,6 +99,11 @@ html, body, #app, main {
             transform: translateY(5px);
             box-shadow: none; }
 
+@keyframes send-out {
+  0% {
+    transform: translateX(0); }
+  100% {
+    transform: translateX(1000px); } }
 .bungee-tint-regular {
   font-family: "Bungee Tint", sans-serif;
   font-weight: 400;

@@ -18,6 +18,7 @@ html, body, #app, main {
 
     &:is(body) {
         position: relative;
+
         dialog {
             width: 90%;
             border-radius: .5rem;
@@ -26,45 +27,62 @@ html, body, #app, main {
             position: absolute;
             top: 25vw;
 
+            .dialog-title {
+                display: flex;
+                font-family: "Tilt Warp", sans-serif;
+                font-size: 1.5rem;
+                color: var(--text-color);
+                text-align: center;
+                justify-content: center;
+                align-items: center;
+                margin-bottom: 1.5rem;
+            }
+
             .search-player {
                 display: flex;
                 flex-direction: column;
                 gap: .5rem;
                 
-                .select-player-container {
-                    display: grid;
-                    grid-template-columns: repeat(5, 1fr);
-                    grid-template-rows: 1fr;
-                    grid-column-gap: 0px;
-                    grid-row-gap: 0px;
-                    align-items: center;
-
-                    .player-img {
-                        height: 2rem;
-                        width: 2rem;
-                        border-radius: 50%;
-                        border: 1px solid black;
-                        background-color: white;
-                        cursor: pointer;
-                        grid-area: 1 / 1 / 2 / 2;
+                div {
+                    &.send-out {
+                        animation: send-out 1s;
                     }
 
-                    .player-name {
-                        display: flex;
-                        justify-content: center;
-                        flex-direction: column;
-                        font-family: "Tilt Warp", sans-serif;
-                        font-size: 1.5rem;
-                        grid-area: 1 / 2 / 2 / 5;
+                    .select-player-container {
+                        display: grid;
+                        grid-template-columns: repeat(5, 1fr);
+                        grid-template-rows: 1fr;
+                        grid-column-gap: 0px;
+                        grid-row-gap: 0px;
+                        align-items: center;
 
-                        .player-name-pseudo, .player-full-name {
+                        .player-img {
+                            height: 2rem;
+                            width: 2rem;
+                            border-radius: 50%;
+                            border: 1px solid black;
+                            background-color: white;
+                            cursor: pointer;
+                            grid-area: 1 / 1 / 2 / 2;
+                        }
+
+                        .player-name {
                             display: flex;
+                            justify-content: center;
+                            flex-direction: column;
                             font-family: "Tilt Warp", sans-serif;
-                            font-size: 1rem;
-                            color: var(--text-color);
+                            font-size: 1.5rem;
+                            grid-area: 1 / 2 / 2 / 5;
+
+                            .player-name-pseudo, .player-full-name {
+                                display: flex;
+                                font-family: "Tilt Warp", sans-serif;
+                                font-size: 1rem;
+                                color: var(--text-color);
+                            }
                         }
                     }
-                    
+                        
                     .select-player {
                         position: relative;
                         background-color: black;
@@ -73,7 +91,7 @@ html, body, #app, main {
                             content: "";
                             display: block;
                             position: absolute;
-                            top: -.5rem;
+                            top: -1.5rem;
                             right: .5rem;
                             width: 1.5rem;
                             height: 1.5rem;
@@ -115,6 +133,15 @@ html, body, #app, main {
                 }
             }
         }
+    }
+}
+
+@keyframes send-out {
+    0% {
+        transform: translateX(0);
+    }
+    100% {
+        transform: translateX(1000px);
     }
 }
 
