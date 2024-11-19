@@ -50,11 +50,14 @@ const selectPlayer = (player: Player) => {
     }, 400);
 }
 
-const removePlayer = (player: Player) => {
+const playerAction = (player: Player) => {
     if(isRemovePlayerMode.value) {
         const indexOfPlayer = selectedPlayers.value.indexOf(player);
         selectedPlayers.value.splice(indexOfPlayer, 1);
         allPlayers.value.push(player);
+    }
+    if(changeOrderMode.value) {
+        
     }
 }
 
@@ -132,10 +135,10 @@ const changeOrder = () => {
                     v-for="player in selectedPlayers"
                     class="player-container"
                     :class="{'remove-player': isRemovePlayerMode}"
-                    @click.prevent="removePlayer(player)"
+                    @click.prevent="playerAction(player)"
                 >
                     <div class="player-content">
-                        <div class="player-img" v-if="!changeOrderMode"></div>
+                        <div class="player-img" :class="{'change-order': changeOrderMode}"></div>
                         <div class="player-name">{{ player.pseudo }}</div>
                     </div>
                 </div>
@@ -143,7 +146,7 @@ const changeOrder = () => {
             <div v-if="isRemovePlayerMode || changeOrderMode" class="btn-save-players" @click.prevent="validPlayers">Valider</div>
             <div v-if="!isRemovePlayerMode && !changeOrderMode" class="btn-add-player" @click.prevent="addNewPlayer">Ajouter des joueurs</div>
             <div v-if="selectedPlayers.length > 0 && !isRemovePlayerMode && !changeOrderMode" class="btn-remove-player" @click.prevent="removePlayers">Supprimer des joueurs</div>
-            <div v-if="selectedPlayers.length > 0 && !changeOrderMode" class="btn-change-order" @click.prevent="changeOrder">Changer l'ordre des joueurs</div>
+            <div v-if="selectedPlayers.length > 0 && !isRemovePlayerMode && !changeOrderMode" class="btn-change-order" @click.prevent="changeOrder">Changer l'ordre des joueurs</div>
             <div v-if="selectedPlayers.length > 0 && !isRemovePlayerMode && !changeOrderMode" class="btn-start-game" @click.prevent="startGame">Commencer la partie</div>
             <Teleport to="body">
                 <dialog :open="openSearchPlayer">
@@ -159,7 +162,7 @@ const changeOrder = () => {
                             </div>
                             <div class="select-player" :class="{'darkmode': isDarkMode}" @click.prevent="selectPlayer(player)"></div>
                         </div>
-                        <div class="btn-close-modal" @click.prevent="closeModal">Annuler</div>
+                        <div class="btn-close-modal" @click.prevent="closeModal">Valider</div>
                     </div>   
                 </dialog>
             </Teleport>
@@ -244,6 +247,10 @@ const changeOrder = () => {
                         border-radius: 50%;
                         background-color: white;
                         cursor: pointer;
+
+                        &.change-order {
+                            background-color: red;
+                        }
                     }
 
                     .player-name {
