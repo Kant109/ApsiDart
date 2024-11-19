@@ -26,6 +26,7 @@ html, body, #app, main {
             background-color: var(--bg-color-secondary);
             position: absolute;
             top: 25vw;
+            overflow: hidden;
 
             .dialog-title {
                 display: flex;

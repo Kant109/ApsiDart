@@ -14,6 +14,7 @@ const x01GameStore = useX01GameStore();
 
 const title = ref('');
 const allPlayers = ref([] as Array<Player>);
+const orderedPlayers = ref([] as Array<Player>);
 const selectedPlayers = ref([] as Array<Player>);
 const openSearchPlayer = ref(false);
 const isDarkMode = computed(() => managementAppStore.isDarkMode);
@@ -57,17 +58,26 @@ const playerAction = (player: Player) => {
         allPlayers.value.push(player);
     }
     if(changeOrderMode.value) {
-        
+        if(player.order !== undefined && player.order !== "") {
+            const playerIndex = orderedPlayers.value.indexOf(player);
+            for (let index = orderedPlayers.value.length - 1; index >= playerIndex; index--) {
+                selectedPlayers.value[selectedPlayers.value.indexOf(orderedPlayers.value[index])].order = "";
+                orderedPlayers.value.pop();
+            }
+        } else {
+            orderedPlayers.value.push(player);
+            player.order = (orderedPlayers.value.indexOf(player) + 1).toString();
+        }
     }
 }
 
 const startGame = () => {
     if(title.value === "CRICKET") {
-        selectedPlayers.value.forEach((player: Player) => {
+        orderedPlayers.value.forEach((player: Player) => {
             const currentPlayer: CricketPlayer = {
                 id: player.id,
                 pseudo: player.pseudo,
-                isActive: false,
+                isActive: player.order === "1",
                 points: {
                     20: 0,
                     19: 0,
@@ -87,14 +97,14 @@ const startGame = () => {
                     15: 0,
                     25: 0
                 },
-                volleys: []
+                volleys: player.order === "1" ? [['', '', '']] : []
             };
 
         cricketGameStore.setPlayer(currentPlayer);
         });
         router.push({ name: "cricket-game" })
     } else {
-        selectedPlayers.value.forEach((player: Player) => {
+        orderedPlayers.value.forEach((player: Player) => {
             const currentPlayer: X01Player = {
                 id: player.id,
                 pseudo: player.pseudo,
@@ -138,16 +148,16 @@ const changeOrder = () => {
                     @click.prevent="playerAction(player)"
                 >
                     <div class="player-content">
-                        <div class="player-img" :class="{'change-order': changeOrderMode}"></div>
+                        <div class="player-img" :class="{'change-order': changeOrderMode}">{{ player.order }}</div>
                         <div class="player-name">{{ player.pseudo }}</div>
                     </div>
                 </div>
             </div>
             <div v-if="isRemovePlayerMode || changeOrderMode" class="btn-save-players" @click.prevent="validPlayers">Valider</div>
+            <div v-if="selectedPlayers.length > 0 && !isRemovePlayerMode && !changeOrderMode" class="btn-start-game" @click.prevent="startGame">Commencer la partie</div>
             <div v-if="!isRemovePlayerMode && !changeOrderMode" class="btn-add-player" @click.prevent="addNewPlayer">Ajouter des joueurs</div>
             <div v-if="selectedPlayers.length > 0 && !isRemovePlayerMode && !changeOrderMode" class="btn-remove-player" @click.prevent="removePlayers">Supprimer des joueurs</div>
             <div v-if="selectedPlayers.length > 0 && !isRemovePlayerMode && !changeOrderMode" class="btn-change-order" @click.prevent="changeOrder">Changer l'ordre des joueurs</div>
-            <div v-if="selectedPlayers.length > 0 && !isRemovePlayerMode && !changeOrderMode" class="btn-start-game" @click.prevent="startGame">Commencer la partie</div>
             <Teleport to="body">
                 <dialog :open="openSearchPlayer">
                     <div class="dialog-title">Sélectionner les joueurs</div>

@@ -21,7 +21,8 @@ html, body, #app, main {
       border: none;
       background-color: var(--bg-color-secondary);
       position: absolute;
-      top: 25vw; }
+      top: 25vw;
+      overflow: hidden; }
       html:is(body) dialog .dialog-title, body:is(body) dialog .dialog-title, #app:is(body) dialog .dialog-title, main:is(body) dialog .dialog-title {
         display: flex;
         font-family: "Tilt Warp", sans-serif;
