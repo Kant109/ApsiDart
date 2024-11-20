@@ -90,13 +90,9 @@ const startGame = () => {
 </script>
 
 <template>
-    <div class="darts-game-container" :class="{'slide-top': isCricketSelected || isX01Selected}">
+    <div class="darts-game-container">
         <div class="header">
             <div class="title">DARTS</div>
-        </div>
-
-        <div class="darts-img" :class="{'slide-top-animation': isSlideTopAnimation}">
-            <img src="/icons/darts.png" alt="Image Game">
         </div>
 
         <div class="darts-game-chose-mode">
@@ -118,15 +114,11 @@ const startGame = () => {
     align-items: center;
     position: relative;
 
-    &.slide-top {   
-        animation: slide-top 2s;
-    }
-
     .header {
         width: 100%;
         padding: 1rem .5rem;
         background-color: var(--bg-color-primary);
-        animation: appear .5s;
+        animation: appear .2s;
 
         .title {
             display: flex;
@@ -137,35 +129,11 @@ const startGame = () => {
         }
     }
 
-    .darts-img {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        background-color: var(--bg-color-secondary);
-        border-radius: .5rem;
-        width: 9rem;
-        height: 9rem;
-        margin-top: 1rem;
-        
-        &.slide-top-animation {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            animation: slide-top-img 0.5s cubic-bezier(0.250, 0.460, 0.450, 0.940) both;
-        }
-
-        img {
-            width: 9rem;
-            height: 9rem;
-        }
-    }
-
     .darts-game-chose-mode {
         display: flex;
         justify-content: center;
         width: 100%;
-        animation: appear 1.25s;
+        animation: appear .2s;
         margin: 2rem 0;
 
         .choices-container {
@@ -227,25 +195,6 @@ const startGame = () => {
     }
 }
 
-
-@keyframes slide-top-img {
-  0% {
-    transform: translateY(0) translate(-50%, -50%);
-  }
-  100% {
-    transform: translateY(calc( -1 * calc(50vh - (106px + 4.5rem)))) translate(-50%, -50%);
-  }
-}
-
-@keyframes slide-top {
-  0% {
-    transform: translateY(0);
-  }
-  100% {
-    transform: translateY(-100vh);
-  }
-}
-
 @keyframes appear {
     0% {
         opacity: 0;
@@ -255,15 +204,6 @@ const startGame = () => {
     }
     100% {
         opacity: 1;
-    }
-}
-
-@keyframes disappear {
-    0% {
-        opacity: 1;
-    }
-    100% {
-        opacity: 0;
     }
 }
 

@@ -52,6 +52,8 @@ const playerAction = (player: Player) => {
     if(isRemovePlayerMode.value) {
         const indexOfPlayer = selectedPlayers.value.indexOf(player);
         selectedPlayers.value.splice(indexOfPlayer, 1);
+        const indexOfPlayerInOrder = orderedPlayers.value.indexOf(player);
+        orderedPlayers.value.splice(indexOfPlayerInOrder, 1);
         allPlayers.value.push(player);
     }
     if(changeOrderMode.value) {
@@ -69,9 +71,7 @@ const playerAction = (player: Player) => {
 }
 
 const startGame = () => {
-    console.log(orderedPlayers.value)
     playerStore.setOrderedPlayers(orderedPlayers.value);
-    console.log(playerStore.orderedPlayers);
     router.push({ name: "darts-mode"});
 }
 
