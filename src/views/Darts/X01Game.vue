@@ -38,7 +38,6 @@ const setIsLastPlayerActive = (isCurrentPlayerLast: boolean) => {
 </template>
 
 <style lang="scss" scoped>
-@import "@/assets/helpers/variables.scss";
 
 .title {
     display: flex;
@@ -108,7 +107,7 @@ const setIsLastPlayerActive = (isCurrentPlayerLast: boolean) => {
 
         &.lastPlayerActive {
             &::after {
-                background-color: $active-player;
+                background-color: var(--active-player);
             }
         }
     }

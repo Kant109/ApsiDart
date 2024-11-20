@@ -217,7 +217,6 @@ onMounted(() => {
 </script>
 
 <style lang="scss">
-@import "@/assets/helpers/variables.scss";
 
 main {
     display: flex;

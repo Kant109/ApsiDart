@@ -44,14 +44,13 @@ watch(
 </template>
 
 <style lang="scss" scoped>
-@import "@/assets/helpers/variables.scss";
 
 .top-bg {
     background-color: var(--bg-color-secondary);
 }
 
 .top-bg-active {
-    background-color: $active-player;
+    background-color: var(--active-player);
 }
 
 .player-content {
@@ -68,7 +67,7 @@ watch(
     box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
 
     &.isPlayerActive {
-        background-color: $active-player;
+        background-color: var(--active-player);
 
         .player-name, .points-taken {
             color: #121212;

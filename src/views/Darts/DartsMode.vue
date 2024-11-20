@@ -1,11 +1,19 @@
 <script setup lang="ts">
-import { onMounted, ref } from 'vue';
+import { useCricketGameStore } from '@/stores/CricketGameStore';
+import { usePlayerStore } from '@/stores/PlayerStore';
+import { useX01GameStore } from '@/stores/X01GameStore';
+import { computed, onMounted, ref } from 'vue';
 import { useRouter } from 'vue-router';
+
+const cricketGameStore = useCricketGameStore();
+const x01GameStore = useX01GameStore();
+const playerStore = usePlayerStore();
 
 const isSlideTopAnimation = ref(false);
 const isCricketSelected = ref(false);
 const isX01Selected = ref(false);
-const nextTitle = ref('');
+const modeTitle = ref('');
+const orderedPlayers = computed(() => playerStore.orderedPlayers);
 
 const router = useRouter();
 
@@ -19,19 +27,63 @@ onMounted(() => {
 const selectGamemode = (mode: string) => {
     switch (mode) {
         case "cricket":
-            nextTitle.value = "CRICKET";
+            modeTitle.value = "CRICKET";
             isCricketSelected.value = true;
-            setTimeout(() => {
-                router.push({ name: "darts-mode", params: {mode: 'cricket'}})
-            }, 1900);
+            startGame();
             break;
         case "x01":
-            nextTitle.value = "X01";
+        modeTitle.value = "X01";
             isX01Selected.value = true;
-            setTimeout(() => {
-                router.push({ name: "darts-mode", params: {mode: 'x01'}})
-            }, 1900);
+            startGame();
             break;
+    }
+}
+
+const startGame = () => {
+    if(modeTitle.value === "CRICKET") {
+        orderedPlayers.value.forEach((player: Player) => {
+            const currentPlayer: CricketPlayer = {
+                id: player.id,
+                pseudo: player.pseudo,
+                isActive: player.order === "1",
+                points: {
+                    20: 0,
+                    19: 0,
+                    18: 0,
+                    17: 0,
+                    16: 0,
+                    15: 0,
+                    25: 0,
+                    total: 0
+                },
+                doors: {
+                    20: 0,
+                    19: 0,
+                    18: 0,
+                    17: 0,
+                    16: 0,
+                    15: 0,
+                    25: 0
+                },
+                volleys: player.order === "1" ? [['', '', '']] : []
+            };
+
+        cricketGameStore.setPlayer(currentPlayer);
+        });
+        router.push({ name: "cricket-game" })
+    } else {
+        orderedPlayers.value.forEach((player: Player) => {
+            const currentPlayer: X01Player = {
+                id: player.id,
+                pseudo: player.pseudo,
+                isActive: false,
+                points: 0,
+                volleys: []
+            };
+
+            x01GameStore.setPlayer(currentPlayer);
+        });
+        router.push({ name: "x01-game" })
     }
 }
 
@@ -53,16 +105,10 @@ const selectGamemode = (mode: string) => {
                 <div class="choice" @click.prevent="selectGamemode('x01')">X01</div>
             </div>
         </div>
-        <div class="cricket-settings-title-animation">
-            <div class="header">
-                <div class="title">{{ nextTitle }}</div>
-            </div>
-        </div>
     </div>
 </template>
 
 <style lang="scss" scoped>
-@import "@/assets/helpers/variables.scss";
 
 .darts-game-container {
     display: flex;

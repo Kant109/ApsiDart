@@ -45,13 +45,13 @@ const launchAnimation = (gameImg: string) => {
         <GameContainer
             img="darts"
             title="Darts"
-            route-name="darts-home"
+            route-name="darts-player"
             @click.prevent="launchAnimation('darts')"
         />
         <GameContainer
             img="darts"
             title="Fléchettes"
-            route-name="darts-home"
+            route-name="darts-player"
         />
     </div>
     <div v-if="isAnimationLaunch" class="container-animation">
@@ -62,7 +62,6 @@ const launchAnimation = (gameImg: string) => {
 </template>
 
 <style lang="scss" scoped>
-@import "@/assets/helpers/variables.scss";
 
 .header {
     display: flex;

@@ -1,18 +1,3 @@
-@mixin button-primary($color) {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    max-width: 100%;
-    height: 3rem;
-    border-radius: 5px;
-    border: 1px solid $color;
-    padding: 0 1rem;
-
-    a {
-        font-family: "Bungee Tint", sans-serif;
-    }
-}
-
 @mixin points {
     display: flex;
     justify-content: center;

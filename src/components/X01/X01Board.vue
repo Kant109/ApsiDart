@@ -159,7 +159,6 @@ const reset = () => {
 </template>
 
 <style lang="scss" scoped>
-@import "@/assets/helpers/variables.scss";
 @import "@/assets/helpers/mixins.scss";
 
 .points-container {
@@ -186,7 +185,7 @@ const reset = () => {
 
             .points {
                 aspect-ratio: 1/1;
-                @include points();
+                @include points;
             }
         }
 
@@ -196,7 +195,7 @@ const reset = () => {
 
             .points {
                 aspect-ratio: 1/1;
-                @include points();
+                @include points;
             }
 
             .specific {

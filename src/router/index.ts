@@ -2,8 +2,8 @@ import { createRouter, createWebHistory } from 'vue-router'
 import HomePage from '@/views/HomePage.vue'
 import CricketGame from '@/views/Darts/CricketGame.vue'
 import X01Game from '@/views/Darts/X01Game.vue'
-import DartsHome from '@/views/Darts/DartsHome.vue'
-import DartsSettings from '@/views/Darts/DartsSettings.vue'
+import DartsMode from '@/views/Darts/DartsMode.vue'
+import DartsPlayer from '@/views/Darts/DartsPlayer.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -15,13 +15,13 @@ const router = createRouter({
     },
     {
       path: '/darts',
-      name: 'darts-home',
-      component: DartsHome,
+      name: 'darts-player',
+      component: DartsPlayer
     },
     {
-      path: '/darts/:mode',
+      path: '/darts/mode',
       name: 'darts-mode',
-      component: DartsSettings
+      component: DartsMode,
     },
     {
       path: '/darts/cricket/game',

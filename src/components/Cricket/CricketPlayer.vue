@@ -72,14 +72,13 @@ const openStat = () => {
 </template>
 
 <style lang="scss" scoped>
-@import "@/assets/helpers/variables.scss";
 
 .top-bg {
     background-color: var(--bg-color-secondary);
 }
 
 .top-bg-active {
-    background-color: $active-player;
+    background-color: var(--active-player);
 }
 
 .player-content {
@@ -171,7 +170,7 @@ const openStat = () => {
     }
 
     &.isPlayerActive {
-        background-color: $active-player;
+        background-color: var(--active-player);
 
         .player-name, .points-taken {
             color: #121212;
@@ -199,7 +198,7 @@ const openStat = () => {
     background-color: var(--bg-color-secondary);
 
     &.isPlayerActive {
-        background-color: $active-player;
+        background-color: var(--active-player);
     }
 
     .current-points {
@@ -264,7 +263,7 @@ const openStat = () => {
         }
 
         &.isPlayerActive {
-            background-color: $active-player;
+            background-color: var(--active-player);
 
             .doors {
                 .door {

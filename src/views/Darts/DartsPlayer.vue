@@ -1,18 +1,14 @@
 <script setup lang="ts">
-import router from '@/router';
-import { useCricketGameStore } from '@/stores/CricketGameStore';
 import { useManagementAppStore } from '@/stores/ManagementAppStore';
-import { useX01GameStore } from '@/stores/X01GameStore';
-import { computed, onMounted, ref } from 'vue';
-import { useRoute } from 'vue-router';
+import { usePlayerStore } from '@/stores/PlayerStore';
+import { computed, onMounted, ref, Teleport } from 'vue';
+import { useRouter } from 'vue-router';
 
-const route = useRoute();
+const router = useRouter();
 
 const managementAppStore = useManagementAppStore();
-const cricketGameStore = useCricketGameStore();
-const x01GameStore = useX01GameStore();
+const playerStore = usePlayerStore();
 
-const title = ref('');
 const allPlayers = ref([] as Array<Player>);
 const orderedPlayers = ref([] as Array<Player>);
 const selectedPlayers = ref([] as Array<Player>);
@@ -22,7 +18,6 @@ const isRemovePlayerMode = ref(false);
 const changeOrderMode = ref(false);
 
 onMounted(async () => {
-    title.value = (route.params.mode as string).toUpperCase();
     const url = import.meta.env.VITE_BE_URL + "/players";
     try {
         const response = await fetch(url);
@@ -46,6 +41,8 @@ const closeModal = () => {
 const selectPlayer = (player: Player) => {
     const indexOfPlayer = allPlayers.value.indexOf(player);
     selectedPlayers.value.push(player);
+    player.order = (orderedPlayers.value.length + 1).toString();
+    orderedPlayers.value.push(player);
     setTimeout(() => {
         allPlayers.value.splice(indexOfPlayer, 1);
     }, 400);
@@ -72,51 +69,10 @@ const playerAction = (player: Player) => {
 }
 
 const startGame = () => {
-    if(title.value === "CRICKET") {
-        orderedPlayers.value.forEach((player: Player) => {
-            const currentPlayer: CricketPlayer = {
-                id: player.id,
-                pseudo: player.pseudo,
-                isActive: player.order === "1",
-                points: {
-                    20: 0,
-                    19: 0,
-                    18: 0,
-                    17: 0,
-                    16: 0,
-                    15: 0,
-                    25: 0,
-                    total: 0
-                },
-                doors: {
-                    20: 0,
-                    19: 0,
-                    18: 0,
-                    17: 0,
-                    16: 0,
-                    15: 0,
-                    25: 0
-                },
-                volleys: player.order === "1" ? [['', '', '']] : []
-            };
-
-        cricketGameStore.setPlayer(currentPlayer);
-        });
-        router.push({ name: "cricket-game" })
-    } else {
-        orderedPlayers.value.forEach((player: Player) => {
-            const currentPlayer: X01Player = {
-                id: player.id,
-                pseudo: player.pseudo,
-                isActive: false,
-                points: 0,
-                volleys: []
-            };
-
-            x01GameStore.setPlayer(currentPlayer);
-        });
-        router.push({ name: "x01-game" })
-    }
+    console.log(orderedPlayers.value)
+    playerStore.setOrderedPlayers(orderedPlayers.value);
+    console.log(playerStore.orderedPlayers);
+    router.push({ name: "darts-mode"});
 }
 
 const validPlayers = () => {
@@ -135,9 +91,9 @@ const changeOrder = () => {
 </script>
 
 <template>
-    <div class="settings-container" :class="{'blur': openSearchPlayer}">
+    <div class="settings-container">
         <div class="header">
-            <div class="title">{{ title }}</div>
+            <div class="title">FLÉCHETTES</div>
         </div>
         <div class="adding-player-container">
             <div class="adding-player-recap" v-if="selectedPlayers.length > 0">
@@ -154,30 +110,30 @@ const changeOrder = () => {
                 </div>
             </div>
             <div v-if="isRemovePlayerMode || changeOrderMode" class="btn-save-players" @click.prevent="validPlayers">Valider</div>
-            <div v-if="selectedPlayers.length > 0 && !isRemovePlayerMode && !changeOrderMode" class="btn-start-game" @click.prevent="startGame">Commencer la partie</div>
+            <div v-if="selectedPlayers.length > 0 && !isRemovePlayerMode && !changeOrderMode" class="btn-start-game" @click.prevent="startGame">Choix du mode</div>
             <div v-if="!isRemovePlayerMode && !changeOrderMode" class="btn-add-player" @click.prevent="addNewPlayer">Ajouter des joueurs</div>
             <div v-if="selectedPlayers.length > 0 && !isRemovePlayerMode && !changeOrderMode" class="btn-remove-player" @click.prevent="removePlayers">Supprimer des joueurs</div>
             <div v-if="selectedPlayers.length > 0 && !isRemovePlayerMode && !changeOrderMode" class="btn-change-order" @click.prevent="changeOrder">Changer l'ordre des joueurs</div>
-            <Teleport to="body">
-                <dialog :open="openSearchPlayer">
-                    <div class="dialog-title">Sélectionner les joueurs</div>
-                    <div class="search-player">
-                        <div v-for="player in allPlayers" :class="{'send-out': selectedPlayers.includes(player)}">  
-                            <div class="select-player-container" v-if="allPlayers.includes(player)">
-                                <div class="player-img"></div>
-                                <div class="player-name">
-                                    <div class="player-name-pseudo">{{ player.pseudo }}</div>
-                                    <div class="player-full-name">{{ player.lastName }} {{ player.firstName }}</div>
-                                </div>
-                            </div>
-                            <div class="select-player" :class="{'darkmode': isDarkMode}" @click.prevent="selectPlayer(player)"></div>
-                        </div>
-                        <div class="btn-close-modal" @click.prevent="closeModal">Valider</div>
-                    </div>   
-                </dialog>
-            </Teleport>
         </div>
     </div>
+    <Teleport defer to=".settings-container" target=".settings-container">
+        <dialog :open="openSearchPlayer">
+            <div class="dialog-title">Sélectionner les joueurs</div>
+            <div class="search-player">
+                <div v-for="player in allPlayers" :class="{'send-out': selectedPlayers.includes(player)}">  
+                    <div class="select-player-container" v-if="allPlayers.includes(player)">
+                        <div class="player-img"></div>
+                        <div class="player-name">
+                            <div class="player-name-pseudo">{{ player.pseudo }}</div>
+                            <div class="player-full-name">{{ player.lastName }} {{ player.firstName }}</div>
+                        </div>
+                    </div>
+                    <div class="select-player" :class="{'darkmode': isDarkMode}" @click.prevent="selectPlayer(player)"></div>
+                </div>
+                <div class="btn-close-modal" @click.prevent="closeModal">Valider</div>
+            </div>   
+        </dialog>
+    </Teleport>
 </template>
 
 <style lang="scss" scoped>
@@ -188,9 +144,123 @@ const changeOrder = () => {
     height: 100%;
     flex-direction: column;
     align-items: center;
-    
-    &.blur {
-        filter: blur(10px);
+    position: relative;
+
+    dialog {
+        width: 90%;
+        border-radius: .5rem;
+        border: none;
+        background-color: var(--bg-color-secondary);
+        position: absolute;
+        top: 25vw;
+        overflow: hidden;
+        backdrop-filter: blur(10px);
+
+        .dialog-title {
+            display: flex;
+            font-family: "Tilt Warp", sans-serif;
+            font-size: 1.5rem;
+            color: var(--text-color);
+            text-align: center;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .search-player {
+            display: flex;
+            flex-direction: column;
+            gap: .5rem;
+            
+            div {
+                &.send-out {
+                    animation: send-out 1s;
+                }
+
+                .select-player-container {
+                    display: grid;
+                    grid-template-columns: repeat(5, 1fr);
+                    grid-template-rows: 1fr;
+                    grid-column-gap: 0px;
+                    grid-row-gap: 0px;
+                    align-items: center;
+
+                    .player-img {
+                        height: 2rem;
+                        width: 2rem;
+                        border-radius: 50%;
+                        border: 1px solid black;
+                        background-color: white;
+                        cursor: pointer;
+                        grid-area: 1 / 1 / 2 / 2;
+                    }
+
+                    .player-name {
+                        display: flex;
+                        justify-content: center;
+                        flex-direction: column;
+                        font-family: "Tilt Warp", sans-serif;
+                        font-size: 1.5rem;
+                        grid-area: 1 / 2 / 2 / 5;
+
+                        .player-name-pseudo, .player-full-name {
+                            display: flex;
+                            font-family: "Tilt Warp", sans-serif;
+                            font-size: 1rem;
+                            color: var(--text-color);
+                        }
+                    }
+                }
+                    
+                .select-player {
+                    position: relative;
+                    background-color: black;
+
+                    &::after {
+                        content: "";
+                        display: block;
+                        position: absolute;
+                        top: -1.5rem;
+                        right: .5rem;
+                        width: 1.5rem;
+                        height: 1.5rem;
+                        background-image: url("@/assets/images/black-right-arrow.svg");
+                    }
+
+                    &.darkmode {
+                        &::after {
+                            background-image: url("@/assets/images/white-right-arrow.svg");
+                        }
+                    }
+                }
+            }
+
+            .btn-close-modal {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                background-color: var(--bg-color-secondary);
+                height: 60px;
+                width: 100%;
+                border-radius: 1rem;
+                margin-top: 1.5rem;
+
+                font-family: "Tilt Warp", sans-serif;
+                font-size: 1.5rem;
+                color: var(--text-color);
+                padding-bottom: 5px;
+
+                --tw-shadow: inset 0 -5px 0 0 rgba(0, 0, 0, .25);
+                box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
+                border: 1px solid rgba(0, 0, 0, .25);
+
+                &:active {
+                    color: rgba(black, .25);
+                    transform: translateY(5px);
+                    box-shadow: none;
+                }
+            }
+        }
     }
 
     .header {
@@ -202,7 +272,7 @@ const changeOrder = () => {
             display: flex;
             justify-content: center;
             font-family: "Monoton", sans-serif;
-            font-size: 3rem;
+            font-size: 2.5rem;
             color: var(--text-color);
         }
     }

@@ -11,7 +11,6 @@ export const useX01GameStore = defineStore('X01Game', () => {
     }
 
     function setIsGameFinish(newIsGameFinish: boolean) {
-        console.log('in set')
         isGameFinish.value = newIsGameFinish;
     }
 
