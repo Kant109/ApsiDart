@@ -1,19 +1,17 @@
 <script setup lang="ts">
 import { useCricketGameStore } from '@/stores/CricketGameStore';
-import { usePlayerStore } from '@/stores/PlayerStore';
 import { useX01GameStore } from '@/stores/X01GameStore';
 import { computed, onMounted, ref } from 'vue';
 import { useRouter } from 'vue-router';
 
 const cricketGameStore = useCricketGameStore();
 const x01GameStore = useX01GameStore();
-const playerStore = usePlayerStore();
 
 const isSlideTopAnimation = ref(false);
 const isCricketSelected = ref(false);
 const isX01Selected = ref(false);
 const modeTitle = ref('');
-const orderedPlayers = computed(() => playerStore.orderedPlayers);
+const orderedPlayers = computed(() => JSON.parse(localStorage.getItem('orderedDartsPlayer') as string));
 
 const router = useRouter();
 

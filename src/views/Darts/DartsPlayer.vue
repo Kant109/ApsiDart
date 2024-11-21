@@ -1,19 +1,18 @@
 <script setup lang="ts">
 import { useManagementAppStore } from '@/stores/ManagementAppStore';
-import { usePlayerStore } from '@/stores/PlayerStore';
 import { computed, onMounted, ref, Teleport } from 'vue';
 import { useRouter } from 'vue-router';
 
 const router = useRouter();
 
 const managementAppStore = useManagementAppStore();
-const playerStore = usePlayerStore();
 
 const allPlayers = ref([] as Array<Player>);
 const orderedPlayers = ref([] as Array<Player>);
 const selectedPlayers = ref([] as Array<Player>);
 const openSearchPlayer = ref(false);
 const isDarkMode = computed(() => managementAppStore.isDarkMode);
+const modificationMode = ref(false);
 const isRemovePlayerMode = ref(false);
 const changeOrderMode = ref(false);
 
@@ -27,6 +26,17 @@ onMounted(async () => {
         allPlayers.value = await response.json();
     } catch (error: any) {
         console.error(error.message);
+    }
+
+    if((localStorage.getItem('orderedDartsPlayer') as string) !== null) {
+        const playersFromLocalStorage = JSON.parse(localStorage.getItem('orderedDartsPlayer') as string) as Array<Player>;
+        playersFromLocalStorage.forEach(player => {
+            orderedPlayers.value.push(player);
+            selectedPlayers.value.push(player);
+        });
+    }
+    if(selectedPlayers.value.length < 1) {
+        openSearchPlayer.value = true;
     }
 })
 
@@ -50,6 +60,13 @@ const selectPlayer = (player: Player) => {
 
 const playerAction = (player: Player) => {
     if(isRemovePlayerMode.value) {
+        if(parseInt(player.order as string) < orderedPlayers.value.length) {
+            for (let index = orderedPlayers.value.indexOf(player); index < orderedPlayers.value.length; index++) {
+                const newOrder = (parseInt(selectedPlayers.value[index].order as string) - 1).toString();
+                selectedPlayers.value[index].order = newOrder;
+                orderedPlayers.value[index].order = newOrder;
+            }
+        }
         const indexOfPlayer = selectedPlayers.value.indexOf(player);
         selectedPlayers.value.splice(indexOfPlayer, 1);
         const indexOfPlayerInOrder = orderedPlayers.value.indexOf(player);
@@ -71,13 +88,21 @@ const playerAction = (player: Player) => {
 }
 
 const startGame = () => {
-    playerStore.setOrderedPlayers(orderedPlayers.value);
+    localStorage.removeItem('orderedDartsPlayer');
+    localStorage.setItem('orderedDartsPlayer', JSON.stringify(orderedPlayers.value));
     router.push({ name: "darts-mode"});
 }
 
 const validPlayers = () => {
+    if(!isRemovePlayerMode.value && !changeOrderMode.value) {
+        modificationMode.value = false;
+    }
     isRemovePlayerMode.value = false;
     changeOrderMode.value = false;
+}
+
+const modification = () => {
+    modificationMode.value = true;
 }
 
 const removePlayers = () => {
@@ -104,16 +129,18 @@ const changeOrder = () => {
                     @click.prevent="playerAction(player)"
                 >
                     <div class="player-content">
-                        <div class="player-img" :class="{'change-order': changeOrderMode}">{{ player.order }}</div>
+                        <div class="player-img" v-if="!changeOrderMode"></div>
+                        <div class="player-order" v-else >{{ player.order }}</div>
                         <div class="player-name">{{ player.pseudo }}</div>
                     </div>
                 </div>
             </div>
-            <div v-if="isRemovePlayerMode || changeOrderMode" class="btn-save-players" @click.prevent="validPlayers">Valider</div>
-            <div v-if="selectedPlayers.length > 0 && !isRemovePlayerMode && !changeOrderMode" class="btn-start-game" @click.prevent="startGame">Choix du mode</div>
-            <div v-if="!isRemovePlayerMode && !changeOrderMode" class="btn-add-player" @click.prevent="addNewPlayer">Ajouter des joueurs</div>
-            <div v-if="selectedPlayers.length > 0 && !isRemovePlayerMode && !changeOrderMode" class="btn-remove-player" @click.prevent="removePlayers">Supprimer des joueurs</div>
-            <div v-if="selectedPlayers.length > 0 && !isRemovePlayerMode && !changeOrderMode" class="btn-change-order" @click.prevent="changeOrder">Changer l'ordre des joueurs</div>
+            <div v-if="isRemovePlayerMode || changeOrderMode || modificationMode" class="btn-save-players" @click.prevent="validPlayers">Valider</div>
+            <div v-if="!isRemovePlayerMode && !changeOrderMode && !modificationMode" class="btn-add-player" @click.prevent="addNewPlayer">Ajouter des joueurs</div>
+            <div v-if="selectedPlayers.length > 0 && !isRemovePlayerMode && !changeOrderMode && !modificationMode" class="btn-start-game" @click.prevent="startGame">Choix du mode</div>
+            <div v-if="selectedPlayers.length > 0 && !isRemovePlayerMode && !changeOrderMode && !modificationMode" class="btn-modif-player" @click.prevent="modification">Modifier</div>
+            <div v-if="selectedPlayers.length > 0 && !isRemovePlayerMode && !changeOrderMode && modificationMode" class="btn-remove-player" @click.prevent="removePlayers">Supprimer des joueurs</div>
+            <div v-if="selectedPlayers.length > 0 && !isRemovePlayerMode && !changeOrderMode && modificationMode" class="btn-change-order" @click.prevent="changeOrder">Changer l'ordre</div>
         </div>
     </div>
     <Teleport defer to=".settings-container" target=".settings-container">
@@ -295,7 +322,6 @@ const changeOrder = () => {
             border-radius: .5rem;
             width: 90%;
             padding: 1rem;
-            margin-bottom: 1rem;
             box-shadow: rgb(0, 0, 0, .25) 0px 5px 5px 0px inset;
 
             .player-container {
@@ -327,10 +353,22 @@ const changeOrder = () => {
                         border-radius: 50%;
                         background-color: white;
                         cursor: pointer;
+                    }
 
-                        &.change-order {
-                            background-color: red;
-                        }
+                    .player-order {
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        height: 3rem;
+                        width: 3rem;
+                        border-radius: 50%;
+                        background-color: white;
+                        cursor: pointer;
+                        font-family: "Tilt Warp", sans-serif;
+                        font-size: 2rem;
+                        color: var(--text-color);
+                        border: 2px solid;
+                        animation: bounce-border-color 1s infinite;
                     }
 
                     .player-name {
@@ -342,7 +380,7 @@ const changeOrder = () => {
             }
         }
 
-        .btn-add-player, .btn-start-game, .btn-save-players {
+        .btn-start-game, .btn-save-players {
             display: flex;
             align-items: center;
             justify-content: center;
@@ -367,7 +405,7 @@ const changeOrder = () => {
             }
         }
 
-        .btn-change-order, .btn-remove-player {
+        .btn-add-player, .btn-modif-player, .btn-change-order, .btn-remove-player {
             display: flex;
             align-items: center;
             justify-content: center;
