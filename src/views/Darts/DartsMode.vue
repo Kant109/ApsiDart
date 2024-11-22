@@ -10,8 +10,10 @@ const x01GameStore = useX01GameStore();
 const isSlideTopAnimation = ref(false);
 const isCricketSelected = ref(false);
 const isX01Selected = ref(false);
-const modeTitle = ref('');
+const title = ref('FLÉCHETTES');
 const orderedPlayers = computed(() => JSON.parse(localStorage.getItem('orderedDartsPlayer') as string));
+const x01Mode = ref(0);
+const selectTeam = ref(false);
 
 const router = useRouter();
 
@@ -25,20 +27,32 @@ onMounted(() => {
 const selectGamemode = (mode: string) => {
     switch (mode) {
         case "cricket":
-            modeTitle.value = "CRICKET";
+            title.value = "CRICKET";
             isCricketSelected.value = true;
-            startGame();
             break;
         case "x01":
-        modeTitle.value = "X01";
+            title.value = "X01";
             isX01Selected.value = true;
-            startGame();
             break;
     }
 }
 
+const selectX01Mode = (selectedX01Mode: number) => {
+    x01Mode.value = selectedX01Mode;
+    startGame();
+}
+
+const selectCricketMode = (selectedCricketMode: string) => {
+    if(selectedCricketMode === 'simple') {
+        startGame();
+    } else if(selectedCricketMode === 'team') {
+        selectTeam.value = true;
+    }
+
+}
+
 const startGame = () => {
-    if(modeTitle.value === "CRICKET") {
+    if(title.value === "CRICKET") {
         orderedPlayers.value.forEach((player: Player) => {
             const currentPlayer: CricketPlayer = {
                 id: player.id,
@@ -74,9 +88,9 @@ const startGame = () => {
             const currentPlayer: X01Player = {
                 id: player.id,
                 pseudo: player.pseudo,
-                isActive: false,
-                points: 0,
-                volleys: []
+                isActive: player.order === "1",
+                points: x01Mode.value,
+                volleys: player.order === "1" ? [['', '', '']] : []
             };
 
             x01GameStore.setPlayer(currentPlayer);
@@ -85,24 +99,54 @@ const startGame = () => {
     }
 }
 
+const cancel = (removeMode: string) => {
+    switch(removeMode) {
+        case "cricketTeam":
+            selectTeam.value = false;
+            break;
+        case "mode":
+            isCricketSelected.value =
+            isX01Selected.value = false;
+            break;
+        case "player":
+            router.push({ name: "darts-player" });
+    }
+}
+
 </script>
 
 <template>
     <div class="darts-game-container">
         <div class="header">
-            <div class="title">DARTS</div>
+            <div class="title">{{ title }}</div>
         </div>
 
         <div class="darts-game-chose-mode">
-            <div class="choices-container">
+            <div class="choices-container" v-if="!isCricketSelected && !isX01Selected">
                 <div class="choice" @click.prevent="selectGamemode('cricket')">Cricket</div>
                 <div class="choice" @click.prevent="selectGamemode('x01')">X01</div>
+                <div class="btn-cancel" @click.prevent="cancel('player')">Annuler</div>
+            </div>
+            <div class="cricket-choice-container" v-if="isCricketSelected">
+                <div class="btn-simple-mode" @click.prevent="selectCricketMode('simple')" v-if="!selectTeam">Simple</div>
+                <div class="btn-team-mode" @click.prevent="selectCricketMode('team')" v-if="!selectTeam">Équipe</div>
+                <div class="btn-cancel" @click.prevent="cancel('mode')">Annuler</div>
+                <div class="cricket-team" v-if="selectTeam">
+                    Coucou
+                    <div class="btn-cancel" @click.prevent="cancel('cricketTeam')">Annuler</div>
+                </div>
+                <div class="x01-choice-container" v-if="isX01Selected">
+                    <div class="btn-simple-mode" @click.prevent="selectX01Mode(301)">301</div>
+                    <div class="btn-team-mode" @click.prevent="selectX01Mode(501)">501</div>
+                    <div class="btn-cancel" @click.prevent="cancel('mode')">Annuler</div>
+                </div>
             </div>
         </div>
     </div>
 </template>
 
 <style lang="scss" scoped>
+@import "@/assets/helpers/mixins.scss";
 
 .darts-game-container {
     display: flex;
@@ -122,7 +166,7 @@ const startGame = () => {
             display: flex;
             justify-content: center;
             font-family: "Monoton", sans-serif;
-            font-size: 3rem;
+            font-size: 2.5rem;
             color: var(--text-color);
         }
     }
@@ -132,9 +176,8 @@ const startGame = () => {
         justify-content: center;
         width: 100%;
         animation: appear .2s;
-        margin: 2rem 0;
 
-        .choices-container {
+        .choices-container, .cricket-choice-container, .x01-choice-container {
             display: flex;
             align-items: center;
             flex-direction: column;
@@ -142,30 +185,12 @@ const startGame = () => {
             width: 80%;
             gap: 2rem;
 
-            .choice {
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                background-color: var(--bg-color-secondary);
-                height: 60px;
-                width: 100%;
-                border-radius: 1rem;
-                margin: 0 2rem;
+            .choice, .btn-simple-mode, .btn-team-mode {
+                @include btn-primary;
+            }
 
-                font-family: "Tilt Warp", sans-serif;
-                font-size: 1.5rem;
-                color: var(--text-color);
-                padding-bottom: 5px;
-
-                --tw-shadow: inset 0 -5px 0 0 rgba(0, 0, 0, .25);
-                box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
-                border: 1px solid rgba(0, 0, 0, .25);
-
-                &:active {
-                    color: rgba(black, .25);
-                    transform: translateY(5px);
-                    box-shadow: none;
-                }
+            .btn-cancel {
+                @include btn-secondary;
             }
         }
     }

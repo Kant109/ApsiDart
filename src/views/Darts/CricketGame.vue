@@ -32,13 +32,13 @@ const setIsLastPlayerActive = (isCurrentPlayerLast: boolean) => {
     </div>
     <div class="players-container" v-if="!isGameFinish">
         <div class="players-content" :class="{'lastPlayerActive': isLastPlayerActive}">
-                <CricketPlayer
-                    v-for="player in players"
-                    :player="player"
-                    :is-top-bg-active="players.indexOf(player) !== 0"
-                    :is-top-bg-player-active="players[players.indexOf(player) - 1 > 0 ? players.indexOf(player) - 1 : 0].isActive === true"
-                    @isLastPlayer="setIsLastPlayerActive"
-                />
+            <CricketPlayer
+                v-for="player in players"
+                :player="player"
+                :is-top-bg-active="players.indexOf(player) !== 0"
+                :is-top-bg-player-active="players[players.indexOf(player) - 1 > 0 ? players.indexOf(player) - 1 : 0].isActive === true"
+                @isLastPlayer="setIsLastPlayerActive"
+            />
         </div>
     </div>
     <CricketBoard v-if="!isGameFinish"/>

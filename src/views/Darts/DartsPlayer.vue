@@ -164,6 +164,7 @@ const changeOrder = () => {
 </template>
 
 <style lang="scss" scoped>
+@import "@/assets/helpers/mixins.scss";
 
 .settings-container {
     display: flex;
@@ -381,38 +382,11 @@ const changeOrder = () => {
         }
 
         .btn-start-game, .btn-save-players {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            background-color: var(--bg-color-secondary);
-            height: 60px;
-            width: 80%;
-            border-radius: 1rem;
-
-            font-family: "Tilt Warp", sans-serif;
-            font-size: 1.5rem;
-            color: var(--text-color);
-            padding-bottom: 5px;
-
-            --tw-shadow: inset 0 -5px 0 0 rgba(0, 0, 0, .25);
-            box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
-            border: 1px solid rgba(0, 0, 0, .25);
-
-            &:active {
-                color: rgba(black, .25);
-                transform: translateY(5px);
-                box-shadow: none;
-            }
+            @include btn-primary;
         }
 
         .btn-add-player, .btn-modif-player, .btn-change-order, .btn-remove-player {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-family: "Tilt Warp", sans-serif;
-            font-size: 1rem;
-            color: var(--text-color);
-            text-decoration: underline;
+            @include btn-secondary;
         }
     }
 }

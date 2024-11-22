@@ -10,6 +10,7 @@ const players = computed(() => gameStore.players);
 const isGameFinish = computed(() => gameStore.isGameFinish);
 const isGameWinner = computed(() => gameStore.isGameWinner);
 const isLastPlayerActive = ref(false);
+const title = players.value[0].points;
 
 const setIsLastPlayerActive = (isCurrentPlayerLast: boolean) => {
     isLastPlayerActive.value = isCurrentPlayerLast;
@@ -18,16 +19,16 @@ const setIsLastPlayerActive = (isCurrentPlayerLast: boolean) => {
 </script>
 
 <template>
-    <div class="title">301</div>
+    <div class="title">{{ title }}</div>
     <div class="players-container" v-if="!isGameFinish">
         <div class="players-content" :class="{'lastPlayerActive': isLastPlayerActive}">
-                <X01Player
-                    v-for="player in players"
-                    :player="player"
-                    :is-top-bg-active="players.indexOf(player) !== 0"
-                    :is-top-bg-player-active="players[players.indexOf(player) - 1 > 0 ? players.indexOf(player) - 1 : 0].isActive === true"
-                    @isLastPlayer="setIsLastPlayerActive"
-                />
+            <X01Player
+                v-for="player in players"
+                :player="player"
+                :is-top-bg-active="players.indexOf(player) !== 0"
+                :is-top-bg-player-active="players[players.indexOf(player) - 1 > 0 ? players.indexOf(player) - 1 : 0].isActive === true"
+                @isLastPlayer="setIsLastPlayerActive"
+            />
         </div>
     </div>
     <X01Board v-if="!isGameFinish"/>
@@ -43,7 +44,7 @@ const setIsLastPlayerActive = (isCurrentPlayerLast: boolean) => {
     display: flex;
     justify-content: center;
     font-family: "Monoton", sans-serif;
-    font-size: 2.5rem;
+    font-size: 3rem;
     padding: 2rem 2rem 1rem 2rem;
     color: var(--text-color);
 }
