@@ -114,6 +114,10 @@ const cancel = (removeMode: string) => {
     }
 }
 
+const selectNbTeam = (nbTeamChoice: number) => {
+    nbTeams.value = nbTeamChoice;
+}
+
 </script>
 
 <template>
@@ -141,10 +145,12 @@ const cancel = (removeMode: string) => {
 
             <div class="cricket-team-mode" v-if="selectCricketTeamMode">
                 <div class="nb-team-container">
-                    <h3>Sélectionner le nombres d'équipe</h3>
-                    <div class="nb-team-choice">2</div>
-                    <div class="nb-team-choice">3</div>
-                    <div class="nb-team-choice">4</div>
+                    <h3>Sélectionner le nombre d'équipes</h3>
+                    <div class="nb-team-choices">
+                        <div class="nb-team-choice" @click.prevent="selectNbTeam(2)">2</div>
+                        <div class="nb-team-choice" @click.prevent="selectNbTeam(3)">3</div>
+                        <div class="nb-team-choice" @click.prevent="selectNbTeam(4)">4</div>
+                    </div>
                 </div>
                 <div class="btn-cancel" @click.prevent="cancel('cricketTeam')">Annuler</div>
             </div>
@@ -209,16 +215,32 @@ const cancel = (removeMode: string) => {
 
             .nb-team-container {
                 display: flex;
+                flex-direction: column;
                 width: 80%;
-                justify-content: space-around;
+                align-items: center;
 
-                .nb-team-choice {
-                    @include btn-primary;
-                    & {
-                        width: 60px;
-                        margin: 0;
-                    }
+                h3 {
+                    font-family: "Tilt Warp", sans-serif;
+                    font-size: 1.5rem;
+                    color: var(--text-color);
+                    text-align: center;
                 }
+
+                .nb-team-choices {
+                    display: flex;
+                    justify-content: space-around;
+                    width: 100%;
+
+                    .nb-team-choice {
+                        @include btn-primary;
+                        & {
+                            width: 60px;
+                            margin: 0;
+                        }
+                    }
+
+                }
+
             }
 
             .btn-cancel {
