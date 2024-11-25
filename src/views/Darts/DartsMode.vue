@@ -1,13 +1,12 @@
 <script setup lang="ts">
 import { useCricketGameStore } from '@/stores/CricketGameStore';
 import { useX01GameStore } from '@/stores/X01GameStore';
-import { computed, onMounted, ref } from 'vue';
+import { computed, ref } from 'vue';
 import { useRouter } from 'vue-router';
 
 const cricketGameStore = useCricketGameStore();
 const x01GameStore = useX01GameStore();
 
-const isSlideTopAnimation = ref(false);
 const isCricketSelected = ref(false);
 const isX01Selected = ref(false);
 const title = ref('FLÉCHETTES');
@@ -17,13 +16,6 @@ const nbTeams = ref(2);
 const selectCricketTeamMode = ref(false);
 
 const router = useRouter();
-
-onMounted(() => {
-    isSlideTopAnimation.value = true;
-    setTimeout(() => {
-        isSlideTopAnimation.value = false;
-    }, 500);
-})
 
 const selectGamemode = (mode: string) => {
     switch (mode) {

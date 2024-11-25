@@ -38,6 +38,16 @@ onMounted(async () => {
     } catch (error: any) {
         console.error(error.message);
     }
+
+    if(orderedPlayers.value.length > 0) {
+        orderedPlayers.value.forEach(player => {
+            allPlayers.value.forEach(playerFromApi => {
+                if(player.id === playerFromApi.id) {
+                    allPlayers.value.splice(allPlayers.value.indexOf(playerFromApi), 1);
+                }
+            })
+        });
+    }
 })
 
 const addNewPlayer = async () => {
@@ -129,8 +139,8 @@ const changeOrder = () => {
                     @click.prevent="playerAction(player)"
                 >
                     <div class="player-content">
-                        <div class="player-img" v-if="!changeOrderMode"></div>
-                        <div class="player-order" v-else >{{ player.order }}</div>
+                        <div class="player-img" v-if="!changeOrderMode && !modificationMode"></div>
+                        <div class="player-order" :class="{'change-order': changeOrderMode}" v-else >{{ player.order }}</div>
                         <div class="player-name">{{ player.pseudo }}</div>
                     </div>
                 </div>
@@ -371,7 +381,10 @@ const changeOrder = () => {
                         font-size: 2rem;
                         color: var(--text-color);
                         border: 2px solid;
-                        animation: bounce-border-color 1s infinite;
+                        
+                        &.change-order {
+                            animation: bounce-border-color 1s infinite;
+                        }
                     }
 
                     .player-name {

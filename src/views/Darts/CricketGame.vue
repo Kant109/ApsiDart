@@ -42,7 +42,7 @@ const setIsLastPlayerActive = (isCurrentPlayerLast: boolean) => {
         </div>
     </div>
     <CricketBoard v-if="!isGameFinish"/>
-    <div v-if="isGameFinish">
+    <div class="winning-container" v-if="isGameFinish">
         GAME IS FINISH
         {{ isGameWinner.pseudo }}
     </div>
