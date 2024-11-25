@@ -54,6 +54,10 @@
         transform: translateY(5px);
         box-shadow: none;
     }
+
+    &:hover {
+        cursor: pointer;
+    }
 }
 
 @mixin btn-secondary {
@@ -64,4 +68,8 @@
     font-size: 1rem;
     color: var(--text-color);
     text-decoration: underline;
+
+    &:hover {
+        cursor: pointer;
+    }
 }

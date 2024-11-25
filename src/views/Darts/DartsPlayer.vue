@@ -17,17 +17,6 @@ const isRemovePlayerMode = ref(false);
 const changeOrderMode = ref(false);
 
 onMounted(async () => {
-    const url = import.meta.env.VITE_BE_URL + "/players";
-    try {
-        const response = await fetch(url);
-        if (!response.ok) {
-            throw new Error(`Response status: ${response.status}`);
-        }
-        allPlayers.value = await response.json();
-    } catch (error: any) {
-        console.error(error.message);
-    }
-
     if((localStorage.getItem('orderedDartsPlayer') as string) !== null) {
         const playersFromLocalStorage = JSON.parse(localStorage.getItem('orderedDartsPlayer') as string) as Array<Player>;
         playersFromLocalStorage.forEach(player => {
@@ -37,6 +26,17 @@ onMounted(async () => {
     }
     if(selectedPlayers.value.length < 1) {
         openSearchPlayer.value = true;
+    }
+
+    const url = import.meta.env.VITE_BE_URL + "/players";
+    try {
+        const response = await fetch(url);
+        if (!response.ok) {
+            throw new Error(`Response status: ${response.status}`);
+        }
+        allPlayers.value = await response.json();
+    } catch (error: any) {
+        console.error(error.message);
     }
 })
 
@@ -135,12 +135,14 @@ const changeOrder = () => {
                     </div>
                 </div>
             </div>
-            <div v-if="isRemovePlayerMode || changeOrderMode || modificationMode" class="btn-save-players" @click.prevent="validPlayers">Valider</div>
-            <div v-if="!isRemovePlayerMode && !changeOrderMode && !modificationMode" class="btn-add-player" @click.prevent="addNewPlayer">Ajouter des joueurs</div>
-            <div v-if="selectedPlayers.length > 0 && !isRemovePlayerMode && !changeOrderMode && !modificationMode" class="btn-start-game" @click.prevent="startGame">Choix du mode</div>
-            <div v-if="selectedPlayers.length > 0 && !isRemovePlayerMode && !changeOrderMode && !modificationMode" class="btn-modif-player" @click.prevent="modification">Modifier</div>
-            <div v-if="selectedPlayers.length > 0 && !isRemovePlayerMode && !changeOrderMode && modificationMode" class="btn-remove-player" @click.prevent="removePlayers">Supprimer des joueurs</div>
-            <div v-if="selectedPlayers.length > 0 && !isRemovePlayerMode && !changeOrderMode && modificationMode" class="btn-change-order" @click.prevent="changeOrder">Changer l'ordre</div>
+            <div class="btn-container">
+                <div v-if="isRemovePlayerMode || changeOrderMode || modificationMode" class="btn-save-players" @click.prevent="validPlayers">Valider</div>
+                <div v-if="!isRemovePlayerMode && !changeOrderMode && !modificationMode" class="btn-add-player" @click.prevent="addNewPlayer">Ajouter des joueurs</div>
+                <div v-if="selectedPlayers.length > 0 && !isRemovePlayerMode && !changeOrderMode && !modificationMode" class="btn-start-game" @click.prevent="startGame">Choix du mode</div>
+                <div v-if="selectedPlayers.length > 0 && !isRemovePlayerMode && !changeOrderMode && !modificationMode" class="btn-modif-player" @click.prevent="modification">Modifier</div>
+                <div v-if="selectedPlayers.length > 0 && !isRemovePlayerMode && !changeOrderMode && modificationMode" class="btn-remove-player" @click.prevent="removePlayers">Supprimer des joueurs</div>
+                <div v-if="selectedPlayers.length > 0 && !isRemovePlayerMode && !changeOrderMode && modificationMode" class="btn-change-order" @click.prevent="changeOrder">Changer l'ordre</div>
+            </div>
         </div>
     </div>
     <Teleport defer to=".settings-container" target=".settings-container">
@@ -381,12 +383,20 @@ const changeOrder = () => {
             }
         }
 
-        .btn-start-game, .btn-save-players {
-            @include btn-primary;
-        }
-
-        .btn-add-player, .btn-modif-player, .btn-change-order, .btn-remove-player {
-            @include btn-secondary;
+        .btn-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 80%;
+            gap: 1rem;
+            
+            .btn-start-game, .btn-save-players {
+                @include btn-primary;
+            }
+            
+            .btn-add-player, .btn-modif-player, .btn-change-order, .btn-remove-player {
+                @include btn-secondary;
+            }
         }
     }
 }

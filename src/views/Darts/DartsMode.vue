@@ -13,7 +13,8 @@ const isX01Selected = ref(false);
 const title = ref('FLÉCHETTES');
 const orderedPlayers = computed(() => JSON.parse(localStorage.getItem('orderedDartsPlayer') as string));
 const x01Mode = ref(0);
-const selectTeam = ref(false);
+const nbTeams = ref(2);
+const selectCricketTeamMode = ref(false);
 
 const router = useRouter();
 
@@ -46,7 +47,7 @@ const selectCricketMode = (selectedCricketMode: string) => {
     if(selectedCricketMode === 'simple') {
         startGame();
     } else if(selectedCricketMode === 'team') {
-        selectTeam.value = true;
+        selectCricketTeamMode.value = true;
     }
 
 }
@@ -102,7 +103,7 @@ const startGame = () => {
 const cancel = (removeMode: string) => {
     switch(removeMode) {
         case "cricketTeam":
-            selectTeam.value = false;
+            selectCricketTeamMode.value = false;
             break;
         case "mode":
             isCricketSelected.value =
@@ -127,19 +128,25 @@ const cancel = (removeMode: string) => {
                 <div class="choice" @click.prevent="selectGamemode('x01')">X01</div>
                 <div class="btn-cancel" @click.prevent="cancel('player')">Annuler</div>
             </div>
-            <div class="cricket-choice-container" v-if="isCricketSelected">
-                <div class="btn-simple-mode" @click.prevent="selectCricketMode('simple')" v-if="!selectTeam">Simple</div>
-                <div class="btn-team-mode" @click.prevent="selectCricketMode('team')" v-if="!selectTeam">Équipe</div>
+            <div class="cricket-choice-container" v-if="isCricketSelected && !selectCricketTeamMode">
+                <div class="btn-simple-mode" @click.prevent="selectCricketMode('simple')" v-if="!selectCricketTeamMode">Simple</div>
+                <div class="btn-team-mode" @click.prevent="selectCricketMode('team')" v-if="!selectCricketTeamMode">Équipe</div>
                 <div class="btn-cancel" @click.prevent="cancel('mode')">Annuler</div>
-                <div class="cricket-team" v-if="selectTeam">
-                    Coucou
-                    <div class="btn-cancel" @click.prevent="cancel('cricketTeam')">Annuler</div>
+            </div>
+            <div class="x01-choice-container" v-if="isX01Selected">
+                <div class="btn-simple-mode" @click.prevent="selectX01Mode(301)">301</div>
+                <div class="btn-team-mode" @click.prevent="selectX01Mode(501)">501</div>
+                <div class="btn-cancel" @click.prevent="cancel('mode')">Annuler</div>
+            </div>
+
+            <div class="cricket-team-mode" v-if="selectCricketTeamMode">
+                <div class="nb-team-container">
+                    <h3>Sélectionner le nombres d'équipe</h3>
+                    <div class="nb-team-choice">2</div>
+                    <div class="nb-team-choice">3</div>
+                    <div class="nb-team-choice">4</div>
                 </div>
-                <div class="x01-choice-container" v-if="isX01Selected">
-                    <div class="btn-simple-mode" @click.prevent="selectX01Mode(301)">301</div>
-                    <div class="btn-team-mode" @click.prevent="selectX01Mode(501)">501</div>
-                    <div class="btn-cancel" @click.prevent="cancel('mode')">Annuler</div>
-                </div>
+                <div class="btn-cancel" @click.prevent="cancel('cricketTeam')">Annuler</div>
             </div>
         </div>
     </div>
@@ -193,36 +200,39 @@ const cancel = (removeMode: string) => {
                 @include btn-secondary;
             }
         }
-    }
 
-    .cricket-settings-title-animation {
-        position: absolute;
-        width: 100%;
-        flex-direction: column;
-        align-items: center;
-        top: 100%;
-    
-        .header {
+        .cricket-team-mode {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
             width: 100%;
-            padding: 1rem .5rem;
-            background-color: var(--bg-color-primary);
-    
-            .title {
+
+            .nb-team-container {
                 display: flex;
-                justify-content: center;
-                font-family: "Monoton", sans-serif;
-                font-size: 3rem;
-                color: var(--text-color);
+                width: 80%;
+                justify-content: space-around;
+
+                .nb-team-choice {
+                    @include btn-primary;
+                    & {
+                        width: 60px;
+                        margin: 0;
+                    }
+                }
+            }
+
+            .btn-cancel {
+                @include btn-secondary;
+                & {
+                    margin-top: 1rem;
+                }
             }
         }
     }
 }
 
 @keyframes appear {
-    0% {
-        opacity: 0;
-    }
-    80% {
+    0%, 80% {
         opacity: 0;
     }
     100% {
