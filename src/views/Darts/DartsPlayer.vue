@@ -126,7 +126,7 @@ const changeOrder = () => {
 </script>
 
 <template>
-    <div class="settings-container">
+    <div class="settings-container" :class="{'blur': openSearchPlayer}">
         <div class="header">
             <div class="title">FLÉCHETTES</div>
         </div>
@@ -155,7 +155,7 @@ const changeOrder = () => {
             </div>
         </div>
     </div>
-    <Teleport defer to=".settings-container" target=".settings-container">
+    <Teleport to="main">
         <dialog :open="openSearchPlayer">
             <div class="dialog-title">Sélectionner les joueurs</div>
             <div class="search-player">
@@ -186,121 +186,8 @@ const changeOrder = () => {
     align-items: center;
     position: relative;
 
-    dialog {
-        width: 90%;
-        border-radius: .5rem;
-        border: none;
-        background-color: var(--bg-color-secondary);
-        position: absolute;
-        top: 25vw;
-        overflow: hidden;
-        backdrop-filter: blur(10px);
-
-        .dialog-title {
-            display: flex;
-            font-family: "Tilt Warp", sans-serif;
-            font-size: 1.5rem;
-            color: var(--text-color);
-            text-align: center;
-            justify-content: center;
-            align-items: center;
-            margin-bottom: 1.5rem;
-        }
-
-        .search-player {
-            display: flex;
-            flex-direction: column;
-            gap: .5rem;
-            
-            div {
-                &.send-out {
-                    animation: send-out 1s;
-                }
-
-                .select-player-container {
-                    display: grid;
-                    grid-template-columns: repeat(5, 1fr);
-                    grid-template-rows: 1fr;
-                    grid-column-gap: 0px;
-                    grid-row-gap: 0px;
-                    align-items: center;
-
-                    .player-img {
-                        height: 2rem;
-                        width: 2rem;
-                        border-radius: 50%;
-                        border: 1px solid black;
-                        background-color: white;
-                        cursor: pointer;
-                        grid-area: 1 / 1 / 2 / 2;
-                    }
-
-                    .player-name {
-                        display: flex;
-                        justify-content: center;
-                        flex-direction: column;
-                        font-family: "Tilt Warp", sans-serif;
-                        font-size: 1.5rem;
-                        grid-area: 1 / 2 / 2 / 5;
-
-                        .player-name-pseudo, .player-full-name {
-                            display: flex;
-                            font-family: "Tilt Warp", sans-serif;
-                            font-size: 1rem;
-                            color: var(--text-color);
-                        }
-                    }
-                }
-                    
-                .select-player {
-                    position: relative;
-                    background-color: black;
-
-                    &::after {
-                        content: "";
-                        display: block;
-                        position: absolute;
-                        top: -1.5rem;
-                        right: .5rem;
-                        width: 1.5rem;
-                        height: 1.5rem;
-                        background-image: url("@/assets/images/black-right-arrow.svg");
-                    }
-
-                    &.darkmode {
-                        &::after {
-                            background-image: url("@/assets/images/white-right-arrow.svg");
-                        }
-                    }
-                }
-            }
-
-            .btn-close-modal {
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                background-color: var(--bg-color-secondary);
-                height: 60px;
-                width: 100%;
-                border-radius: 1rem;
-                margin-top: 1.5rem;
-
-                font-family: "Tilt Warp", sans-serif;
-                font-size: 1.5rem;
-                color: var(--text-color);
-                padding-bottom: 5px;
-
-                --tw-shadow: inset 0 -5px 0 0 rgba(0, 0, 0, .25);
-                box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
-                border: 1px solid rgba(0, 0, 0, .25);
-
-                &:active {
-                    color: rgba(black, .25);
-                    transform: translateY(5px);
-                    box-shadow: none;
-                }
-            }
-        }
+    &.blur {
+        filter: blur(10px);
     }
 
     .header {
