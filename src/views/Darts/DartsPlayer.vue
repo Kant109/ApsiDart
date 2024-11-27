@@ -15,6 +15,13 @@ const isDarkMode = computed(() => managementAppStore.isDarkMode);
 const modificationMode = ref(false);
 const isRemovePlayerMode = ref(false);
 const changeOrderMode = ref(false);
+const modalTitle = ref("Sélectionner les joueurs");
+const creatingPlayer = ref(false);
+
+const name = ref("");
+const firstname = ref("");
+const pseudo = ref("");
+
 
 onMounted(async () => {
     if((localStorage.getItem('orderedDartsPlayer') as string) !== null) {
@@ -123,6 +130,10 @@ const changeOrder = () => {
     changeOrderMode.value = true;
 }
 
+const addingPlayer = () => {
+    creatingPlayer.value = true;
+}
+
 const createPlayer = () => {
     
 }
@@ -166,8 +177,8 @@ const back = () => {
     </div>
     <Teleport to="main">
         <dialog :open="openSearchPlayer">
-            <div class="dialog-title">Sélectionner les joueurs</div>
-            <div class="search-player">
+            <div class="dialog-title">{{ modalTitle }}</div>
+            <div class="search-player" v-if="!creatingPlayer">
                 <div v-for="player in allPlayers" :class="{'send-out': selectedPlayers.includes(player)}">  
                     <div class="select-player-container" v-if="allPlayers.includes(player)">
                         <div class="player-img"></div>
@@ -178,9 +189,27 @@ const back = () => {
                     </div>
                     <div class="select-player" :class="{'darkmode': isDarkMode}" @click.prevent="selectPlayer(player)"></div>
                 </div>
-                <div class="btn-create-modal" @click.prevent="createPlayer">Créer un joueur</div>
+                <div class="btn-create-modal" @click.prevent="addingPlayer">Créer un joueur</div>
                 <div class="btn-close-modal" @click.prevent="closeModal">Valider</div>
-            </div>   
+            </div>
+            <div class="create-player" v-if="creatingPlayer">
+                <div class="input">
+                    <label for="name">Nom</label>
+                    <input type="text" id="name" name="name" required v-model="name" />
+                </div>
+                
+                <div class="input">
+                    <label for="firstname">Prénom</label>
+                    <input type="text" id="firstname" name="firstname" required v-model="firstname" />
+                </div>
+                
+                <div class="input">
+                    <label for="name">Pseudo</label>
+                    <input type="text" id="name" name="name" required minlength="3" maxlength="5" v-model="pseudo" />
+                </div>
+
+                <div class="btn-save-player-modal" @click.prevent="createPlayer">Créer le joueur</div>
+            </div>
         </dialog>
     </Teleport>
 </template>
