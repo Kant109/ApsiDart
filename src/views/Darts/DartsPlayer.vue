@@ -71,8 +71,8 @@ const selectPlayer = (player: Player) => {
 const playerAction = (player: Player) => {
     if(isRemovePlayerMode.value) {
         if(parseInt(player.order as string) < orderedPlayers.value.length) {
-            for (let index = orderedPlayers.value.indexOf(player); index < orderedPlayers.value.length; index++) {
-                const newOrder = (parseInt(selectedPlayers.value[index].order as string) - 1).toString();
+            for (let index = orderedPlayers.value.indexOf(player) + 1; index < orderedPlayers.value.length; index++) {
+                const newOrder = (parseInt(orderedPlayers.value[index].order as string) - 1).toString();
                 selectedPlayers.value[index].order = newOrder;
                 orderedPlayers.value[index].order = newOrder;
             }

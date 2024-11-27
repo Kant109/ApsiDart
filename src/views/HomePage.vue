@@ -44,14 +44,9 @@ const launchAnimation = (gameImg: string) => {
     <div class="all-games-container" :class="{'isAnimationLaunch': isAnimationLaunch}">
         <GameContainer
             img="darts"
-            title="Darts"
-            route-name="darts-player"
-            @click.prevent="launchAnimation('darts')"
-        />
-        <GameContainer
-            img="darts"
             title="Fléchettes"
             route-name="darts-player"
+            @click.prevent="launchAnimation('darts')"
         />
     </div>
     <div v-if="isAnimationLaunch" class="container-animation">
