@@ -86,7 +86,7 @@ html, body, #app, main {
         height: 60px;
         width: 100%;
         border-radius: 1rem;
-        margin-top: 1.5rem;
+        margin-top: .5rem;
         font-family: "Tilt Warp", sans-serif;
         font-size: 1.5rem;
         color: var(--text-color);
@@ -98,6 +98,17 @@ html, body, #app, main {
           color: rgba(0, 0, 0, 0.25);
           transform: translateY(5px);
           box-shadow: none; }
+      html dialog .search-player .btn-create-modal, body dialog .search-player .btn-create-modal, #app dialog .search-player .btn-create-modal, main dialog .search-player .btn-create-modal {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-family: "Tilt Warp", sans-serif;
+        font-size: 1rem;
+        color: var(--text-color);
+        text-decoration: underline;
+        margin-top: 1.5rem; }
+        html dialog .search-player .btn-create-modal:hover, body dialog .search-player .btn-create-modal:hover, #app dialog .search-player .btn-create-modal:hover, main dialog .search-player .btn-create-modal:hover {
+          cursor: pointer; }
 
 @keyframes send-out {
   0% {

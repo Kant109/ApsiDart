@@ -3,6 +3,7 @@ import { computed, ref } from 'vue';
 import X01Board from '@/components/X01/X01Board.vue';
 import X01Player from '@/components/X01/X01Player.vue';
 import { useX01GameStore } from '@/stores/X01GameStore';
+import { useRouter } from 'vue-router';
 
 const gameStore = useX01GameStore();
 
@@ -12,14 +13,23 @@ const isGameWinner = computed(() => gameStore.isGameWinner);
 const isLastPlayerActive = ref(false);
 const title = players.value[0].points;
 
+const router = useRouter();
+
 const setIsLastPlayerActive = (isCurrentPlayerLast: boolean) => {
     isLastPlayerActive.value = isCurrentPlayerLast;
+}
+
+const back = () => {
+    router.push({ name: "darts-mode-x01" });
 }
 
 </script>
 
 <template>
-    <div class="title">{{ title }}</div>
+    <div class="header">
+        <img src="@/assets/images/chevron.svg" alt="Retour" @click.prevent="back">
+        <div class="title">{{ title }}</div>
+    </div>
     <div class="players-container" v-if="!isGameFinish">
         <div class="players-content" :class="{'lastPlayerActive': isLastPlayerActive}">
             <X01Player
@@ -40,13 +50,28 @@ const setIsLastPlayerActive = (isCurrentPlayerLast: boolean) => {
 
 <style lang="scss" scoped>
 
-.title {
+.header {
     display: flex;
+    align-items: center;
     justify-content: center;
-    font-family: "Monoton", sans-serif;
-    font-size: 3rem;
-    padding: 2rem 2rem 1rem 2rem;
-    color: var(--text-color);
+
+    img {
+        position: absolute;
+        left: 0;
+        transform: rotate(180deg);
+        width: 1.5rem;
+        height: 1.5rem;
+        margin-left: .5rem;
+    }
+
+    .title {
+        display: flex;
+        justify-content: center;
+        font-family: "Monoton", sans-serif;
+        font-size: 3rem;
+        padding: 1rem;
+        color: var(--text-color);
+    }
 }
 
 .points-recap-doors {

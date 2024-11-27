@@ -78,7 +78,7 @@ const launchAnimation = (gameImg: string) => {
         display: flex;
         justify-content: center;
         font-family: "Monoton", sans-serif;
-        font-size: 3rem;
+        font-size: 2rem;
         color: var(--text-color);
     }
 

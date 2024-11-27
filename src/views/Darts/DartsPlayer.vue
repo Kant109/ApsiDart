@@ -123,11 +123,20 @@ const changeOrder = () => {
     changeOrderMode.value = true;
 }
 
+const createPlayer = () => {
+    
+}
+
+const back = () => {
+    router.push({ name: "home" });
+}
+
 </script>
 
 <template>
     <div class="settings-container" :class="{'blur': openSearchPlayer}">
         <div class="header">
+            <img src="@/assets/images/chevron.svg" alt="Retour" @click.prevent="back">
             <div class="title">FLÉCHETTES</div>
         </div>
         <div class="adding-player-container">
@@ -169,6 +178,7 @@ const changeOrder = () => {
                     </div>
                     <div class="select-player" :class="{'darkmode': isDarkMode}" @click.prevent="selectPlayer(player)"></div>
                 </div>
+                <div class="btn-create-modal" @click.prevent="createPlayer">Créer un joueur</div>
                 <div class="btn-close-modal" @click.prevent="closeModal">Valider</div>
             </div>   
         </dialog>
@@ -191,15 +201,27 @@ const changeOrder = () => {
     }
 
     .header {
+        display: flex;
+        align-items: center;
+        justify-content: center;
         width: 100%;
         padding: 1rem .5rem;
         background-color: var(--bg-color-primary);
+
+        img {
+            position: absolute;
+            left: 0;
+            transform: rotate(180deg);
+            width: 1rem;
+            height: 1rem;
+            margin-left: .5rem;
+        }
 
         .title {
             display: flex;
             justify-content: center;
             font-family: "Monoton", sans-serif;
-            font-size: 2.5rem;
+            font-size: 2rem;
             color: var(--text-color);
         }
     }

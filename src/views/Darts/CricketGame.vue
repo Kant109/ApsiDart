@@ -3,6 +3,7 @@ import { computed, ref } from 'vue';
 import CricketBoard from '@/components/Cricket/CricketBoard.vue';
 import CricketPlayer from '@/components/Cricket/CricketPlayer.vue';
 import { useCricketGameStore } from '@/stores/CricketGameStore';
+import { useRouter } from 'vue-router';
 
 const gameStore = useCricketGameStore();
 
@@ -11,14 +12,23 @@ const isGameFinish = computed(() => gameStore.isGameFinish);
 const isGameWinner = computed(() => gameStore.isGameWinner);
 const isLastPlayerActive = ref(false);
 
+const router = useRouter();
+
 const setIsLastPlayerActive = (isCurrentPlayerLast: boolean) => {
     isLastPlayerActive.value = isCurrentPlayerLast;
+}
+
+const back = () => {
+    router.push({ name: "darts-mode-cricket" });
 }
 
 </script>
 
 <template>
-    <div class="title">CRICKET</div>
+    <div class="header">
+        <img src="@/assets/images/chevron.svg" alt="Retour" @click.prevent="back">
+        <div class="title">CRICKET</div>
+    </div>
     <div class="points-recap-doors" v-if="!isGameFinish">
         <div class="recap-doors">
             <div class="recap-door">20</div>
@@ -50,13 +60,28 @@ const setIsLastPlayerActive = (isCurrentPlayerLast: boolean) => {
 
 <style lang="scss" scoped>
 
-.title {
+.header {
     display: flex;
+    align-items: center;
     justify-content: center;
-    font-family: "Monoton", sans-serif;
-    font-size: 2.5rem;
-    padding: 2rem 2rem 1rem 2rem;
-    color: var(--text-color);
+
+    img {
+        position: absolute;
+        left: 0;
+        transform: rotate(180deg);
+        width: 1.5rem;
+        height: 1.5rem;
+        margin-left: .5rem;
+    }
+
+    .title {
+        display: flex;
+        justify-content: center;
+        font-family: "Monoton", sans-serif;
+        font-size: 3rem;
+        padding: 1rem;
+        color: var(--text-color);
+    }
 }
 
 .points-recap-doors {

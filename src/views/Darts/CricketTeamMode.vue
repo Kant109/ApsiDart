@@ -1,33 +1,34 @@
 <script setup lang="ts">
+import { ref } from 'vue';
 import { useRouter } from 'vue-router';
+
+const nbTeams = ref(2);
 
 const router = useRouter();
 
-const selectGamemode = (mode: string) => {
-    if(mode === "cricket") {
-        router.push({ name: "darts-mode-cricket" });
-    } else if(mode === "x01") {
-        router.push({ name: "darts-mode-x01" });
-    }
+const selectNbTeam = (nbTeamChoice: number) => {
+    nbTeams.value = nbTeamChoice;
 }
 
-const back = () => { 
-    router.push({ name: "darts-player" });
+const back = () => {
+    router.push({ name: "darts-mode-cricket" });
 }
 
 </script>
 
 <template>
-    <div class="darts-game-container">
+    <div class="cricket-team-mode">
         <div class="header">
             <img src="@/assets/images/chevron.svg" alt="Retour" @click.prevent="back">
-            <div class="title">FLÉCHETTES</div>
+            <div class="title">CRICKET</div>
         </div>
 
-        <div class="darts-game-chose-mode">
-            <div class="choices-container">
-                <div class="choice" @click.prevent="selectGamemode('cricket')">Cricket</div>
-                <div class="choice" @click.prevent="selectGamemode('x01')">X01</div>
+        <div class="nb-team-container">
+            <h3>Sélectionner le nombre d'équipes</h3>
+            <div class="nb-team-choices">
+                <div class="nb-team-choice" @click.prevent="selectNbTeam(2)">2</div>
+                <div class="nb-team-choice" @click.prevent="selectNbTeam(3)">3</div>
+                <div class="nb-team-choice" @click.prevent="selectNbTeam(4)">4</div>
             </div>
         </div>
     </div>
@@ -36,7 +37,7 @@ const back = () => {
 <style lang="scss" scoped>
 @import "@/assets/helpers/mixins.scss";
 
-.darts-game-container {
+.cricket-team-mode {
     display: flex;
     width: 100%;
     height: 100%;
@@ -71,37 +72,39 @@ const back = () => {
         }
     }
 
-    .darts-game-chose-mode {
+    .nb-team-container {
         display: flex;
-        justify-content: center;
-        width: 100%;
-        animation: appear .2s;
+        flex-direction: column;
+        width: 80%;
+        align-items: center;
 
-        .choices-container {
+        h3 {
+            font-family: "Tilt Warp", sans-serif;
+            font-size: 1.5rem;
+            color: var(--text-color);
+            text-align: center;
+        }
+
+        .nb-team-choices {
             display: flex;
-            align-items: center;
-            flex-direction: column;
             justify-content: space-around;
-            width: 80%;
-            gap: 2rem;
+            width: 100%;
 
-            .choice, .btn-simple-mode, .btn-team-mode {
+            .nb-team-choice {
                 @include btn-primary;
-            }
-
-            .btn-cancel {
-                @include btn-secondary;
+                & {
+                    width: 60px;
+                    margin: 0;
+                }
             }
         }
     }
-}
 
-@keyframes appear {
-    0%, 80% {
-        opacity: 0;
-    }
-    100% {
-        opacity: 1;
+    .btn-cancel {
+        @include btn-secondary;
+        & {
+            margin-top: 1rem;
+        }
     }
 }
 
