@@ -38,7 +38,7 @@ const selectCricketMode = (selectedCricketMode: string) => {
                 volleys: player.order === "1" ? [['', '', '']] : []
             };
 
-        cricketGameStore.setPlayer(currentPlayer);
+            cricketGameStore.setPlayer(currentPlayer);
         });
         router.push({ name: "cricket-game" })
     } else if(selectedCricketMode === 'team') {

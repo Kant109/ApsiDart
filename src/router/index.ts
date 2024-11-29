@@ -7,6 +7,7 @@ import DartsPlayer from '@/views/Darts/DartsPlayer.vue'
 import CricketMode from '@/views/Darts/CricketMode.vue'
 import X01Mode from '@/views/Darts/X01Mode.vue'
 import CricketTeamMode from '@/views/Darts/CricketTeamMode.vue'
+import CricketWinner from '@/views/Darts/CricketWinner.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -45,6 +46,11 @@ const router = createRouter({
       path: '/darts/cricket/game',
       name: 'cricket-game',
       component: CricketGame
+    },
+    {
+      path: '/darts/cricket/winner',
+      name: 'cricket-winner',
+      component: CricketWinner
     },
     {
       path: '/darts/x01/game',

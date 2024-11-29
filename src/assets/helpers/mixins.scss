@@ -73,3 +73,38 @@
         cursor: pointer;
     }
 }
+
+@mixin input-base {
+    width: 100%;
+    display: block;
+    position: relative;
+    box-sizing: border-box;
+
+    label {
+        $labelSize: 1rem;
+        font-size: $labelSize;
+        margin-left: $labelSize;
+        z-index: 1;
+        background: transparent;
+        text-align: center;
+        padding: 0 5px;
+        position: absolute;
+        top: calc(#{$labelSize} * -0.55);
+        background-color: var(--bg-color-secondary);
+        font-family: "Tilt Warp", sans-serif;
+        color: var(--text-color);
+    }
+    
+    input {
+        display: flex;
+        align-items: center;
+        width: 100%;
+        background: white;
+        padding: 1rem 2.8rem 1rem 1rem;
+        font-size: 1rem;
+        border-radius: 1rem;
+        border: 1px solid rgba(0, 0, 0, .25);
+        font-family: "Tilt Warp", sans-serif;
+        color: var(--text-color);
+    }
+}

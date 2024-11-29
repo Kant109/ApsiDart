@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, ref } from 'vue';
+import { computed, ref, watch } from 'vue';
 import CricketBoard from '@/components/Cricket/CricketBoard.vue';
 import CricketPlayer from '@/components/Cricket/CricketPlayer.vue';
 import { useCricketGameStore } from '@/stores/CricketGameStore';
@@ -9,7 +9,6 @@ const gameStore = useCricketGameStore();
 
 const players = computed(() => gameStore.players);
 const isGameFinish = computed(() => gameStore.isGameFinish);
-const isGameWinner = computed(() => gameStore.isGameWinner);
 const isLastPlayerActive = ref(false);
 
 const router = useRouter();
@@ -21,6 +20,11 @@ const setIsLastPlayerActive = (isCurrentPlayerLast: boolean) => {
 const back = () => {
     router.push({ name: "darts-mode-cricket" });
 }
+const nextRoute = () => {
+    router.push({ name: "cricket-winner" });
+}
+
+watch(() => isGameFinish.value, () => router.push({ name: "cricket-winner" }));
 
 </script>
 
@@ -29,7 +33,7 @@ const back = () => {
         <img src="@/assets/images/chevron.svg" alt="Retour" @click.prevent="back">
         <div class="title">CRICKET</div>
     </div>
-    <div class="points-recap-doors" v-if="!isGameFinish">
+    <div class="points-recap-doors">
         <div class="recap-doors">
             <div class="recap-door">20</div>
             <div class="recap-door">19</div>
@@ -40,7 +44,7 @@ const back = () => {
             <div class="recap-door">25</div>
         </div>
     </div>
-    <div class="players-container" v-if="!isGameFinish">
+    <div class="players-container">
         <div class="players-content" :class="{'lastPlayerActive': isLastPlayerActive}">
             <CricketPlayer
                 v-for="player in players"
@@ -51,11 +55,7 @@ const back = () => {
             />
         </div>
     </div>
-    <CricketBoard v-if="!isGameFinish"/>
-    <div class="winning-container" v-if="isGameFinish">
-        GAME IS FINISH
-        {{ isGameWinner.pseudo }}
-    </div>
+    <CricketBoard @next-route="nextRoute"/>
 </template>
 
 <style lang="scss" scoped>
@@ -64,6 +64,7 @@ const back = () => {
     display: flex;
     align-items: center;
     justify-content: center;
+    min-height: 82px;
 
     img {
         position: absolute;
@@ -78,7 +79,7 @@ const back = () => {
         display: flex;
         justify-content: center;
         font-family: "Monoton", sans-serif;
-        font-size: 3rem;
+        font-size: 2rem;
         padding: 1rem;
         color: var(--text-color);
     }

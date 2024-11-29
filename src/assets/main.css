@@ -109,6 +109,60 @@ html, body, #app, main {
         margin-top: 1.5rem; }
         html dialog .search-player .btn-create-modal:hover, body dialog .search-player .btn-create-modal:hover, #app dialog .search-player .btn-create-modal:hover, main dialog .search-player .btn-create-modal:hover {
           cursor: pointer; }
+    html dialog .create-player, body dialog .create-player, #app dialog .create-player, main dialog .create-player {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 1.5rem; }
+      html dialog .create-player .input, body dialog .create-player .input, #app dialog .create-player .input, main dialog .create-player .input {
+        width: 100%;
+        display: block;
+        position: relative;
+        box-sizing: border-box; }
+        html dialog .create-player .input label, body dialog .create-player .input label, #app dialog .create-player .input label, main dialog .create-player .input label {
+          font-size: 1rem;
+          margin-left: 1rem;
+          z-index: 1;
+          background: transparent;
+          text-align: center;
+          padding: 0 5px;
+          position: absolute;
+          top: calc(1rem * -0.55);
+          background-color: var(--bg-color-secondary);
+          font-family: "Tilt Warp", sans-serif;
+          color: var(--text-color); }
+        html dialog .create-player .input input, body dialog .create-player .input input, #app dialog .create-player .input input, main dialog .create-player .input input {
+          display: flex;
+          align-items: center;
+          width: 100%;
+          background: white;
+          padding: 1rem 2.8rem 1rem 1rem;
+          font-size: 1rem;
+          border-radius: 1rem;
+          border: 1px solid rgba(0, 0, 0, 0.25);
+          font-family: "Tilt Warp", sans-serif;
+          color: var(--text-color); }
+      html dialog .create-player .btn-save-player-modal, body dialog .create-player .btn-save-player-modal, #app dialog .create-player .btn-save-player-modal, main dialog .create-player .btn-save-player-modal {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background-color: var(--bg-color-secondary);
+        height: 60px;
+        width: 100%;
+        border-radius: 1rem;
+        margin-top: .5rem;
+        font-family: "Tilt Warp", sans-serif;
+        font-size: 1.5rem;
+        color: var(--text-color);
+        padding-bottom: 5px;
+        --tw-shadow: inset 0 -5px 0 0 rgba(0, 0, 0, .25);
+        box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
+        border: 1px solid rgba(0, 0, 0, 0.25); }
+        html dialog .create-player .btn-save-player-modal:active, body dialog .create-player .btn-save-player-modal:active, #app dialog .create-player .btn-save-player-modal:active, main dialog .create-player .btn-save-player-modal:active {
+          color: rgba(0, 0, 0, 0.25);
+          transform: translateY(5px);
+          box-shadow: none; }
 
 @keyframes send-out {
   0% {

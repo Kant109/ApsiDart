@@ -15,7 +15,7 @@ const isDarkMode = computed(() => managementAppStore.isDarkMode);
 const modificationMode = ref(false);
 const isRemovePlayerMode = ref(false);
 const changeOrderMode = ref(false);
-const modalTitle = ref("Sélectionner les joueurs");
+const modalTitle = ref("Sélectionner des joueurs");
 const creatingPlayer = ref(false);
 
 const name = ref("");
@@ -131,11 +131,40 @@ const changeOrder = () => {
 }
 
 const addingPlayer = () => {
+    modalTitle.value = "Nouveau joueur";
     creatingPlayer.value = true;
 }
 
-const createPlayer = () => {
+const createPlayer = async () => {
+    let player = {
+        "firstName": firstname.value,
+        "lastName": name.value,
+        "pseudo": pseudo.value
+    }
     
+    try {
+        const response = await fetch(import.meta.env.VITE_BE_URL + "/players", {
+            method: "POST",
+            body: JSON.stringify(player),
+            headers: {
+                "Content-Type": "application/json"
+            }
+        });
+        if (!response.ok) {
+            throw new Error(`Response status: ${response.status}`);
+        }
+
+        Object.assign(player, { id: response.json() });
+        Object.assign(player, { order: (orderedPlayers.value.length + 1).toString() });
+
+        orderedPlayers.value.push(player as Player);
+        selectedPlayers.value.push(player as Player);
+    } catch (error: any) {
+        console.error(error.message);
+    }
+
+    modalTitle.value = "Sélectionner des joueurs";
+    creatingPlayer.value = false;
 }
 
 const back = () => {

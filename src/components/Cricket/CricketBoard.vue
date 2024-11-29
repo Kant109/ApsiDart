@@ -96,7 +96,6 @@ const checkIsGameFinish = async () => {
     players.value.forEach(async player => {
         if(!isGameFinish.value) {
             gameStore.setIsGameFinish(playerCloseAllDoors(player) && playerBestScore(player));
-            gameStore.setIsGameWinner(player);
         }
     });
 }
