@@ -1,7 +1,16 @@
 <script setup lang="ts">
+import { LottieAnimation } from "lottie-web-vue";
+import ConfettiAnimation from "../../assets/animations/confetti.json";
+import { useRouter } from "vue-router";
+import { useCricketGameStore } from "@/stores/CricketGameStore";
+
+const gameStore = useCricketGameStore();
+
+const router = useRouter();
 
 const back = () => {
-
+    gameStore.setIsGameFinish(false);
+    router.push({ name: "cricket-game"});
 }
 
 const replay = () => {
@@ -12,6 +21,14 @@ const replay = () => {
 
 <template>
     <div class="winning-container">
+        <LottieAnimation
+            class="animation"
+            :animation-data="ConfettiAnimation"
+            :auto-play="true"
+            :loop="true"
+            :speed="1"
+            ref="anim"
+        />
         <div class="winner-content">
             <img src="@/assets/images/chevron.svg" alt="Retour" @click.prevent="back">
             <div class="player-img"></div>
@@ -26,6 +43,7 @@ const replay = () => {
 </template>
 
 <style lang="scss" scoped>
+@import "@/assets/helpers/mixins.scss";
 
 .winning-container {
     display: flex;
@@ -33,6 +51,12 @@ const replay = () => {
     align-items: center;
     justify-content: center;
     width: 100%;
+
+    .animation {
+        position: absolute;
+        top: 0;
+        left: 0;
+    }
 
     .winner-content {
         display: flex;
@@ -54,8 +78,8 @@ const replay = () => {
         }
 
         .player-img {
-            height: 7rem;
-            width: 7rem;
+            height: 10rem;
+            width: 10rem;
             border-radius: 50%;
             background-color: white;
             cursor: pointer;
@@ -82,6 +106,17 @@ const replay = () => {
                 text-align: center;
                 margin-top: .5rem;
             }
+        }
+    }
+
+    .player-stats {
+
+    }
+
+    .btn-replay {
+        @include btn-primary;
+        & {
+            width: 80%;
         }
     }
 }

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, ref } from 'vue';
+import { computed, onMounted, ref } from 'vue';
 import { useCricketGameStore } from '@/stores/CricketGameStore';
 
 const gameStore = useCricketGameStore();
@@ -349,6 +349,10 @@ const reset = () => {
     double.value = false;
     triple.value = false;
 }
+
+onMounted(() => {
+    cancel();
+})
 
 </script>
 
