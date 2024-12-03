@@ -19,11 +19,12 @@ html, body, #app, main {
 
     dialog {
         width: 90%;
+        max-height: 90vh;
         border-radius: .5rem;
         border: none;
         background-color: var(--bg-color-secondary);
         position: absolute;
-        top: 25vw;
+        top: 15vw;
         overflow: hidden;
 
         .dialog-title {
@@ -34,13 +35,30 @@ html, body, #app, main {
             text-align: center;
             justify-content: center;
             align-items: center;
-            margin-bottom: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .btn-create-modal {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: "Tilt Warp", sans-serif;
+            font-size: 1rem;
+            color: var(--text-color);
+            text-decoration: underline;
+            margin-bottom: .5rem;
+
+            &:hover {
+                cursor: pointer;
+            }
         }
 
         .search-player {
             display: flex;
             flex-direction: column;
             gap: .5rem;
+            max-height: 70vh;
+            overflow: scroll;
             
             div {
                 &.send-out {
@@ -110,7 +128,7 @@ html, body, #app, main {
                 align-items: center;
                 justify-content: center;
                 background-color: var(--bg-color-secondary);
-                height: 60px;
+                min-height: 60px;
                 width: 100%;
                 border-radius: 1rem;
                 margin-top: .5rem;
@@ -128,21 +146,6 @@ html, body, #app, main {
                     color: rgba(black, .25);
                     transform: translateY(5px);
                     box-shadow: none;
-                }
-            }
-            
-            .btn-create-modal {
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                font-family: "Tilt Warp", sans-serif;
-                font-size: 1rem;
-                color: var(--text-color);
-                text-decoration: underline;
-                margin-top: 1.5rem;
-
-                &:hover {
-                    cursor: pointer;
                 }
             }
         }
@@ -179,13 +182,27 @@ html, body, #app, main {
                     display: flex;
                     align-items: center;
                     width: 100%;
-                    background: white;
+                    background: var(--bg-color-secondary);
                     padding: 1rem 2.8rem 1rem 1rem;
                     font-size: 1rem;
                     border-radius: 1rem;
-                    border: 1px solid rgba(0, 0, 0, .25);
                     font-family: "Tilt Warp", sans-serif;
                     color: var(--text-color);
+                }
+
+                span {
+                    font-family: "Tilt Warp", sans-serif;
+                    font-size: .75rem;
+                    color: #878787;
+                }
+
+                &.error {
+                    input {
+                        border-color: red;
+                    }
+                    label, span {
+                        color: red;
+                    }
                 }
             }
 
@@ -212,6 +229,20 @@ html, body, #app, main {
                     color: rgba(black, .25);
                     transform: translateY(5px);
                     box-shadow: none;
+                }
+            }
+
+            .btn-cancel-modal {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                font-family: "Tilt Warp", sans-serif;
+                font-size: 1rem;
+                color: var(--text-color);
+                text-decoration: underline;
+
+                &:hover {
+                    cursor: pointer;
                 }
             }
         }

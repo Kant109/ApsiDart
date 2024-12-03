@@ -46,7 +46,6 @@ const setPointsActivePlayer = async (points: number) => {
             } else if(player.points === 0) {
                 if(value === 2) {
                     gameStore.setIsGameFinish(true);
-                    gameStore.setIsGameWinner(player);
                 } else {
                     player.points += value * points;
                 }

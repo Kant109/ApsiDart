@@ -1,17 +1,17 @@
 <script setup lang="ts">
-import { computed, ref } from 'vue';
+import { computed, ref, watch } from 'vue';
 import X01Board from '@/components/X01/X01Board.vue';
 import X01Player from '@/components/X01/X01Player.vue';
 import { useX01GameStore } from '@/stores/X01GameStore';
 import { useRouter } from 'vue-router';
+import Header from '@/components/Header.vue';
 
 const gameStore = useX01GameStore();
 
 const players = computed(() => gameStore.players);
 const isGameFinish = computed(() => gameStore.isGameFinish);
-const isGameWinner = computed(() => gameStore.isGameWinner);
 const isLastPlayerActive = ref(false);
-const title = players.value[0].points;
+const title = players.value[0].points.toString();
 
 const router = useRouter();
 
@@ -20,17 +20,17 @@ const setIsLastPlayerActive = (isCurrentPlayerLast: boolean) => {
 }
 
 const back = () => {
+    gameStore.reset();
     router.push({ name: "darts-mode-x01" });
 }
+
+watch(() => isGameFinish.value, () => router.push({ name: "x01-winner" }));
 
 </script>
 
 <template>
-    <div class="header">
-        <img src="@/assets/images/chevron.svg" alt="Retour" @click.prevent="back">
-        <div class="title">{{ title }}</div>
-    </div>
-    <div class="players-container" v-if="!isGameFinish">
+    <Header :title="title" @previous-route="back" />
+    <div class="players-container">
         <div class="players-content" :class="{'lastPlayerActive': isLastPlayerActive}">
             <X01Player
                 v-for="player in players"
@@ -41,38 +41,10 @@ const back = () => {
             />
         </div>
     </div>
-    <X01Board v-if="!isGameFinish"/>
-    <div v-if="isGameFinish">
-        GAME IS FINISH
-        {{ isGameWinner.pseudo }}
-    </div>
+    <X01Board />
 </template>
 
 <style lang="scss" scoped>
-
-.header {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    img {
-        position: absolute;
-        left: 0;
-        transform: rotate(180deg);
-        width: 1.5rem;
-        height: 1.5rem;
-        margin-left: .5rem;
-    }
-
-    .title {
-        display: flex;
-        justify-content: center;
-        font-family: "Monoton", sans-serif;
-        font-size: 2rem;
-        padding: 1rem;
-        color: var(--text-color);
-    }
-}
 
 .points-recap-doors {
     display: flex;

@@ -13,5 +13,10 @@ export const useCricketGameStore = defineStore('CricketGame', () => {
         isGameFinish.value = newIsGameFinish;
     }
 
-    return { players, isGameFinish, setPlayer, setIsGameFinish };
+    function reset() {
+        players.value = [];
+        isGameFinish.value = false;
+    }
+
+    return { players, isGameFinish, setPlayer, setIsGameFinish, reset };
 })

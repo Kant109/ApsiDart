@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import Header from '@/components/Header.vue';
 import { useManagementAppStore } from '@/stores/ManagementAppStore';
 import { computed, onMounted, ref, Teleport } from 'vue';
 import { useRouter } from 'vue-router';
@@ -17,6 +18,7 @@ const isRemovePlayerMode = ref(false);
 const changeOrderMode = ref(false);
 const modalTitle = ref("Sélectionner des joueurs");
 const creatingPlayer = ref(false);
+const formError = ref(false);
 
 const name = ref("");
 const firstname = ref("");
@@ -105,9 +107,9 @@ const playerAction = (player: Player) => {
 }
 
 const startGame = () => {
+    router.push({ name: "darts-mode"});
     localStorage.removeItem('orderedDartsPlayer');
     localStorage.setItem('orderedDartsPlayer', JSON.stringify(orderedPlayers.value));
-    router.push({ name: "darts-mode"});
 }
 
 const validPlayers = () => {
@@ -136,6 +138,11 @@ const addingPlayer = () => {
 }
 
 const createPlayer = async () => {
+    if (firstname.value.length < 1 && name.value.length < 1 && pseudo.value.length < 1) {
+        formError.value = true;
+        return;
+    }
+    
     let player = {
         "firstName": firstname.value,
         "lastName": name.value,
@@ -162,8 +169,17 @@ const createPlayer = async () => {
     } catch (error: any) {
         console.error(error.message);
     }
-
+    
     modalTitle.value = "Sélectionner des joueurs";
+    creatingPlayer.value = false;
+    formError.value = false;
+
+    firstname.value = "";
+    name.value = "";
+    pseudo.value = "";
+}
+
+const cancel = () => {
     creatingPlayer.value = false;
 }
 
@@ -175,10 +191,7 @@ const back = () => {
 
 <template>
     <div class="settings-container" :class="{'blur': openSearchPlayer}">
-        <div class="header">
-            <img src="@/assets/images/chevron.svg" alt="Retour" @click.prevent="back">
-            <div class="title">FLÉCHETTES</div>
-        </div>
+        <Header title="FLÉCHETTES" @previous-route="back" />
         <div class="adding-player-container">
             <div class="adding-player-recap" v-if="selectedPlayers.length > 0">
                 <div
@@ -188,7 +201,7 @@ const back = () => {
                     @click.prevent="playerAction(player)"
                 >
                     <div class="player-content">
-                        <div class="player-img" v-if="!changeOrderMode && !modificationMode"></div>
+                        <img class="player-img" :src="'https://api.dicebear.com/9.x/adventurer/svg?seed=' + player.firstName + player.pseudo + player.lastName" alt="Avatar" v-if="!changeOrderMode && !modificationMode" />
                         <div class="player-order" :class="{'change-order': changeOrderMode}" v-else >{{ player.order }}</div>
                         <div class="player-name">{{ player.pseudo }}</div>
                     </div>
@@ -208,9 +221,10 @@ const back = () => {
         <dialog :open="openSearchPlayer">
             <div class="dialog-title">{{ modalTitle }}</div>
             <div class="search-player" v-if="!creatingPlayer">
+                <div class="btn-create-modal" @click.prevent="addingPlayer">Créer un joueur</div>
                 <div v-for="player in allPlayers" :class="{'send-out': selectedPlayers.includes(player)}">  
                     <div class="select-player-container" v-if="allPlayers.includes(player)">
-                        <div class="player-img"></div>
+                        <img class="player-img" :src="'https://api.dicebear.com/9.x/adventurer/svg?seed=' + player.firstName + player.pseudo + player.lastName" alt="Avatar" />
                         <div class="player-name">
                             <div class="player-name-pseudo">{{ player.pseudo }}</div>
                             <div class="player-full-name">{{ player.lastName }} {{ player.firstName }}</div>
@@ -218,26 +232,29 @@ const back = () => {
                     </div>
                     <div class="select-player" :class="{'darkmode': isDarkMode}" @click.prevent="selectPlayer(player)"></div>
                 </div>
-                <div class="btn-create-modal" @click.prevent="addingPlayer">Créer un joueur</div>
                 <div class="btn-close-modal" @click.prevent="closeModal">Valider</div>
             </div>
             <div class="create-player" v-if="creatingPlayer">
-                <div class="input">
+                <div class="input" :class="{'error': formError}">
                     <label for="name">Nom</label>
-                    <input type="text" id="name" name="name" required v-model="name" />
+                    <input type="text" id="name" name="name" minlength="2" required v-model="name" />
+                    <span>Votre prénom doit contenir au moins 2 caractères</span>
                 </div>
                 
-                <div class="input">
+                <div class="input" :class="{'error': formError}">
                     <label for="firstname">Prénom</label>
-                    <input type="text" id="firstname" name="firstname" required v-model="firstname" />
+                    <input type="text" id="firstname" name="firstname" minlength="2" required v-model="firstname" />
+                    <span>Votre nom doit contenir au moins 2 caractères</span>
                 </div>
                 
-                <div class="input">
+                <div class="input" :class="{'error': formError}">
                     <label for="name">Pseudo</label>
                     <input type="text" id="name" name="name" required minlength="3" maxlength="5" v-model="pseudo" />
+                    <span>Votre pseudo doit être de 3 caractères à 5 caractères</span>
                 </div>
 
                 <div class="btn-save-player-modal" @click.prevent="createPlayer">Créer le joueur</div>
+                <div class="btn-cancel-modal" @click.prevent="cancel">Annuler</div>
             </div>
         </dialog>
     </Teleport>
@@ -253,35 +270,11 @@ const back = () => {
     flex-direction: column;
     align-items: center;
     position: relative;
+    overflow: scroll;
+    padding-bottom: 2rem;
 
     &.blur {
         filter: blur(10px);
-    }
-
-    .header {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        width: 100%;
-        padding: 1rem .5rem;
-        background-color: var(--bg-color-primary);
-
-        img {
-            position: absolute;
-            left: 0;
-            transform: rotate(180deg);
-            width: 1rem;
-            height: 1rem;
-            margin-left: .5rem;
-        }
-
-        .title {
-            display: flex;
-            justify-content: center;
-            font-family: "Monoton", sans-serif;
-            font-size: 2rem;
-            color: var(--text-color);
-        }
     }
 
     .adding-player-container {
@@ -342,7 +335,7 @@ const back = () => {
                         height: 3rem;
                         width: 3rem;
                         border-radius: 50%;
-                        background-color: white;
+                        background-color: var(--bg-color-secondary);
                         cursor: pointer;
                         font-family: "Tilt Warp", sans-serif;
                         font-size: 2rem;

@@ -4,6 +4,7 @@ import CricketBoard from '@/components/Cricket/CricketBoard.vue';
 import CricketPlayer from '@/components/Cricket/CricketPlayer.vue';
 import { useCricketGameStore } from '@/stores/CricketGameStore';
 import { useRouter } from 'vue-router';
+import Header from '@/components/Header.vue';
 
 const gameStore = useCricketGameStore();
 
@@ -18,6 +19,7 @@ const setIsLastPlayerActive = (isCurrentPlayerLast: boolean) => {
 }
 
 const back = () => {
+    gameStore.reset();
     router.push({ name: "darts-mode-cricket" });
 }
 const nextRoute = () => {
@@ -29,10 +31,8 @@ watch(() => isGameFinish.value, () => router.push({ name: "cricket-winner" }));
 </script>
 
 <template>
-    <div class="header">
-        <img src="@/assets/images/chevron.svg" alt="Retour" @click.prevent="back">
-        <div class="title">CRICKET</div>
-    </div>
+    <Header title="CRICKET" @previous-route="back" />
+
     <div class="points-recap-doors">
         <div class="recap-doors">
             <div class="recap-door">20</div>
@@ -59,31 +59,6 @@ watch(() => isGameFinish.value, () => router.push({ name: "cricket-winner" }));
 </template>
 
 <style lang="scss" scoped>
-
-.header {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    min-height: 82px;
-
-    img {
-        position: absolute;
-        left: 0;
-        transform: rotate(180deg);
-        width: 1.5rem;
-        height: 1.5rem;
-        margin-left: .5rem;
-    }
-
-    .title {
-        display: flex;
-        justify-content: center;
-        font-family: "Monoton", sans-serif;
-        font-size: 2rem;
-        padding: 1rem;
-        color: var(--text-color);
-    }
-}
 
 .points-recap-doors {
     display: flex;
@@ -115,7 +90,7 @@ watch(() => isGameFinish.value, () => router.push({ name: "cricket-winner" }));
     flex-direction: column;
     align-items: center;
     width: 100%;
-    max-height: calc(100vh - 287px);
+    max-height: calc(100vh - 250px);
     height: 100%;
     background-color: var(--bg-color-primary);
     padding-bottom: 2rem;
@@ -151,9 +126,4 @@ watch(() => isGameFinish.value, () => router.push({ name: "cricket-winner" }));
     }
 }
 
-@media screen and (max-width: 389px) {
-    .players-container {
-        max-height: calc(100vh - 278px);
-    }
-}
 </style>

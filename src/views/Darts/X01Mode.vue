@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import Header from '@/components/Header.vue';
 import { useX01GameStore } from '@/stores/X01GameStore';
 import { computed, ref } from 'vue';
 import { useRouter } from 'vue-router';
@@ -35,10 +36,7 @@ const back = () => {
 
 <template>
     <div class="x01-mode-container">
-        <div class="header">
-            <img src="@/assets/images/chevron.svg" alt="Retour" @click.prevent="back">
-            <div class="title">X01</div>
-        </div>
+        <Header title="X01" @previous-route="back" />
 
         <div class="x01-choice-container">
             <div class="btn-simple-mode" @click.prevent="selectX01Mode(301)">301</div>
@@ -57,33 +55,6 @@ const back = () => {
     flex-direction: column;
     align-items: center;
     position: relative;
-
-    .header {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        width: 100%;
-        padding: 1rem .5rem;
-        background-color: var(--bg-color-primary);
-        animation: appear .2s;
-
-        img {
-            position: absolute;
-            left: 0;
-            transform: rotate(180deg);
-            width: 1rem;
-            height: 1rem;
-            margin-left: .5rem;
-        }
-
-        .title {
-            display: flex;
-            justify-content: center;
-            font-family: "Monoton", sans-serif;
-            font-size: 2rem;
-            color: var(--text-color);
-        }
-    }
 
     .x01-choice-container {
         display: flex;

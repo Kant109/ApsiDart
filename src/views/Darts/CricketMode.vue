@@ -2,6 +2,7 @@
 import { computed } from 'vue';
 import { useCricketGameStore } from '@/stores/CricketGameStore';
 import { useRouter } from 'vue-router';
+import Header from '@/components/Header.vue';
 
 const cricketGameStore = useCricketGameStore();
 
@@ -54,10 +55,7 @@ const back = () => {
 
 <template>
     <div class="cricket-mode-container">
-        <div class="header">
-            <img src="@/assets/images/chevron.svg" alt="Retour" @click.prevent="back">
-            <div class="title">CRICKET</div>
-        </div>
+        <Header title="CRICKET" @previous-route="back" />
 
         <div class="cricket-choice-container">
             <div class="btn-simple-mode" @click.prevent="selectCricketMode('simple')">Simple</div>
@@ -76,33 +74,6 @@ const back = () => {
     flex-direction: column;
     align-items: center;
     position: relative;
-
-    .header {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        width: 100%;
-        padding: 1rem .5rem;
-        background-color: var(--bg-color-primary);
-        animation: appear .2s;
-
-        img {
-            position: absolute;
-            left: 0;
-            transform: rotate(180deg);
-            width: 1rem;
-            height: 1rem;
-            margin-left: .5rem;
-        }
-
-        .title {
-            display: flex;
-            justify-content: center;
-            font-family: "Monoton", sans-serif;
-            font-size: 2rem;
-            color: var(--text-color);
-        }
-    }
 
     .cricket-choice-container {
         display: flex;

@@ -30,8 +30,9 @@ const replay = () => {
             ref="anim"
         />
         <div class="winner-content">
-            <img src="@/assets/images/chevron.svg" alt="Retour" @click.prevent="back">
-            <div class="player-img"></div>
+            <img class="back" src="@/assets/images/chevron.svg" alt="Retour" @click.prevent="back">
+            <img class="player-img" :src="'https://api.dicebear.com/9.x/adventurer/svg?seed=MatisMatiCharrier'" alt="Avatar"></img>
+            <!-- <img class="player-img" :src="'https://api.dicebear.com/9.x/adventurer/svg?seed=' + player.firstName + player.pseudo + player.lastName" alt="Avatar"></img> -->
             <div class="player-info">
                 <div class="player-info-pseudo">Mati</div>
                 <div class="player-info-full-name">CHARRIER Matis</div>
@@ -67,7 +68,7 @@ const replay = () => {
         height: 50vh;
         position: relative;
 
-        img {
+        .back {
             position: absolute;
             left: 0;
             top: 1rem;
@@ -78,11 +79,11 @@ const replay = () => {
         }
 
         .player-img {
+            display: flex;
             height: 10rem;
             width: 10rem;
             border-radius: 50%;
             background-color: white;
-            cursor: pointer;
         }
 
         .player-info {
@@ -110,7 +111,12 @@ const replay = () => {
     }
 
     .player-stats {
-
+        display: flex;
+        background-color: var(--bg-color-secondary);
+        border-radius: .5rem;
+        width: 90%;
+        padding: 1rem;
+        box-shadow: rgb(0, 0, 0, .25) 0px 5px 5px 0px inset;
     }
 
     .btn-replay {

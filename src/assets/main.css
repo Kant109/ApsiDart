@@ -16,11 +16,12 @@ html, body, #app, main {
   height: 100%; }
   html dialog, body dialog, #app dialog, main dialog {
     width: 90%;
+    max-height: 90vh;
     border-radius: .5rem;
     border: none;
     background-color: var(--bg-color-secondary);
     position: absolute;
-    top: 25vw;
+    top: 15vw;
     overflow: hidden; }
     html dialog .dialog-title, body dialog .dialog-title, #app dialog .dialog-title, main dialog .dialog-title {
       display: flex;
@@ -30,11 +31,24 @@ html, body, #app, main {
       text-align: center;
       justify-content: center;
       align-items: center;
-      margin-bottom: 1.5rem; }
+      margin-bottom: 1rem; }
+    html dialog .btn-create-modal, body dialog .btn-create-modal, #app dialog .btn-create-modal, main dialog .btn-create-modal {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: "Tilt Warp", sans-serif;
+      font-size: 1rem;
+      color: var(--text-color);
+      text-decoration: underline;
+      margin-bottom: .5rem; }
+      html dialog .btn-create-modal:hover, body dialog .btn-create-modal:hover, #app dialog .btn-create-modal:hover, main dialog .btn-create-modal:hover {
+        cursor: pointer; }
     html dialog .search-player, body dialog .search-player, #app dialog .search-player, main dialog .search-player {
       display: flex;
       flex-direction: column;
-      gap: .5rem; }
+      gap: .5rem;
+      max-height: 70vh;
+      overflow: scroll; }
       html dialog .search-player div.send-out, body dialog .search-player div.send-out, #app dialog .search-player div.send-out, main dialog .search-player div.send-out {
         animation: send-out 1s; }
       html dialog .search-player div .select-player-container, body dialog .search-player div .select-player-container, #app dialog .search-player div .select-player-container, main dialog .search-player div .select-player-container {
@@ -83,7 +97,7 @@ html, body, #app, main {
         align-items: center;
         justify-content: center;
         background-color: var(--bg-color-secondary);
-        height: 60px;
+        min-height: 60px;
         width: 100%;
         border-radius: 1rem;
         margin-top: .5rem;
@@ -98,17 +112,6 @@ html, body, #app, main {
           color: rgba(0, 0, 0, 0.25);
           transform: translateY(5px);
           box-shadow: none; }
-      html dialog .search-player .btn-create-modal, body dialog .search-player .btn-create-modal, #app dialog .search-player .btn-create-modal, main dialog .search-player .btn-create-modal {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-family: "Tilt Warp", sans-serif;
-        font-size: 1rem;
-        color: var(--text-color);
-        text-decoration: underline;
-        margin-top: 1.5rem; }
-        html dialog .search-player .btn-create-modal:hover, body dialog .search-player .btn-create-modal:hover, #app dialog .search-player .btn-create-modal:hover, main dialog .search-player .btn-create-modal:hover {
-          cursor: pointer; }
     html dialog .create-player, body dialog .create-player, #app dialog .create-player, main dialog .create-player {
       display: flex;
       flex-direction: column;
@@ -136,13 +139,20 @@ html, body, #app, main {
           display: flex;
           align-items: center;
           width: 100%;
-          background: white;
+          background: var(--bg-color-secondary);
           padding: 1rem 2.8rem 1rem 1rem;
           font-size: 1rem;
           border-radius: 1rem;
-          border: 1px solid rgba(0, 0, 0, 0.25);
           font-family: "Tilt Warp", sans-serif;
           color: var(--text-color); }
+        html dialog .create-player .input span, body dialog .create-player .input span, #app dialog .create-player .input span, main dialog .create-player .input span {
+          font-family: "Tilt Warp", sans-serif;
+          font-size: .75rem;
+          color: #878787; }
+        html dialog .create-player .input.error input, body dialog .create-player .input.error input, #app dialog .create-player .input.error input, main dialog .create-player .input.error input {
+          border-color: red; }
+        html dialog .create-player .input.error label, html dialog .create-player .input.error span, body dialog .create-player .input.error label, body dialog .create-player .input.error span, #app dialog .create-player .input.error label, #app dialog .create-player .input.error span, main dialog .create-player .input.error label, main dialog .create-player .input.error span {
+          color: red; }
       html dialog .create-player .btn-save-player-modal, body dialog .create-player .btn-save-player-modal, #app dialog .create-player .btn-save-player-modal, main dialog .create-player .btn-save-player-modal {
         display: flex;
         align-items: center;
@@ -163,6 +173,16 @@ html, body, #app, main {
           color: rgba(0, 0, 0, 0.25);
           transform: translateY(5px);
           box-shadow: none; }
+      html dialog .create-player .btn-cancel-modal, body dialog .create-player .btn-cancel-modal, #app dialog .create-player .btn-cancel-modal, main dialog .create-player .btn-cancel-modal {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-family: "Tilt Warp", sans-serif;
+        font-size: 1rem;
+        color: var(--text-color);
+        text-decoration: underline; }
+        html dialog .create-player .btn-cancel-modal:hover, body dialog .create-player .btn-cancel-modal:hover, #app dialog .create-player .btn-cancel-modal:hover, main dialog .create-player .btn-cancel-modal:hover {
+          cursor: pointer; }
 
 @keyframes send-out {
   0% {
