@@ -3,8 +3,12 @@ import { LottieAnimation } from "lottie-web-vue";
 import ConfettiAnimation from "../../assets/animations/confetti.json";
 import { useRouter } from "vue-router";
 import { useCricketGameStore } from "@/stores/CricketGameStore";
+import { onMounted, ref } from "vue";
 
 const gameStore = useCricketGameStore();
+
+const winnerPlayer = gameStore.winnerPlayer;
+const nbDarts = ref(0);
 
 const router = useRouter();
 
@@ -16,6 +20,18 @@ const back = () => {
 const replay = () => {
 
 }
+
+onMounted(() => {
+    winnerPlayer.volleys.forEach(volley => {
+        if(volley.includes("")) {
+            volley.forEach(dart => {
+                if(dart !== "") nbDarts.value++;
+            });
+        } else {
+            nbDarts.value += 3;
+        }
+    });
+})
 
 </script>
 
@@ -31,14 +47,22 @@ const replay = () => {
         />
         <div class="winner-content">
             <img class="back" src="@/assets/images/chevron.svg" alt="Retour" @click.prevent="back">
-            <img class="player-img" :src="'https://api.dicebear.com/9.x/adventurer/svg?seed=MatisMatiCharrier'" alt="Avatar"></img>
-            <!-- <img class="player-img" :src="'https://api.dicebear.com/9.x/adventurer/svg?seed=' + player.firstName + player.pseudo + player.lastName" alt="Avatar"></img> -->
+            <img class="player-img" :src="'https://api.dicebear.com/9.x/adventurer/svg?seed=' + winnerPlayer.firstName + winnerPlayer.pseudo + winnerPlayer.lastName" alt="Avatar"></img>
             <div class="player-info">
-                <div class="player-info-pseudo">Mati</div>
-                <div class="player-info-full-name">CHARRIER Matis</div>
+                <div class="player-info-pseudo">{{ winnerPlayer.pseudo }}</div>
+                <div class="player-info-full-name">{{ winnerPlayer.lastName.toUpperCase() }} {{ winnerPlayer.firstName }}</div>
             </div>
         </div>
-        <div class="player-stats"></div>
+        <div class="player-stats">
+            <div class="points-taken-container">
+                <div class="points-taken-text">Nb Darts</div>
+                <div class="points-taken-content">{{ nbDarts }}</div>
+            </div>
+            <div class="points-taken-container" v-for="(value, name) in winnerPlayer.points">
+                <div class="points-taken-text">{{ name }}</div>
+                <div class="points-taken-content">{{ value }}</div>
+            </div>
+        </div>
         <div class="btn-replay" @click.prevent="replay">Rejouer</div>
     </div>
 </template>
@@ -117,12 +141,37 @@ const replay = () => {
         width: 90%;
         padding: 1rem;
         box-shadow: rgb(0, 0, 0, .25) 0px 5px 5px 0px inset;
+        gap: .5rem;
+        white-space: nowrap;
+        overflow: auto;
+
+        .points-taken-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            background-color: var(--bg-color-primary);
+            border-radius: .5rem;
+            min-width: 4rem;
+            min-height: 4rem;
+
+            .points-taken-text, .points-taken-content {
+                font-family: "Tilt Warp", sans-serif;
+                color: var(--text-color);
+                font-size: 1.5rem;
+
+                &:is(.points-taken-content) {
+                    font-size: 1.25rem;
+                }
+            }
+        }
     }
 
     .btn-replay {
         @include btn-primary;
         & {
             width: 80%;
+            margin-top: 1rem;
         }
     }
 }

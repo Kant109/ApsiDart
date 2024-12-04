@@ -4,6 +4,7 @@ import { ref } from "vue";
 export const useCricketGameStore = defineStore('CricketGame', () => {
     const players = ref([] as Array<CricketPlayer>);
     const isGameFinish = ref(false);
+    const winnerPlayer = ref({} as CricketPlayer);
 
     function setPlayer(player: CricketPlayer) {
         players.value.push(player);
@@ -13,10 +14,14 @@ export const useCricketGameStore = defineStore('CricketGame', () => {
         isGameFinish.value = newIsGameFinish;
     }
 
+    function setWinner(winner: CricketPlayer) {
+        winnerPlayer.value = winner;
+    }
+
     function reset() {
         players.value = [];
         isGameFinish.value = false;
     }
 
-    return { players, isGameFinish, setPlayer, setIsGameFinish, reset };
+    return { players, isGameFinish, winnerPlayer, setPlayer, setIsGameFinish, setWinner, reset };
 })

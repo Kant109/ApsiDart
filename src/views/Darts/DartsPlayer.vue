@@ -249,8 +249,8 @@ const back = () => {
                 
                 <div class="input" :class="{'error': formError}">
                     <label for="name">Pseudo</label>
-                    <input type="text" id="name" name="name" required minlength="3" maxlength="5" v-model="pseudo" />
-                    <span>Votre pseudo doit être de 3 caractères à 5 caractères</span>
+                    <input type="text" id="name" name="name" required minlength="3" maxlength="6" v-model="pseudo" />
+                    <span>Votre pseudo doit être de 3 caractères à 6 caractères</span>
                 </div>
 
                 <div class="btn-save-player-modal" @click.prevent="createPlayer">Créer le joueur</div>

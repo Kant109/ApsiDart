@@ -1,6 +1,8 @@
 interface CricketPlayer {
     id: number,
     pseudo: string,
+    firstName: string,
+    lastName: string,
     isActive: boolean,
     points: {
         20: number,
