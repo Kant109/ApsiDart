@@ -1,4 +1,10 @@
 <script setup lang="ts">
+import { computed } from 'vue';
+import { useManagementAppStore } from '@/stores/ManagementAppStore';
+
+const managementAppStore = useManagementAppStore();
+
+const isDarkMode = computed(() => managementAppStore.isDarkMode);
 
 const props = defineProps<{
   title: string
@@ -13,7 +19,8 @@ const back = () => {
 
 <template>
     <div class="header">
-        <img src="@/assets/images/chevron.svg" alt="Retour" @click.prevent="back">
+        <img v-if="!isDarkMode" src="@/assets/images/chevron.svg" alt="Retour" @click.prevent="back">
+        <img v-else src="@/assets/images/chevron-white.svg" alt="Retour" @click.prevent="back">
         <div class="title">{{ props.title }}</div>
     </div>
 </template>
