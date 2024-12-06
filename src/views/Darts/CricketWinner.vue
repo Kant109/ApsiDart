@@ -14,11 +14,12 @@ const router = useRouter();
 
 const back = () => {
     gameStore.setIsGameFinish(false);
+    gameStore.setWinner({} as CricketPlayer);
     router.push({ name: "cricket-game"});
 }
 
 const replay = () => {
-
+    
 }
 
 onMounted(() => {

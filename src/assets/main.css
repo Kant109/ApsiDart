@@ -144,6 +144,7 @@ html, body, #app, main {
           font-size: 1rem;
           border-radius: 1rem;
           font-family: "Tilt Warp", sans-serif;
+          border: 1px solid var(--text-color);
           color: var(--text-color); }
         html dialog .create-player .input span, body dialog .create-player .input span, #app dialog .create-player .input span, main dialog .create-player .input span {
           font-family: "Tilt Warp", sans-serif;
