@@ -54,16 +54,6 @@ onMounted(() => {
                 <div class="player-info-full-name">{{ winnerPlayer.lastName.toUpperCase() }} {{ winnerPlayer.firstName }}</div>
             </div>
         </div>
-        <div class="player-stats">
-            <div class="points-taken-container">
-                <div class="points-taken-text">Nb Darts</div>
-                <div class="points-taken-content">{{ nbDarts }}</div>
-            </div>
-            <div class="points-taken-container" v-for="(value, name) in winnerPlayer.points">
-                <div class="points-taken-text">{{ name }}</div>
-                <div class="points-taken-content">{{ value }}</div>
-            </div>
-        </div>
         <div class="btn-replay" @click.prevent="replay">Rejouer</div>
     </div>
 </template>
@@ -71,12 +61,14 @@ onMounted(() => {
 <style lang="scss" scoped>
 @import "@/assets/helpers/mixins.scss";
 
-.winning-container {
+.winning-container { 
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
     width: 100%;
+    background-color: var(--bg-color-primary);
+    padding-bottom: 3rem;
 
     .animation {
         position: absolute;
@@ -90,7 +82,7 @@ onMounted(() => {
         justify-content: center;
         align-items: center;
         width: 100%;
-        height: 50vh;
+        padding: 2rem 0;
         position: relative;
 
         .back {
@@ -135,37 +127,8 @@ onMounted(() => {
         }
     }
 
-    .player-stats {
-        display: flex;
-        background-color: var(--bg-color-secondary);
-        border-radius: .5rem;
-        width: 90%;
-        padding: 1rem;
-        box-shadow: rgb(0, 0, 0, .25) 0px 5px 5px 0px inset;
-        gap: .5rem;
-        white-space: nowrap;
-        overflow: auto;
-
-        .points-taken-container {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            background-color: var(--bg-color-primary);
-            border-radius: .5rem;
-            min-width: 4rem;
-            min-height: 4rem;
-
-            .points-taken-text, .points-taken-content {
-                font-family: "Tilt Warp", sans-serif;
-                color: var(--text-color);
-                font-size: 1.5rem;
-
-                &:is(.points-taken-content) {
-                    font-size: 1.25rem;
-                }
-            }
-        }
+    #chart {
+        width: 100%;
     }
 
     .btn-replay {
