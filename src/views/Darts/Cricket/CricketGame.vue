@@ -22,9 +22,6 @@ const back = () => {
     gameStore.reset();
     router.push({ name: "darts-mode-cricket" });
 }
-const nextRoute = () => {
-    router.push({ name: "cricket-winner" });
-}
 
 watch(() => isGameFinish.value, () => router.push({ name: "cricket-winner" }));
 
@@ -55,7 +52,7 @@ watch(() => isGameFinish.value, () => router.push({ name: "cricket-winner" }));
             />
         </div>
     </div>
-    <CricketBoard @next-route="nextRoute"/>
+    <CricketBoard />
 </template>
 
 <style lang="scss" scoped>

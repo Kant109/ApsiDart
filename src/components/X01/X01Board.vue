@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, ref } from 'vue';
+import { computed, onMounted, ref } from 'vue';
 import { useX01GameStore } from '@/stores/X01GameStore';
 
 const gameStore = useX01GameStore();
@@ -7,7 +7,6 @@ const gameStore = useX01GameStore();
 const players = computed(() => gameStore.players);
 const double = ref(false);
 const triple = ref(false);
-const isGameFinish = computed(() => gameStore.isGameFinish);
 
 const selectDouble = () => {
     if(triple.value) {
@@ -32,7 +31,7 @@ const setPointsActivePlayer = async (points: number) => {
             const currentPointValue = value === 2 ? "D" + points.toString() : value === 3 ? "T" + points.toString() : points.toString();
 
             player.points -= value * points;
-            if(player.points < 0) {
+            if(player.points < 0 || player.points === 1) {
                 if(player.volleys[player.volleys.length - 1][0] === "") {
                     player.volleys[player.volleys.length - 1][0] = "";
                 }
@@ -46,6 +45,7 @@ const setPointsActivePlayer = async (points: number) => {
             } else if(player.points === 0) {
                 if(value === 2) {
                     gameStore.setIsGameFinish(true);
+                    gameStore.setWinner(player);
                 } else {
                     player.points += value * points;
                 }
@@ -73,12 +73,18 @@ const setPointsActivePlayer = async (points: number) => {
     reset();
 }
 
+const cancelPoints = async (previousDart: string, player: X01Player) => {
+    const value = previousDart.includes('T') ? 3 : previousDart.includes('D') ? 2 : 1;
+    player.points += value === 1 ? parseInt(previousDart) : value * parseInt(previousDart.substring(1,3));
+}
+
 const removePreviousDart = async (player: X01Player, isCancel: boolean) => {
+    console.log(player)
     for (let index = 3; index > 0; index--) {
-        const previousDart = player.volleys[player.volleys.length - 1][index - 1].length === 3 ? player.volleys[player.volleys.length - 1][index - 1].substring(1,2) : player.volleys[player.volleys.length - 1][index - 1];
+        const previousDart = player.volleys[player.volleys.length - 1][index - 1];
 
         if(previousDart !== "" && !isCancel) {
-            player.points += parseInt(previousDart);
+            await cancelPoints(previousDart, player);
 
             player.volleys[player.volleys.length - 1][index - 1] = "";
             isCancel = true;
@@ -112,6 +118,11 @@ const reset = () => {
     double.value = false;
     triple.value = false;
 }
+
+onMounted(() => {
+    gameStore.setWinner({} as X01Player);
+    cancel();
+})
 
 </script>
 

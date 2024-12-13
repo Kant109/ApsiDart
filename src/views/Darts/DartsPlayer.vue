@@ -142,12 +142,20 @@ const createPlayer = async () => {
         formError.value = true;
         return;
     }
+
+    modalTitle.value = "Sélectionner des joueurs";
+    creatingPlayer.value = false;
+    formError.value = false;
     
     let player = {
         "firstName": firstname.value,
         "lastName": name.value,
         "pseudo": pseudo.value
     }
+
+    firstname.value = "";
+    name.value = "";
+    pseudo.value = "";
     
     try {
         const response = await fetch(import.meta.env.VITE_BE_URL + "/players", {
@@ -169,14 +177,6 @@ const createPlayer = async () => {
     } catch (error: any) {
         console.error(error.message);
     }
-    
-    modalTitle.value = "Sélectionner des joueurs";
-    creatingPlayer.value = false;
-    formError.value = false;
-
-    firstname.value = "";
-    name.value = "";
-    pseudo.value = "";
 }
 
 const cancel = () => {
@@ -202,7 +202,7 @@ const back = () => {
                 >
                     <div class="player-content">
                         <img class="player-img" :src="'https://api.dicebear.com/9.x/adventurer/svg?seed=' + player.firstName + player.pseudo + player.lastName" alt="Avatar" v-if="!changeOrderMode && !modificationMode" />
-                        <div class="player-order" :class="{'change-order': changeOrderMode}" v-else >{{ player.order }}</div>
+                        <div class="player-order" :class="{'change-order': changeOrderMode}" v-else >{{ orderedPlayers.indexOf(player) + 1 }}</div>
                         <div class="player-name">{{ player.pseudo }}</div>
                     </div>
                 </div>
@@ -236,15 +236,15 @@ const back = () => {
             </div>
             <div class="create-player" v-if="creatingPlayer">
                 <div class="input" :class="{'error': formError}">
-                    <label for="name">Nom</label>
-                    <input type="text" id="name" name="name" minlength="2" required v-model="name" />
-                    <span>Votre prénom doit contenir au moins 2 caractères</span>
-                </div>
-                
-                <div class="input" :class="{'error': formError}">
                     <label for="firstname">Prénom</label>
                     <input type="text" id="firstname" name="firstname" minlength="2" required v-model="firstname" />
                     <span>Votre nom doit contenir au moins 2 caractères</span>
+                </div>
+                
+                <div class="input" :class="{'error': formError}">
+                    <label for="name">Nom</label>
+                    <input type="text" id="name" name="name" minlength="2" required v-model="name" />
+                    <span>Votre prénom doit contenir au moins 2 caractères</span>
                 </div>
                 
                 <div class="input" :class="{'error': formError}">

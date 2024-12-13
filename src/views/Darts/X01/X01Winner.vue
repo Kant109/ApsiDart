@@ -1,11 +1,11 @@
 <script setup lang="ts">
 import { LottieAnimation } from "lottie-web-vue";
-import ConfettiAnimation from "../../assets/animations/confetti.json";
+import ConfettiAnimation from "@/assets/animations/confetti.json";
 import { useRouter } from "vue-router";
-import { useCricketGameStore } from "@/stores/CricketGameStore";
 import { onMounted, ref } from "vue";
+import { useX01GameStore } from "@/stores/X01GameStore";
 
-const gameStore = useCricketGameStore();
+const gameStore = useX01GameStore();
 
 const winnerPlayer = gameStore.winnerPlayer;
 const nbDarts = ref(0);
@@ -14,8 +14,8 @@ const router = useRouter();
 
 const back = () => {
     gameStore.setIsGameFinish(false);
-    gameStore.setWinner({} as CricketPlayer);
-    router.push({ name: "cricket-game"});
+    gameStore.setWinner({} as X01Player);
+    router.push({ name: "x01-game"});
 }
 
 const replay = () => {
@@ -51,7 +51,7 @@ onMounted(() => {
             <img class="player-img" :src="'https://api.dicebear.com/9.x/adventurer/svg?seed=' + winnerPlayer.firstName + winnerPlayer.pseudo + winnerPlayer.lastName" alt="Avatar"></img>
             <div class="player-info">
                 <div class="player-info-pseudo">{{ winnerPlayer.pseudo }}</div>
-                <div class="player-info-full-name">{{ winnerPlayer.lastName.toUpperCase() }} {{ winnerPlayer.firstName }}</div>
+                <div class="player-info-full-name">{{ winnerPlayer.firstName }} {{ winnerPlayer.lastName.toUpperCase() }}</div>
             </div>
         </div>
         <div class="btn-replay" @click.prevent="replay">Rejouer</div>

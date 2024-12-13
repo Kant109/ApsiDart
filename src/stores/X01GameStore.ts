@@ -14,10 +14,14 @@ export const useX01GameStore = defineStore('X01Game', () => {
         isGameFinish.value = newIsGameFinish;
     }
 
+    function setWinner(winner: X01Player) {
+        winnerPlayer.value = winner;
+    }
+
     function reset() {
         players.value = [];
         isGameFinish.value = false;
     }
 
-    return { players, isGameFinish, setPlayer, setIsGameFinish, reset };
+    return { players, isGameFinish, winnerPlayer, setPlayer, setIsGameFinish, setWinner, reset };
 })
