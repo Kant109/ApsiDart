@@ -18,6 +18,8 @@ const selectX01Mode = (selectedX01Mode: number) => {
         const currentPlayer: X01Player = {
             id: player.id,
             pseudo: player.pseudo,
+            firstName: player.firstName,
+            lastName: player.lastName,
             isActive: player.order === "1",
             points: x01Mode.value,
             volleys: player.order === "1" ? [['', '', '']] : []
