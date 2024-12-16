@@ -9,7 +9,6 @@ const router = useRouter();
 const managementAppStore = useManagementAppStore();
 
 const allPlayers = ref([] as Array<Player>);
-const orderedPlayers = ref([] as Array<Player>);
 const selectedPlayers = ref([] as Array<Player>);
 const openSearchPlayer = ref(false);
 const isDarkMode = computed(() => managementAppStore.isDarkMode);
@@ -19,6 +18,7 @@ const changeOrderMode = ref(false);
 const modalTitle = ref("Sélectionner des joueurs");
 const creatingPlayer = ref(false);
 const formError = ref(false);
+const nextPlayerPlace = ref(1);
 
 const name = ref("");
 const firstname = ref("");
@@ -29,7 +29,6 @@ onMounted(async () => {
     if((localStorage.getItem('orderedDartsPlayer') as string) !== null) {
         const playersFromLocalStorage = JSON.parse(localStorage.getItem('orderedDartsPlayer') as string) as Array<Player>;
         playersFromLocalStorage.forEach(player => {
-            orderedPlayers.value.push(player);
             selectedPlayers.value.push(player);
         });
     }
@@ -48,8 +47,9 @@ onMounted(async () => {
         console.error(error.message);
     }
 
-    if(orderedPlayers.value.length > 0) {
-        orderedPlayers.value.forEach(player => {
+    if(selectedPlayers.value.length > 0) {
+        selectedPlayers.value.forEach(player => {
+            player.order = (selectedPlayers.value.indexOf(player) + 1).toString();
             allPlayers.value.forEach(playerFromApi => {
                 if(player.id === playerFromApi.id) {
                     allPlayers.value.splice(allPlayers.value.indexOf(playerFromApi), 1);
@@ -69,9 +69,8 @@ const closeModal = () => {
 
 const selectPlayer = (player: Player) => {
     const indexOfPlayer = allPlayers.value.indexOf(player);
+    player.order = (selectedPlayers.value.length + 1).toString();
     selectedPlayers.value.push(player);
-    player.order = (orderedPlayers.value.length + 1).toString();
-    orderedPlayers.value.push(player);
     setTimeout(() => {
         allPlayers.value.splice(indexOfPlayer, 1);
     }, 400);
@@ -79,37 +78,34 @@ const selectPlayer = (player: Player) => {
 
 const playerAction = (player: Player) => {
     if(isRemovePlayerMode.value) {
-        if(parseInt(player.order as string) < orderedPlayers.value.length) {
-            for (let index = orderedPlayers.value.indexOf(player) + 1; index < orderedPlayers.value.length; index++) {
-                const newOrder = (parseInt(orderedPlayers.value[index].order as string) - 1).toString();
+        if(parseInt(player.order as string) < selectedPlayers.value.length) {
+            for (let index = selectedPlayers.value.indexOf(player) + 1; index < selectedPlayers.value.length; index++) {
+                const newOrder = (parseInt(selectedPlayers.value[index].order as string) - 1).toString();
                 selectedPlayers.value[index].order = newOrder;
-                orderedPlayers.value[index].order = newOrder;
             }
         }
         const indexOfPlayer = selectedPlayers.value.indexOf(player);
         selectedPlayers.value.splice(indexOfPlayer, 1);
-        const indexOfPlayerInOrder = orderedPlayers.value.indexOf(player);
-        orderedPlayers.value.splice(indexOfPlayerInOrder, 1);
         allPlayers.value.push(player);
     }
     if(changeOrderMode.value) {
-        if(player.order !== undefined && player.order !== "") {
-            const playerIndex = orderedPlayers.value.indexOf(player);
-            for (let index = orderedPlayers.value.length - 1; index >= playerIndex; index--) {
-                selectedPlayers.value[selectedPlayers.value.indexOf(orderedPlayers.value[index])].order = "";
-                orderedPlayers.value.pop();
-            }
-        } else {
-            orderedPlayers.value.push(player);
-            player.order = (orderedPlayers.value.indexOf(player) + 1).toString();
-        }
+        player.order = nextPlayerPlace.value.toString();
+        nextPlayerPlace.value++;
     }
 }
 
 const startGame = () => {
     router.push({ name: "darts-mode"});
     localStorage.removeItem('orderedDartsPlayer');
-    localStorage.setItem('orderedDartsPlayer', JSON.stringify(orderedPlayers.value));
+
+    let orderedDartsPlayer = Array(selectedPlayers.value.length).fill("");
+
+    selectedPlayers.value.forEach(player => {
+        console.log(player.order);
+        orderedDartsPlayer[parseInt(player.order as string) - 1] = player;
+    })
+
+    localStorage.setItem('orderedDartsPlayer', JSON.stringify(orderedDartsPlayer));
 }
 
 const validPlayers = () => {
@@ -117,6 +113,9 @@ const validPlayers = () => {
         modificationMode.value = false;
     }
     isRemovePlayerMode.value = false;
+    selectedPlayers.value.forEach(player => {
+        if(player.order === "") return;
+    });
     changeOrderMode.value = false;
 }
 
@@ -130,6 +129,10 @@ const removePlayers = () => {
 
 const changeOrder = () => {
     changeOrderMode.value = true;
+    nextPlayerPlace.value = 1;
+    selectedPlayers.value.forEach(player => {
+        player.order = "";
+    });
 }
 
 const addingPlayer = () => {
@@ -170,9 +173,8 @@ const createPlayer = async () => {
         }
 
         Object.assign(player, { id: response.json() });
-        Object.assign(player, { order: (orderedPlayers.value.length + 1).toString() });
+        Object.assign(player, { order: (selectedPlayers.value.length + 1).toString() });
 
-        orderedPlayers.value.push(player as Player);
         selectedPlayers.value.push(player as Player);
     } catch (error: any) {
         console.error(error.message);
@@ -202,8 +204,8 @@ const back = () => {
                 >
                     <div class="player-content">
                         <img class="player-img" :src="'https://api.dicebear.com/9.x/adventurer/svg?seed=' + player.firstName + player.pseudo + player.lastName" alt="Avatar" v-if="!changeOrderMode && !modificationMode" />
-                        <div class="player-order" :class="{'change-order': changeOrderMode}" v-else >{{ orderedPlayers.indexOf(player) + 1 }}</div>
-                        <div class="player-name">{{ player.pseudo }}</div>
+                        <div class="player-order" :class="{'change-order': changeOrderMode}" v-else >{{ player.order }}</div>
+                        <div class="player-name">{{ player.pseudo.length > 5 ? player.pseudo.substring(0,5) + ".." : player.pseudo}}</div>
                     </div>
                 </div>
             </div>
@@ -226,8 +228,8 @@ const back = () => {
                     <div class="select-player-container" v-if="allPlayers.includes(player)">
                         <img class="player-img" :src="'https://api.dicebear.com/9.x/adventurer/svg?seed=' + player.firstName + player.pseudo + player.lastName" alt="Avatar" />
                         <div class="player-name">
-                            <div class="player-name-pseudo">{{ player.pseudo }}</div>
-                            <div class="player-full-name">{{ player.lastName }} {{ player.firstName }}</div>
+                            <div class="player-name-pseudo">{{ player.pseudo.length > 18 ? player.pseudo.substring(0,18) + ".." : player.pseudo}}</div>
+                            <div class="player-full-name">{{ player.firstName.length + player.lastName.length > 18 ? (player.firstName + " " + player.lastName).substring(0,18) + ".." : player.firstName + " " + player.lastName}}</div>
                         </div>
                     </div>
                     <div class="select-player" :class="{'darkmode': isDarkMode}" @click.prevent="selectPlayer(player)"></div>
@@ -249,8 +251,8 @@ const back = () => {
                 
                 <div class="input" :class="{'error': formError}">
                     <label for="name">Pseudo</label>
-                    <input type="text" id="name" name="name" required minlength="3" maxlength="6" v-model="pseudo" />
-                    <span>Votre pseudo doit être de 3 caractères à 6 caractères</span>
+                    <input type="text" id="name" name="name" required minlength="2" v-model="pseudo" />
+                    <span>Votre pseudo doit contenir au moins 2 caractères</span>
                 </div>
 
                 <div class="btn-save-player-modal" @click.prevent="createPlayer">Créer le joueur</div>

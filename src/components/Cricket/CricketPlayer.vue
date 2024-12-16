@@ -36,21 +36,30 @@ const openStat = () => {
 <template>
     <div class="full-content" :class="{'top-bg': props.isTopBgActive, 'top-bg-active': props.isTopBgPlayerActive && props.isTopBgActive}">
         <div class="player-content" :class="{'isPlayerActive': player.isActive }" @click.prevent="openStat">
-            <div class="player-name">{{ player.pseudo }}</div>
+            <div class="player-name">{{ player.pseudo.length > 5 ? player.pseudo.substring(0,5) + ".." : player.pseudo}}</div>
             <div class="recap">
                 <div class="doors">
-                    <div class="door" :class="{'first': player.doors[20] !== 0, 'second': player.doors[20] >= 2, 'full': player.doors[20] >= 3}"></div>
-                    <div class="door" :class="{'first': player.doors[19] !== 0, 'second': player.doors[19] >= 2, 'full': player.doors[19] >= 3}"></div>
-                    <div class="door" :class="{'first': player.doors[18] !== 0, 'second': player.doors[18] >= 2, 'full': player.doors[18] >= 3}"></div>
-                    <div class="door" :class="{'first': player.doors[17] !== 0, 'second': player.doors[17] >= 2, 'full': player.doors[17] >= 3}"></div>
-                    <div class="door" :class="{'first': player.doors[16] !== 0, 'second': player.doors[16] >= 2, 'full': player.doors[16] >= 3}"></div>
                     <div class="door" :class="{'first': player.doors[15] !== 0, 'second': player.doors[15] >= 2, 'full': player.doors[15] >= 3}"></div>
+                    <div class="door" :class="{'first': player.doors[16] !== 0, 'second': player.doors[16] >= 2, 'full': player.doors[16] >= 3}"></div>
+                    <div class="door" :class="{'first': player.doors[17] !== 0, 'second': player.doors[17] >= 2, 'full': player.doors[17] >= 3}"></div>
+                    <div class="door" :class="{'first': player.doors[18] !== 0, 'second': player.doors[18] >= 2, 'full': player.doors[18] >= 3}"></div>
+                    <div class="door" :class="{'first': player.doors[19] !== 0, 'second': player.doors[19] >= 2, 'full': player.doors[19] >= 3}"></div>
+                    <div class="door" :class="{'first': player.doors[20] !== 0, 'second': player.doors[20] >= 2, 'full': player.doors[20] >= 3}"></div>
                     <div class="door" :class="{'first': player.doors[25] !== 0, 'second': player.doors[25] >= 2, 'full': player.doors[25] >= 3}"></div>
                 </div>
             </div>
             <div class="points-taken">{{ player.points.total }}</div>
         </div>
         <div class="player-stats" :class="{'isPlayerActive': player.isActive}" v-if="player.isActive || isStatOpen">
+            <div class="recap-doors">
+                <div class="recap-door">15</div>
+                <div class="recap-door">16</div>
+                <div class="recap-door">17</div>
+                <div class="recap-door">18</div>
+                <div class="recap-door">19</div>
+                <div class="recap-door">20</div>
+                <div class="recap-door">25</div>
+            </div>
             <div class="current-points">
                 <div class="points">{{ player.volleys.length > 0 ? player.volleys[player.volleys.length - 1][0] : "" }}</div>
                 <div class="points">{{ player.volleys.length > 0 ? player.volleys[player.volleys.length - 1][1] : "" }}</div>
@@ -58,12 +67,12 @@ const openStat = () => {
             </div>
             <div class="points-recap" :class="{'isPlayerActive': player.isActive}">
                 <div class="doors">
-                    <div class="door"><div class="base">20</div><div class="taken">{{ player.points[20] }}</div></div>
-                    <div class="door"><div class="base">19</div><div class="taken">{{ player.points[19] }}</div></div>
-                    <div class="door"><div class="base">18</div><div class="taken">{{ player.points[18] }}</div></div>
-                    <div class="door"><div class="base">17</div><div class="taken">{{ player.points[17] }}</div></div>
-                    <div class="door"><div class="base">16</div><div class="taken">{{ player.points[16] }}</div></div>
                     <div class="door"><div class="base">15</div><div class="taken">{{ player.points[15] }}</div></div>
+                    <div class="door"><div class="base">16</div><div class="taken">{{ player.points[16] }}</div></div>
+                    <div class="door"><div class="base">17</div><div class="taken">{{ player.points[17] }}</div></div>
+                    <div class="door"><div class="base">18</div><div class="taken">{{ player.points[18] }}</div></div>
+                    <div class="door"><div class="base">19</div><div class="taken">{{ player.points[19] }}</div></div>
+                    <div class="door"><div class="base">20</div><div class="taken">{{ player.points[20] }}</div></div>
                     <div class="door"><div class="base">25</div><div class="taken">{{ player.points[25] }}</div></div>
                 </div>
             </div>
@@ -194,11 +203,30 @@ const openStat = () => {
     display: flex;
     flex-direction: column;
     justify-content: center;
+    align-items: center;
     gap: 1rem;
     background-color: var(--bg-color-secondary);
 
     &.isPlayerActive {
         background-color: var(--active-player);
+    }
+
+    .recap-doors {
+        display: flex;
+        gap: .5rem;
+        font-family: "Tilt Warp", sans-serif;
+        font-size: 1rem;
+
+        .recap-door {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 5px;
+            background-color: white;
+            width: 1.5rem;
+            aspect-ratio: 1/1;
+            border: 1px solid rgba(0, 0, 0, .25);
+        }
     }
 
     .current-points {

@@ -33,9 +33,12 @@ watch(
             <div class="player-name">{{ player.pseudo }}</div>
                 <div class="recap">
                     <div class="current-points">
-                    <div class="points">{{ player.volleys.length > 0 ? player.volleys[player.volleys.length - 1][0] : "" }}</div>
-                    <div class="points">{{ player.volleys.length > 0 ? player.volleys[player.volleys.length - 1][1] : "" }}</div>
-                    <div class="points">{{ player.volleys.length > 0 ? player.volleys[player.volleys.length - 1][2] : "" }}</div>
+                    <div class="points" v-if="player.volleys.length > 0 && player.volleys[player.volleys.length - 1][0].includes('O')"><s>{{ player.volleys[player.volleys.length - 1][0].substring(1) }}</s></div>
+                    <div class="points" v-else>{{ player.volleys.length > 0 ? player.volleys[player.volleys.length - 1][0] : "" }}</div>
+                    <div class="points" v-if="player.volleys.length > 0 && player.volleys[player.volleys.length - 1][1].includes('O')"><s>{{ player.volleys[player.volleys.length - 1][1].substring(1) }}</s></div>
+                    <div class="points" v-else>{{ player.volleys.length > 0 ? player.volleys[player.volleys.length - 1][1] : "" }}</div>
+                    <div class="points" v-if="player.volleys.length > 0 && player.volleys[player.volleys.length - 1][2].includes('O')"><s>{{ player.volleys[player.volleys.length - 1][2].substring(1) }}</s></div>
+                    <div class="points" v-else>{{ player.volleys.length > 0 ? player.volleys[player.volleys.length - 1][2] : "" }}</div>
                 </div>
             </div>
             <div class="points-taken">{{ player.points }}</div>
@@ -119,6 +122,10 @@ watch(
                 border: 1px solid rgba(0, 0, 0, .25);
                 --tw-shadow: inset 0 -5px 0 0 rgba(0, 0, 0, .25);
                 box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
+
+                & s {
+                    text-decoration-thickness: 2px;
+                }
             }
         }
     }

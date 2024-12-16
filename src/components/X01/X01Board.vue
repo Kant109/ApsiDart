@@ -22,6 +22,16 @@ const selectTriple = () => {
     triple.value = !triple.value;
 }
 
+const setNextPlayerActive = (player: X01Player) => {
+    if(players.value.indexOf(player) + 1 === players.value.length) {
+        players.value[0].isActive = true;
+        players.value[0].volleys.push(['', '', '']);
+    } else {
+        players.value[players.value.indexOf(player) + 1].isActive = true;
+        players.value[players.value.indexOf(player) + 1].volleys.push(['', '', '']);
+    }
+}
+
 const setPointsActivePlayer = async (points: number) => {
     const value = double.value ? 2 : triple.value ? 3 : 1;
     let activePlayerPointsVolley = true;
@@ -31,25 +41,6 @@ const setPointsActivePlayer = async (points: number) => {
             const currentPointValue = value === 2 ? "D" + points.toString() : value === 3 ? "T" + points.toString() : points.toString();
 
             player.points -= value * points;
-            if(player.points < 0 || player.points === 1) {
-                if(player.volleys[player.volleys.length - 1][0] === "") {
-                    player.volleys[player.volleys.length - 1][0] = "";
-                }
-                if(player.volleys[player.volleys.length - 1][1] === "") {
-                    player.volleys[player.volleys.length - 1][1] = "";
-                }
-                if(player.volleys[player.volleys.length - 1][2] === "") {
-                    player.volleys[player.volleys.length - 1][2] = "";
-                }
-                player.points += value * points;
-            } else if(player.points === 0) {
-                if(value === 2) {
-                    gameStore.setIsGameFinish(true);
-                    gameStore.setWinner(player);
-                } else {
-                    player.points += value * points;
-                }
-            }
 
             if(player.volleys[player.volleys.length - 1][0] === "") {
                 player.volleys[player.volleys.length - 1][0] = currentPointValue;
@@ -57,16 +48,46 @@ const setPointsActivePlayer = async (points: number) => {
                 player.volleys[player.volleys.length - 1][1] = currentPointValue;
             } else if(player.volleys[player.volleys.length - 1][2] === "") {
                 player.volleys[player.volleys.length - 1][2] = currentPointValue;
+                player.isActive = false;
+                setNextPlayerActive(player);
+                activePlayerPointsVolley = false;
+            }
+
+            if(player.points < 0 || player.points === 1) {
+
+                player.points += value * points;
+
+                if(player.volleys[player.volleys.length - 1][0] === "") {
+                    player.volleys[player.volleys.length - 1][0] = "";
+                } else {
+                    player.volleys[player.volleys.length - 1][0] = "O" + player.volleys[player.volleys.length - 1][0];
+                }
+
+                if(player.volleys[player.volleys.length - 1][1] === "") {
+                    player.volleys[player.volleys.length - 1][1] = "";
+                } else {
+                    player.volleys[player.volleys.length - 1][1] = "O" + player.volleys[player.volleys.length - 1][1];
+                }
+
+                if(player.volleys[player.volleys.length - 1][2] === "") {
+                    player.volleys[player.volleys.length - 1][2] = "";
+                } else {
+                    player.volleys[player.volleys.length - 1][2] = "O" + player.volleys[player.volleys.length - 1][2];
+                }
 
                 player.isActive = false;
-                if(players.value.indexOf(player) + 1 === players.value.length) {
-                    players.value[0].isActive = true;
-                    players.value[0].volleys.push(['', '', '']);
-                } else {
-                    players.value[players.value.indexOf(player) + 1].isActive = true;
-                    players.value[players.value.indexOf(player) + 1].volleys.push(['', '', '']);
-                }
+                setNextPlayerActive(player);
                 activePlayerPointsVolley = false;
+            } else if(player.points === 0) {
+                if(value === 2) {
+                    gameStore.setIsGameFinish(true);
+                    gameStore.setWinner(player);
+                } else {
+                    player.points += value * points;
+                    player.isActive = false;
+                    setNextPlayerActive(player);
+                    activePlayerPointsVolley = false;
+                }
             }
         }
     })
@@ -79,7 +100,6 @@ const cancelPoints = async (previousDart: string, player: X01Player) => {
 }
 
 const removePreviousDart = async (player: X01Player, isCancel: boolean) => {
-    console.log(player)
     for (let index = 3; index > 0; index--) {
         const previousDart = player.volleys[player.volleys.length - 1][index - 1];
 

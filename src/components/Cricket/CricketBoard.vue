@@ -362,12 +362,12 @@ onMounted(() => {
     <div class="points-container">
         <div class="points-content">
             <div class="points-line">
-                <div class="points" @click.prevent="setPointsActivePlayer(20)">20</div>
-                <div class="points" @click.prevent="setPointsActivePlayer(19)">19</div>
-                <div class="points" @click.prevent="setPointsActivePlayer(18)">18</div>
-                <div class="points" @click.prevent="setPointsActivePlayer(17)">17</div>
-                <div class="points" @click.prevent="setPointsActivePlayer(16)">16</div>
                 <div class="points" @click.prevent="setPointsActivePlayer(15)">15</div>
+                <div class="points" @click.prevent="setPointsActivePlayer(16)">16</div>
+                <div class="points" @click.prevent="setPointsActivePlayer(17)">17</div>
+                <div class="points" @click.prevent="setPointsActivePlayer(18)">18</div>
+                <div class="points" @click.prevent="setPointsActivePlayer(19)">19</div>
+                <div class="points" @click.prevent="setPointsActivePlayer(20)">20</div>
                 <div class="points" :class="{'isDisable': triple}" @click.prevent="setPointsActivePlayer(25)">25</div>
             </div>
             <div class="instructions">

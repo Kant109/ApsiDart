@@ -30,17 +30,17 @@ watch(() => isGameFinish.value, () => router.push({ name: "cricket-winner" }));
 <template>
     <Header title="CRICKET" @previous-route="back" />
 
-    <div class="points-recap-doors">
+    <!-- <div class="points-recap-doors">
         <div class="recap-doors">
-            <div class="recap-door">20</div>
-            <div class="recap-door">19</div>
-            <div class="recap-door">18</div>
-            <div class="recap-door">17</div>
-            <div class="recap-door">16</div>
             <div class="recap-door">15</div>
+            <div class="recap-door">16</div>
+            <div class="recap-door">17</div>
+            <div class="recap-door">18</div>
+            <div class="recap-door">19</div>
+            <div class="recap-door">20</div>
             <div class="recap-door">25</div>
         </div>
-    </div>
+    </div> -->
     <div class="players-container">
         <div class="players-content" :class="{'lastPlayerActive': isLastPlayerActive}">
             <CricketPlayer
@@ -87,7 +87,7 @@ watch(() => isGameFinish.value, () => router.push({ name: "cricket-winner" }));
     flex-direction: column;
     align-items: center;
     width: 100%;
-    max-height: calc(100vh - 250px);
+    max-height: calc(100vh - 210px);
     height: 100%;
     background-color: var(--bg-color-primary);
     padding-bottom: 2rem;
