@@ -8,6 +8,7 @@ const players = computed(() => gameStore.players);
 const double = ref(false);
 const triple = ref(false);
 const isGameFinish = computed(() => gameStore.isGameFinish);
+const numeroTour = ref(1);
 
 const selectDouble = () => {
     if(triple.value) {
@@ -175,10 +176,27 @@ const setPointsActivePlayer = async (points: number) => {
             } else if(player.volleys[player.volleys.length - 1][2] === "") {
                 player.volleys[player.volleys.length - 1][2] = currentPointValue;
 
+                if(players.value.indexOf(player) === players.value.length - 1) {
+                    let performance = [] as Array<any>;
+                    players.value.forEach(player => {
+
+                        performance.push({
+                            "idJoueur": player.id.toString(),
+                            "pseudo": player.pseudo,
+                            "volee": player.volleys[player.volleys.length - 1][0] + "-" + player.volleys[player.volleys.length - 1][1] + "-" + player.volleys[player.volleys.length - 1][2],
+                            "delta": "00",
+                            "numeroTour": numeroTour.value.toString(),
+                            "score": player.points.total.toString(),
+                        })
+                    });
+                    sendTour(performance);
+                }
+
                 player.isActive = false;
                 if(players.value.indexOf(player) + 1 === players.value.length) {
                     players.value[0].isActive = true;
                     players.value[0].volleys.push(['', '', '']);
+                    numeroTour.value++;
                 } else {
                     players.value[players.value.indexOf(player) + 1].isActive = true;
                     players.value[players.value.indexOf(player) + 1].volleys.push(['', '', '']);
@@ -189,6 +207,48 @@ const setPointsActivePlayer = async (points: number) => {
     });
     await checkIsGameFinish();
     reset();
+}
+
+const sendTour = async (performance: any) => {
+    const data = {
+        "modeJeu": {
+            "code": "DACKT",
+            "nom": "Cricket",
+            "variante": "",
+            "properties": {
+                "mode": "TOUR"
+            }
+        },
+        "idJeu": gameStore.gameId.toString(),
+        "performances": performance,
+        "properties": {}
+    }
+
+    const maPromesse = new Promise(async (resolve, reject) => {
+        const response = await fetch(import.meta.env.VITE_BE_URL + "/game/perform", {
+            method: "POST",
+            body: JSON.stringify(data),
+            headers: {
+                "Content-Type": "application/json"
+            }
+        });
+        resolve(response.json());
+    })
+    maPromesse.then((message: any) => {
+        speak(message.commentaire as string)
+    });
+}
+
+const speak = async (text: string) => {
+    const utterance = new SpeechSynthesisUtterance(text);
+    
+    utterance.voice = window.speechSynthesis
+        .getVoices()
+        .find((voice) => voice.name === "Microsoft Paul - French (France)") as SpeechSynthesisVoice;
+    utterance.rate = 1;
+    utterance.pitch = 1;
+
+    window.speechSynthesis.speak(utterance);
 }
 
 const removePoints = async (points: number) => {
@@ -337,6 +397,7 @@ const cancel = () => {
                         players.value[players.value.indexOf(player) - 1].isActive = true;
                         removePreviousDart(players.value[players.value.indexOf(player) - 1], isCancel);
                     } else {
+                        numeroTour.value--;
                         players.value[players.value.length - 1].isActive = true;
                         removePreviousDart(players.value[players.value.length - 1], isCancel);
                     }
