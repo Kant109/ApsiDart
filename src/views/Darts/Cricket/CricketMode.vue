@@ -45,7 +45,7 @@ const selectCricketMode = (selectedCricketMode: string) => {
         });
         router.push({ name: "cricket-game" })
     } else if(selectedCricketMode === 'team') {
-        router.push({ name: "cricket-team-mode" })
+        // router.push({ name: "cricket-team-mode" })
     }
 }
 
@@ -85,8 +85,12 @@ const back = () => {
         width: 80%;
         gap: 2rem;
 
-        .choice, .btn-simple-mode, .btn-team-mode {
+        .btn-simple-mode, .btn-team-mode {
             @include btn-primary;
+
+            &.btn-team-mode {
+                @include wip-btn;
+            }
         }
 
         .btn-cancel {

@@ -101,7 +101,6 @@ const startGame = () => {
     let orderedDartsPlayer = Array(selectedPlayers.value.length).fill("");
 
     selectedPlayers.value.forEach(player => {
-        console.log(player.order);
         orderedDartsPlayer[parseInt(player.order as string) - 1] = player;
     })
 

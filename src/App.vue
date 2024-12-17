@@ -17,15 +17,29 @@ const managementAppStore = useManagementAppStore();
 const isAppLoaded = computed(() => managementAppStore.isAppLoaded);
 const isDarkMode = computed(() => managementAppStore.isDarkMode);
 
+const speak = async (text: string) => {
+  const utterance = new SpeechSynthesisUtterance(text);
+  
+  utterance.voice = window.speechSynthesis
+    .getVoices()
+    .find((voice) => voice.name === "Microsoft Paul - French (France)") as SpeechSynthesisVoice;
+  utterance.rate = 1;
+  utterance.pitch = 1;
+
+  window.speechSynthesis.speak(utterance);
+}
+
 onBeforeMount(() => {
     managementAppStore.isDarkMode = localStorage.getItem('darkmode-apsidart') === 'active';
 })
 
-onMounted(() => {
-  // GET profil
-  setTimeout(() => {
-    managementAppStore.isAppLoaded = true;
-  }, 2500)
+onMounted(async () => {
+    // GET profil
+    setTimeout(() => {
+        managementAppStore.isAppLoaded = true;
+    }, 2500)
+
+    await speak("SALUT MATIS TU VAS BIEN ?");
 })
 
 </script>

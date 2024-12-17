@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, ref, watch } from 'vue';
+import { computed, onMounted, ref, watch } from 'vue';
 import CricketBoard from '@/components/Cricket/CricketBoard.vue';
 import CricketPlayer from '@/components/Cricket/CricketPlayer.vue';
 import { useCricketGameStore } from '@/stores/CricketGameStore';
@@ -25,22 +25,54 @@ const back = () => {
 
 watch(() => isGameFinish.value, () => router.push({ name: "cricket-winner" }));
 
+onMounted(async () => {
+    const participants = async () => {
+        let participants = [] as Array<Player>;
+        players.value.forEach(player => {
+            participants.push({
+                "id": player.id,
+                "firstName": player.firstName,
+                "lastName": player.lastName,
+                "pseudo": player.pseudo
+            })
+        });
+
+        return participants;
+    }
+
+    const data = {
+        "typeJeu":{
+            "code":"DACKT",
+            "nom":"Cricket",
+            "variante":""
+        },
+        "participants": await participants(),
+        "properties": null
+    }
+
+    try {
+        const response = await fetch(import.meta.env.VITE_BE_URL + "/game", {
+            method: "POST",
+            body: JSON.stringify(data),
+            headers: {
+                "Content-Type": "application/json"
+            }
+        });
+        if (!response.ok) {
+            throw new Error(`Response status: ${response.status}`);
+        }
+
+        gameStore.setGameId(await response.json());
+    } catch (error: any) {
+        console.error(error.message);
+    }
+})
+
 </script>
 
 <template>
     <Header title="CRICKET" @previous-route="back" />
 
-    <!-- <div class="points-recap-doors">
-        <div class="recap-doors">
-            <div class="recap-door">15</div>
-            <div class="recap-door">16</div>
-            <div class="recap-door">17</div>
-            <div class="recap-door">18</div>
-            <div class="recap-door">19</div>
-            <div class="recap-door">20</div>
-            <div class="recap-door">25</div>
-        </div>
-    </div> -->
     <div class="players-container">
         <div class="players-content" :class="{'lastPlayerActive': isLastPlayerActive}">
             <CricketPlayer

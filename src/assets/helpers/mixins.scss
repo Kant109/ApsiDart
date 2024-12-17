@@ -108,3 +108,34 @@
         color: var(--text-color);
     }
 }
+
+@mixin wip-btn {
+    position: relative;
+    overflow: hidden;
+
+    &::before, &::after {
+        position: absolute;
+        content: '';
+        background: repeating-linear-gradient(
+            45deg,
+            #000,
+            #000 10px,
+            yellow 10px,
+            yellow 20px
+        );
+        display: block;
+        width: 100%;
+        height: 15px;
+        -webkit-transform: rotate(-15deg);
+        transform: rotate(-15deg); /* center the X vertically and horizontally: */
+        left: 0;
+        right: 0;
+        top: 0;
+        bottom: 0;
+        margin: auto;
+
+    }
+    &::after {
+        transform: rotate(15deg);
+    }
+}
