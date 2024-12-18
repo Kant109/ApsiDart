@@ -5,6 +5,7 @@ import CricketPlayer from '@/components/Cricket/CricketPlayer.vue';
 import { useCricketGameStore } from '@/stores/CricketGameStore';
 import { useRouter } from 'vue-router';
 import Header from '@/components/Header.vue';
+import RadioSpeaker from '@/components/RadioSpeaker.vue';
 
 const gameStore = useCricketGameStore();
 
@@ -71,6 +72,7 @@ onMounted(async () => {
 </script>
 
 <template>
+    <RadioSpeaker />
     <Header title="CRICKET" @previous-route="back" />
 
     <div class="players-container">

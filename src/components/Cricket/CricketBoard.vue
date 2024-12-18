@@ -1,14 +1,17 @@
 <script setup lang="ts">
 import { computed, onMounted, ref } from 'vue';
 import { useCricketGameStore } from '@/stores/CricketGameStore';
+import { useManagementAppStore } from '@/stores/ManagementAppStore';
 
 const gameStore = useCricketGameStore();
+const managementAppStore = useManagementAppStore();
 
 const players = computed(() => gameStore.players);
 const double = ref(false);
 const triple = ref(false);
 const isGameFinish = computed(() => gameStore.isGameFinish);
 const numeroTour = ref(1);
+const displayRadioBox = ref(false);
 
 const selectDouble = () => {
     if(triple.value) {
@@ -245,8 +248,16 @@ const speak = async (text: string) => {
     utterance.voice = window.speechSynthesis
         .getVoices()
         .find((voice) => voice.name === "Microsoft Paul - French (France)") as SpeechSynthesisVoice;
-    utterance.rate = 1;
+    utterance.rate = 1.5;
     utterance.pitch = 1;
+
+    utterance.onstart = () => {
+        managementAppStore.displayRadioBox = true;
+    };
+
+    utterance.onend = () => {
+        managementAppStore.displayRadioBox = false;
+    };
 
     window.speechSynthesis.speak(utterance);
 }
