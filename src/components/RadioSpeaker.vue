@@ -32,8 +32,9 @@ const stopSpeaker = () => {
     align-items: center;
     justify-content: center;
     height: 90px;
-    background-color: #03045e;
+    background-color: var(--bg-color-primary);
     padding: 0 1rem .5rem 1rem;
+    border: 2px red solid;
     border-top: red 10px solid;
     position: absolute;
     right: 5%;
@@ -54,7 +55,7 @@ const stopSpeaker = () => {
             width: 100%;
             font-family: "Tilt Warp", sans-serif;
             font-size: 1.5rem;
-            color: white;
+            color: black;
         }
 
         &-button {

@@ -35,11 +35,11 @@ const launchAnimation = (gameImg: string) => {
 
 <template>
     <div class="header" :class="{'isAnimationLaunch': isAnimationLaunch}">
-        <div class="profile" @click.prevent="goToProfile"></div>
+        <!-- <div class="profile" @click.prevent="goToProfile"></div> -->
         <div class="title">DENIS</div>
-        <div class="dark-mode" @click.prevent="setDarkMode">
+        <!-- <div class="dark-mode" @click.prevent="setDarkMode">
             <input id="toggle" class="toggle" :class="{'darkmode': isDarkMode}" type="checkbox">
-        </div>
+        </div> -->
     </div>
     <div class="all-games-container" :class="{'isAnimationLaunch': isAnimationLaunch}">
         <GameContainer
