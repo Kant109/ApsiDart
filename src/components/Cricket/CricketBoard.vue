@@ -13,6 +13,7 @@ const isGameFinish = computed(() => gameStore.isGameFinish);
 const numeroTour = ref(1);
 const displayRadioBox = ref(false);
 const message = ref("");
+const message2 = ref("");
 
 const selectDouble = () => {
     if(triple.value) {
@@ -214,7 +215,6 @@ const setPointsActivePlayer = async (points: number) => {
 }
 
 const sendTour = async (performance: any) => {
-    message.value = "Début sendTour";
     const data = {
         "modeJeu": {
             "code": "DACKT",
@@ -229,7 +229,6 @@ const sendTour = async (performance: any) => {
         "properties": {}
     }
 
-    message.value = "Début promise";
     const maPromesse = new Promise(async (resolve, reject) => {
         const response = await fetch(import.meta.env.VITE_BE_URL + "/game/perform", {
             method: "POST",
@@ -241,8 +240,8 @@ const sendTour = async (performance: any) => {
         resolve(response.json());
     })
     maPromesse.then((message: any) => {
-        message.value = "Dans .then";
         speak(message.commentaire as string)
+        message2.value = message;
     });
 }
 
@@ -440,6 +439,7 @@ onMounted(() => {
     <div class="points-container">
         <div class="points-content">
             {{ message }}
+            {{ message2 }}
             <div class="points-line">
                 <div class="points" @click.prevent="setPointsActivePlayer(15)">15</div>
                 <div class="points" @click.prevent="setPointsActivePlayer(16)">16</div>
