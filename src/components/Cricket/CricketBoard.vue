@@ -13,7 +13,6 @@ const isGameFinish = computed(() => gameStore.isGameFinish);
 const numeroTour = ref(1);
 const displayRadioBox = ref(false);
 const message = ref("");
-const message2 = ref("");
 
 const selectDouble = () => {
     if(triple.value) {
@@ -229,6 +228,8 @@ const sendTour = async (performance: any) => {
         "properties": {}
     }
 
+    message.value = JSON.stringify(data);
+
     const maPromesse = new Promise(async (resolve, reject) => {
         const response = await fetch(import.meta.env.VITE_BE_URL + "/game/perform", {
             method: "POST",
@@ -241,13 +242,10 @@ const sendTour = async (performance: any) => {
     })
     maPromesse.then((message: any) => {
         speak(message.commentaire as string)
-        message2.value = message;
     });
 }
 
 const speak = async (text: string) => {
-    message.value = "Début speak";
-    managementAppStore.displayRadioBox = true;
     const utterance = new SpeechSynthesisUtterance(text);
     
     utterance.voice = window.speechSynthesis
@@ -439,7 +437,6 @@ onMounted(() => {
     <div class="points-container">
         <div class="points-content">
             {{ message }}
-            {{ message2 }}
             <div class="points-line">
                 <div class="points" @click.prevent="setPointsActivePlayer(15)">15</div>
                 <div class="points" @click.prevent="setPointsActivePlayer(16)">16</div>
