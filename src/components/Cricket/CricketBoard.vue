@@ -248,6 +248,7 @@ const sendTour = async (performance: any) => {
 
 const speak = async (text: string) => {
     message.value = "Début speak";
+    managementAppStore.displayRadioBox = true;
     const utterance = new SpeechSynthesisUtterance(text);
     
     utterance.voice = window.speechSynthesis
