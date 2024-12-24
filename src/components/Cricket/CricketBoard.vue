@@ -246,7 +246,8 @@ const speak = async (text: string) => {
     
     utterance.voice = window.speechSynthesis
         .getVoices()
-        .find((voice) => voice.name === "Microsoft Paul - French (France)") as SpeechSynthesisVoice;
+        .find((voice) => voice.name === "") as SpeechSynthesisVoice;
+        // .find((voice) => voice.name === "Microsoft Paul - French (France)") as SpeechSynthesisVoice;
     utterance.rate = 1.5;
     utterance.pitch = 1;
 
