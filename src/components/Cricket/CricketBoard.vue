@@ -228,9 +228,7 @@ const sendTour = async (performance: any) => {
         "properties": {}
     }
 
-    message.value = JSON.stringify(data);
-
-    const maPromesse = new Promise(async (resolve, reject) => {
+    // const maPromesse = new Promise(async (resolve, reject) => {
         const response = await fetch(import.meta.env.VITE_BE_URL + "/game/perform", {
             method: "POST",
             body: JSON.stringify(data),
@@ -238,11 +236,12 @@ const sendTour = async (performance: any) => {
                 "Content-Type": "application/json"
             }
         });
-        resolve(response.json());
-    })
-    maPromesse.then((message: any) => {
-        speak(message.commentaire as string)
-    });
+        const responseData = await response.json();
+        speak(responseData.commentaire);
+        // resolve(response.json());
+    // })
+    // maPromesse.then((message: any) => {
+    // });
 }
 
 const speak = async (text: string) => {
