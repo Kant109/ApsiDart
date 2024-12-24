@@ -237,6 +237,7 @@ const sendTour = async (performance: any) => {
             }
         });
         const responseData = await response.json();
+        message.value = responseData;
         speak(responseData.commentaire);
         // resolve(response.json());
     // })
