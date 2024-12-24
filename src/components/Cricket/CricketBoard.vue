@@ -247,7 +247,7 @@ const sendTour = async (performance: any) => {
 }
 
 const speak = async (text: string) => {
-    message.value = text;
+    message.value = "Début speak";
     const utterance = new SpeechSynthesisUtterance(text);
     
     utterance.voice = window.speechSynthesis
