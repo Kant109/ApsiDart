@@ -11,8 +11,6 @@ const double = ref(false);
 const triple = ref(false);
 const isGameFinish = computed(() => gameStore.isGameFinish);
 const numeroTour = ref(1);
-const message = ref("");
-const message2 = ref("");
 
 const selectDouble = () => {
     if(triple.value) {
@@ -244,7 +242,6 @@ const sendTour = async (performance: any) => {
 }
 
 const speak = async (text: string) => {
-    message.value = text;
     const utterance = new SpeechSynthesisUtterance(text);
     
     utterance.voice = window.speechSynthesis
@@ -435,7 +432,6 @@ onMounted(() => {
 <template>
     <div class="points-container">
         <div class="points-content">
-            {{ message }}
             <div class="points-line">
                 <div class="points" @click.prevent="setPointsActivePlayer(15)">15</div>
                 <div class="points" @click.prevent="setPointsActivePlayer(16)">16</div>
