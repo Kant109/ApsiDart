@@ -61,7 +61,7 @@ const launchAnimation = (gameImg: string) => {
 .header {
     display: flex;
     align-items: center;
-    justify-content: space-between;
+    justify-content: center;
     width: 100%;
     padding: 1rem 1rem;
     background-color: var(--bg-color-primary);
