@@ -214,6 +214,7 @@ const setPointsActivePlayer = async (points: number) => {
 }
 
 const sendTour = async (performance: any) => {
+    message.value = "Début sendTour";
     const data = {
         "modeJeu": {
             "code": "DACKT",
@@ -228,6 +229,7 @@ const sendTour = async (performance: any) => {
         "properties": {}
     }
 
+    message.value = "Début promise";
     const maPromesse = new Promise(async (resolve, reject) => {
         const response = await fetch(import.meta.env.VITE_BE_URL + "/game/perform", {
             method: "POST",
@@ -239,6 +241,7 @@ const sendTour = async (performance: any) => {
         resolve(response.json());
     })
     maPromesse.then((message: any) => {
+        message.value = "Dans .then";
         speak(message.commentaire as string)
     });
 }
