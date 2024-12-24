@@ -11,8 +11,6 @@ const double = ref(false);
 const triple = ref(false);
 const isGameFinish = computed(() => gameStore.isGameFinish);
 const numeroTour = ref(1);
-const displayRadioBox = ref(false);
-const message = ref("");
 
 const selectDouble = () => {
     if(triple.value) {
@@ -228,7 +226,7 @@ const sendTour = async (performance: any) => {
         "properties": {}
     }
 
-    // const maPromesse = new Promise(async (resolve, reject) => {
+    const maPromesse = new Promise(async (resolve, reject) => {
         const response = await fetch(import.meta.env.VITE_BE_URL + "/game/perform", {
             method: "POST",
             body: JSON.stringify(data),
@@ -236,13 +234,11 @@ const sendTour = async (performance: any) => {
                 "Content-Type": "application/json"
             }
         });
-        const responseData = await response.json();
-        message.value = responseData;
-        speak(responseData.commentaire);
-        // resolve(response.json());
-    // })
-    // maPromesse.then((message: any) => {
-    // });
+        resolve(response.json());
+    })
+    maPromesse.then((message: any) => {
+        speak(message.commentaire as string)
+    });
 }
 
 const speak = async (text: string) => {
@@ -436,7 +432,6 @@ onMounted(() => {
 <template>
     <div class="points-container">
         <div class="points-content">
-            {{ message }}
             <div class="points-line">
                 <div class="points" @click.prevent="setPointsActivePlayer(15)">15</div>
                 <div class="points" @click.prevent="setPointsActivePlayer(16)">16</div>
