@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import Header from '@/components/Header.vue';
 import { useManagementAppStore } from '@/stores/ManagementAppStore';
-import { computed, onMounted, ref, Teleport } from 'vue';
+import { computed, onMounted, ref } from 'vue';
 import { useRouter } from 'vue-router';
 
 const router = useRouter();
@@ -171,7 +171,7 @@ const createPlayer = async () => {
             throw new Error(`Response status: ${response.status}`);
         }
 
-        Object.assign(player, { id: response.json() });
+        Object.assign(player, { id: await response.json() });
         Object.assign(player, { order: (selectedPlayers.value.length + 1).toString() });
 
         selectedPlayers.value.push(player as Player);
@@ -219,7 +219,7 @@ const back = () => {
         </div>
     </div>
     <Teleport to="main">
-        <dialog :open="openSearchPlayer">
+        <dialog class="search-player-dialog" :open="openSearchPlayer">
             <div class="dialog-title">{{ modalTitle }}</div>
             <div class="search-player" v-if="!creatingPlayer">
                 <div class="btn-create-modal" @click.prevent="addingPlayer">Créer un joueur</div>

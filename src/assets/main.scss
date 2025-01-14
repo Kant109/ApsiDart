@@ -17,7 +17,7 @@ html, body, #app, main {
     padding: 0;
     height: 100%;
 
-    dialog {
+    .search-player-dialog {
         width: 90%;
         max-height: 90vh;
         border-radius: .5rem;
@@ -244,6 +244,75 @@ html, body, #app, main {
 
                 &:hover {
                     cursor: pointer;
+                }
+            }
+        }
+    }
+
+    .confirm-end-game-dialog {
+        border: none;
+        border-radius: 8px;
+
+        position: absolute;
+        top: calc(50vh - 73px);
+
+        padding: 0;
+        padding-top: 1rem;
+
+        .confirm-end-game-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            gap: .5rem;
+
+            .title {
+                font-family: "Tilt Warp", sans-serif;
+                font-size: 1rem;
+                color: var(--text-color);
+                text-align: center;
+            }
+
+            .text {
+                font-family: "Tilt Warp", sans-serif;
+                font-size: .75rem;
+                color: grey;
+                text-align: center;
+                width: 95%;
+            }
+
+            .btn-container {
+                display: flex;
+                width: 100%;
+                border-top: 1px solid lightgrey;
+                align-items: center;
+                justify-content: space-around;
+                background-color: lightgray;
+                gap: 1px;
+                height: 35px;
+                border-bottom-left-radius: 8px;
+                border-bottom-right-radius: 8px;
+                
+                .btn {
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    
+                    font-family: "Tilt Warp", sans-serif;
+                    font-size: 1rem;
+                    color: var(--text-color);
+                    
+                    height: 100%;
+                    width: 100%;
+                    
+                    &.cancel {
+                        background-color: white;
+                        border-bottom-left-radius: 8px;
+                    }
+                    &.end {
+                        background-color: var(--active-player);
+                        border-bottom-right-radius: 8px;
+                    }
                 }
             }
         }

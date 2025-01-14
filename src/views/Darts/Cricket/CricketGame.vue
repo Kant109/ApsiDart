@@ -6,12 +6,15 @@ import { useCricketGameStore } from '@/stores/CricketGameStore';
 import { useRouter } from 'vue-router';
 import Header from '@/components/Header.vue';
 import RadioSpeaker from '@/components/RadioSpeaker.vue';
+import { useManagementAppStore } from '@/stores/ManagementAppStore';
 
 const gameStore = useCricketGameStore();
+const managementAppStore = useManagementAppStore();
 
 const players = computed(() => gameStore.players);
 const isGameFinish = computed(() => gameStore.isGameFinish);
 const isLastPlayerActive = ref(false);
+const blur = computed(() => managementAppStore.blur);
 
 const router = useRouter();
 
@@ -24,7 +27,13 @@ const back = () => {
     router.push({ name: "darts-mode-cricket" });
 }
 
-watch(() => isGameFinish.value, () => router.push({ name: "cricket-winner" }));
+watch(
+    () => isGameFinish.value,
+    () => {
+        
+        router.push({ name: "cricket-winner" });
+    }
+);
 
 onMounted(async () => {
     const participants = async () => {
@@ -75,7 +84,7 @@ onMounted(async () => {
     <RadioSpeaker />
     <Header title="CRICKET" @previous-route="back" />
 
-    <div class="players-container">
+    <div class="players-container" :class="{'blur': blur}">
         <div class="players-content" :class="{'lastPlayerActive': isLastPlayerActive}">
             <CricketPlayer
                 v-for="player in players"
@@ -128,6 +137,10 @@ onMounted(async () => {
     overflow: scroll;
     -ms-overflow-style: none;  /* IE and Edge */
     scrollbar-width: none;  /* Firefox */
+
+    &.blur {
+        filter: blur(10px);
+    }
 
     /* Hide scrollbar for Chrome, Safari and Opera */
     &::-webkit-scrollbar {

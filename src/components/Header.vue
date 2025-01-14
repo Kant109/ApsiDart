@@ -5,6 +5,7 @@ import { useManagementAppStore } from '@/stores/ManagementAppStore';
 const managementAppStore = useManagementAppStore();
 
 const isDarkMode = computed(() => managementAppStore.isDarkMode);
+const blur = computed(() => managementAppStore.blur);
 
 const props = defineProps<{
   title: string
@@ -18,7 +19,7 @@ const back = () => {
 </script>
 
 <template>
-    <div class="header">
+    <div class="header" :class="{'blur': blur}">
         <img v-if="!isDarkMode" src="@/assets/images/chevron.svg" alt="Retour" @click.prevent="back">
         <img v-else src="@/assets/images/chevron-white.svg" alt="Retour" @click.prevent="back">
         <div class="title">{{ props.title }}</div>
@@ -35,6 +36,10 @@ const back = () => {
     padding: 1rem .5rem;
     background-color: var(--bg-color-primary);
     animation: appear .2s;
+
+    &.blur {
+        filter: blur(10px);
+    }
 
     img {
         position: absolute;

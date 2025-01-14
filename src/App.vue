@@ -18,7 +18,7 @@ const isAppLoaded = computed(() => managementAppStore.isAppLoaded);
 const isDarkMode = computed(() => managementAppStore.isDarkMode);
 
 onBeforeMount(() => {
-    localStorage.removeItem('orderedDartsPlayer')
+    // localStorage.removeItem('orderedDartsPlayer')
     managementAppStore.isDarkMode = localStorage.getItem('darkmode-apsidart') === 'active';
 })
 

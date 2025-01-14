@@ -11,6 +11,8 @@ const double = ref(false);
 const triple = ref(false);
 const isGameFinish = computed(() => gameStore.isGameFinish);
 const numeroTour = ref(1);
+const openConfirmEndGame = ref(false);
+const blur = computed(() => managementAppStore.blur);
 
 const selectDouble = () => {
     if(triple.value) {
@@ -98,8 +100,11 @@ const playerBestScore = (player: CricketPlayer): boolean => {
 const checkIsGameFinish = async () => {
     players.value.forEach(async player => {
         if(!isGameFinish.value) {
-            gameStore.setIsGameFinish(playerCloseAllDoors(player) && playerBestScore(player));
-            gameStore.setWinner(player);
+            if(playerCloseAllDoors(player) && playerBestScore(player)) {
+                openConfirmEndGame.value = true;
+                managementAppStore.blur = true;
+                gameStore.setWinner(player);
+            }
         }
     });
 }
@@ -423,6 +428,12 @@ const reset = () => {
     triple.value = false;
 }
 
+const confirmEndGame = (confirm: boolean) => {
+    openConfirmEndGame.value = false;
+    managementAppStore.blur = false;
+    confirm ? gameStore.setIsGameFinish(true) : cancel();
+}
+
 onMounted(() => {
     gameStore.setWinner({} as CricketPlayer);
     cancel();
@@ -431,7 +442,7 @@ onMounted(() => {
 </script>
 
 <template>
-    <div class="points-container">
+    <div class="points-container" :class="{'blur': blur}">
         <div class="points-content">
             <div class="points-line">
                 <div class="points" @click.prevent="setPointsActivePlayer(15)">15</div>
@@ -452,6 +463,21 @@ onMounted(() => {
             </div>
         </div>
     </div>
+
+    <Teleport to="main">
+        <dialog class="confirm-end-game-dialog" :open="openConfirmEndGame">
+
+            <div class="confirm-end-game-container">
+                <div class="title">Un joueur a terminé</div>
+                <div class="text">Confirmez-vous la fin de la partie ?</div>
+                <div class="btn-container">
+                    <div class="btn cancel" @click.prevent="confirmEndGame(false)">Annuler</div>
+                    <div class="btn end" @click.prevent="confirmEndGame(true)">Terminer</div>
+                </div>
+            </div>
+
+        </dialog>
+    </Teleport>
 </template>
 
 <style lang="scss" scoped>
@@ -466,6 +492,10 @@ onMounted(() => {
     background-color: var(--bg-color-secondary);
     --tw-shadow: inset 0 5px 0 0 rgba(0, 0, 0, .25);
     box-shadow: var(--tw-ring-offset-shadow, 0 0 rgba(0, 0, 0, 0)), var(--tw-ring-shadow, 0 0 rgba(0, 0, 0, 0)), var(--tw-shadow);
+
+    &.blur {
+        filter: blur(10px);
+    }
 
     .points-content {
         display: flex;
