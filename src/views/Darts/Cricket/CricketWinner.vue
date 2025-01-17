@@ -13,8 +13,8 @@ const nbDarts = ref(0);
 const router = useRouter();
 
 const back = () => {
-    gameStore.setIsGameFinish(false);
-    gameStore.setWinner({} as CricketPlayer);
+    gameStore.isGameFinish = false;
+    gameStore.winnerPlayer = {} as CricketPlayer;
     router.push({ name: "cricket-game"});
 }
 
@@ -47,7 +47,6 @@ onMounted(() => {
             ref="anim"
         />
         <div class="winner-content">
-            <img class="back" src="@/assets/images/chevron.svg" alt="Retour" @click.prevent="back">
             <img class="player-img" :src="'https://api.dicebear.com/9.x/adventurer/svg?seed=' + winnerPlayer.firstName + winnerPlayer.pseudo + winnerPlayer.lastName" alt="Avatar"></img>
             <div class="player-info">
                 <div class="player-info-pseudo">{{ winnerPlayer.pseudo }}</div>

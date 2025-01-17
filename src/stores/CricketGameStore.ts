@@ -7,26 +7,12 @@ export const useCricketGameStore = defineStore('CricketGame', () => {
     const winnerPlayer = ref({} as CricketPlayer);
     const gameId = ref(0);
 
-    function setPlayer(player: CricketPlayer) {
-        players.value.push(player);
-    }
-
-    function setIsGameFinish(newIsGameFinish: boolean) {
-        isGameFinish.value = newIsGameFinish;
-    }
-
-    function setWinner(winner: CricketPlayer) {
-        winnerPlayer.value = winner;
-    }
-
-    function setGameId(id: number) {
-        gameId.value = id;
-    }
-
     function reset() {
         players.value = [];
         isGameFinish.value = false;
+        winnerPlayer.value = {} as CricketPlayer;
+        gameId.value = 0;
     }
 
-    return { players, isGameFinish, winnerPlayer, gameId, setPlayer, setIsGameFinish, setWinner, setGameId, reset };
+    return { players, isGameFinish, winnerPlayer, gameId, reset };
 })

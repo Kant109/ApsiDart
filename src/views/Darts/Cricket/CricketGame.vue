@@ -36,45 +36,47 @@ watch(
 );
 
 onMounted(async () => {
-    const participants = async () => {
-        let participants = [] as Array<Player>;
-        players.value.forEach(player => {
-            participants.push({
-                "id": player.id,
-                "firstName": player.firstName,
-                "lastName": player.lastName,
-                "pseudo": player.pseudo
-            })
-        });
+    if(gameStore.gameId === 0) {
+        const participants = async () => {
+            let participants = [] as Array<Player>;
+            players.value.forEach(player => {
+                participants.push({
+                    "id": player.id,
+                    "firstName": player.firstName,
+                    "lastName": player.lastName,
+                    "pseudo": player.pseudo
+                })
+            });
 
-        return participants;
-    }
-
-    const data = {
-        "typeJeu":{
-            "code":"DACKT",
-            "nom":"Cricket",
-            "variante":""
-        },
-        "participants": await participants(),
-        "properties": null
-    }
-
-    try {
-        const response = await fetch(import.meta.env.VITE_BE_URL + "/game", {
-            method: "POST",
-            body: JSON.stringify(data),
-            headers: {
-                "Content-Type": "application/json"
-            }
-        });
-        if (!response.ok) {
-            throw new Error(`Response status: ${response.status}`);
+            return participants;
         }
 
-        gameStore.setGameId(await response.json());
-    } catch (error: any) {
-        console.error(error.message);
+        const data = {
+            "typeJeu":{
+                "code":"DACKT",
+                "nom":"Cricket",
+                "variante":""
+            },
+            "participants": await participants(),
+            "properties": null
+        }
+
+        try {
+            const response = await fetch(import.meta.env.VITE_BE_URL + "/game", {
+                method: "POST",
+                body: JSON.stringify(data),
+                headers: {
+                    "Content-Type": "application/json"
+                }
+            });
+            if (!response.ok) {
+                throw new Error(`Response status: ${response.status}`);
+            }
+
+            gameStore.gameId = await response.json();
+        } catch (error: any) {
+            console.error(error.message);
+        }
     }
 })
 

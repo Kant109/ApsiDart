@@ -7,6 +7,7 @@ const gameStore = useCricketGameStore();
 const managementAppStore = useManagementAppStore();
 
 const players = computed(() => gameStore.players);
+const playersPosition = ref([] as Array<CricketPlayer>);
 const double = ref(false);
 const triple = ref(false);
 const isGameFinish = computed(() => gameStore.isGameFinish);
@@ -97,13 +98,29 @@ const playerBestScore = (player: CricketPlayer): boolean => {
     return isPlayerLeastPoints;
 }
 
+const getPlayersPosition = async () => {
+    let pointsByPlayer = [] as Array<number>;
+
+    players.value.forEach(async player => {
+        pointsByPlayer.push(player.points.total);
+    });
+
+    pointsByPlayer.sort();
+
+    players.value.forEach(player => {
+        if(player.points.total === pointsByPlayer[players.value.indexOf(player)]) {
+            playersPosition.value.push(player);
+        }
+    });
+}
+
 const checkIsGameFinish = async () => {
     players.value.forEach(async player => {
         if(!isGameFinish.value) {
             if(playerCloseAllDoors(player) && playerBestScore(player)) {
                 openConfirmEndGame.value = true;
                 managementAppStore.blur = true;
-                gameStore.setWinner(player);
+                gameStore.winnerPlayer = player;
             }
         }
     });
@@ -244,6 +261,54 @@ const sendTour = async (performance: any) => {
     maPromesse.then((message: any) => {
         speak(message.commentaire as string)
     });
+}
+
+const endGame = async () => {
+    let performance = [] as Array<any>;
+
+    await getPlayersPosition();
+
+    players.value.forEach(player => {
+
+        performance.push({
+            "idJoueur": player.id.toString(),
+            "positionClassement": (playersPosition.value.indexOf(player) + 1).toString(),
+            "pseudo": player.pseudo,
+            "volee": player.volleys[player.volleys.length - 1][0] + "-" + player.volleys[player.volleys.length - 1][1] + "-" + player.volleys[player.volleys.length - 1][2],
+            "delta": "00",
+            "numeroTour": numeroTour.value.toString(),
+            "score": player.points.total.toString(),
+        })
+    });
+
+    const data = {
+        "modeJeu": {
+            "code": "DACKT",
+            "nom": "Cricket",
+            "variante": "",
+            "properties": {
+                "mode": "TOUR"
+            }
+        },
+        "idJeu": gameStore.gameId.toString(),
+        "performances": performance,
+        "properties": {}
+    }
+
+    try {
+        const response = await fetch(import.meta.env.VITE_BE_URL + "/game/end", {
+            method: "POST",
+            body: JSON.stringify(data),
+            headers: {
+                "Content-Type": "application/json"
+            }
+        });
+        if (!response.ok) {
+            throw new Error(`Response status: ${response.status}`);
+        }
+    } catch (error) {
+        console.error(error)
+    }
 }
 
 const speak = async (text: string) => {
@@ -428,14 +493,20 @@ const reset = () => {
     triple.value = false;
 }
 
-const confirmEndGame = (confirm: boolean) => {
+const confirmEndGame = async (confirm: boolean) => {
     openConfirmEndGame.value = false;
     managementAppStore.blur = false;
-    confirm ? gameStore.setIsGameFinish(true) : cancel();
+    if(confirm) {
+        await endGame();
+        gameStore.isGameFinish = true;
+        gameStore.gameId = 0;
+    } else {
+        cancel();
+    }
 }
 
 onMounted(() => {
-    gameStore.setWinner({} as CricketPlayer);
+    gameStore.winnerPlayer = {} as CricketPlayer;
     cancel();
 })
 
