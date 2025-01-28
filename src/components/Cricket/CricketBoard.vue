@@ -7,7 +7,7 @@ const gameStore = useCricketGameStore();
 const managementAppStore = useManagementAppStore();
 
 const players = computed(() => gameStore.players);
-const playersPosition = ref([] as Array<CricketPlayer>);
+const playersPosition = computed(() => gameStore.playersPosition);
 const double = ref(false);
 const triple = ref(false);
 const isGameFinish = computed(() => gameStore.isGameFinish);
@@ -109,7 +109,7 @@ const getPlayersPosition = async () => {
 
     players.value.forEach(player => {
         if(player.points.total === pointsByPlayer[players.value.indexOf(player)]) {
-            playersPosition.value.push(player);
+            gameStore.playersPosition.push(player);
         }
     });
 }
@@ -308,6 +308,15 @@ const endGame = async () => {
         }
     } catch (error) {
         console.error(error)
+    }
+    try {
+        const response = await fetch(import.meta.env.VITE_BE_URL + "/stat/dart/" + gameStore.gameId);
+        if (!response.ok) {
+            throw new Error(`Response status: ${response.status}`);
+        }
+        gameStore.stats = await response.json();
+    } catch (error) {
+        console.log(error)
     }
 }
 

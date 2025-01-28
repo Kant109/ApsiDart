@@ -19,6 +19,7 @@ const modalTitle = ref("Sélectionner des joueurs");
 const creatingPlayer = ref(false);
 const formError = ref(false);
 const nextPlayerPlace = ref(1);
+const messageErrorNbPlayer = ref(false);
 
 const name = ref("");
 const firstname = ref("");
@@ -61,6 +62,7 @@ onMounted(async () => {
 
 const addNewPlayer = async () => {
     openSearchPlayer.value = true;
+    messageErrorNbPlayer.value = false;
 }
 
 const closeModal = () => {
@@ -95,16 +97,20 @@ const playerAction = (player: Player) => {
 }
 
 const startGame = () => {
-    router.push({ name: "darts-mode"});
-    localStorage.removeItem('orderedDartsPlayer');
-
-    let orderedDartsPlayer = Array(selectedPlayers.value.length).fill("");
-
-    selectedPlayers.value.forEach(player => {
-        orderedDartsPlayer[parseInt(player.order as string) - 1] = player;
-    })
-
-    localStorage.setItem('orderedDartsPlayer', JSON.stringify(orderedDartsPlayer));
+    if(selectedPlayers.value.length > 1) {
+        router.push({ name: "darts-mode"});
+        localStorage.removeItem('orderedDartsPlayer');
+        
+        let orderedDartsPlayer = Array(selectedPlayers.value.length).fill("");
+        
+        selectedPlayers.value.forEach(player => {
+            orderedDartsPlayer[parseInt(player.order as string) - 1] = player;
+        })
+        
+        localStorage.setItem('orderedDartsPlayer', JSON.stringify(orderedDartsPlayer));
+    } else {
+        messageErrorNbPlayer.value = true;
+    }
 }
 
 const validPlayers = () => {
@@ -208,6 +214,7 @@ const back = () => {
                     </div>
                 </div>
             </div>
+            <div class="error-nb-player" v-if="messageErrorNbPlayer">Il faut minimum 2 joueurs pour lancer une partie</div>
             <div class="btn-container">
                 <div v-if="isRemovePlayerMode || changeOrderMode || modificationMode" class="btn-save-players" @click.prevent="validPlayers">Valider</div>
                 <div v-if="!isRemovePlayerMode && !changeOrderMode && !modificationMode" class="btn-add-player" @click.prevent="addNewPlayer">Ajouter des joueurs</div>
@@ -355,6 +362,12 @@ const back = () => {
                     }
                 }
             }
+        }
+
+        .error-nb-player {
+            font-family: "Tilt Warp", sans-serif;
+            font-size: .75rem;
+            color: red;
         }
 
         .btn-container {

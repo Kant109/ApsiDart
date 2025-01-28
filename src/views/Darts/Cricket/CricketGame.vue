@@ -30,7 +30,6 @@ const back = () => {
 watch(
     () => isGameFinish.value,
     () => {
-        
         router.push({ name: "cricket-winner" });
     }
 );
