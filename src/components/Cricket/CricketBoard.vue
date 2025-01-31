@@ -105,8 +105,8 @@ const getPlayersPosition = async () => {
         pointsByPlayer.push(player.points.total);
     });
 
-    pointsByPlayer.sort();
-
+    pointsByPlayer.sort((x, y) => x - y);
+    
     players.value.forEach(player => {
         if(player.points.total === pointsByPlayer[players.value.indexOf(player)]) {
             gameStore.playersPosition.push(player);

@@ -45,7 +45,8 @@ onMounted(() => {
                         </div>
                     </div>
                     <div class="stats-container">
-                        <div class="first-close-15">Tu as fermé en premier :{{ stats.commonStat.zonestats["15"].idPlayerFirstToclose === player.id ? " 15," : ""}}</div>
+                        <div class="first-close">Tu as fermé en premier :{{ stats.commonStat.zonestats["15"].idPlayerFirstToclose === player.id ? " 15" : ""}}{{ stats.commonStat.zonestats["16"].idPlayerFirstToclose === player.id ? " 16" : ""}}{{ stats.commonStat.zonestats["17"].idPlayerFirstToclose === player.id ? " 17" : ""}}{{ stats.commonStat.zonestats["18"].idPlayerFirstToclose === player.id ? " 18" : ""}}{{ stats.commonStat.zonestats["19"].idPlayerFirstToclose === player.id ? " 19" : ""}}{{ stats.commonStat.zonestats["20"].idPlayerFirstToclose === player.id ? " 20" : ""}}{{ stats.commonStat.zonestats["25"].idPlayerFirstToclose === player.id ? " 25" : ""}}</div>
+                        <div class="take-more-point">Tu es le joueur qui a pris le plus de point dans le numérp ... pour un total de ...</div>
                     </div>
                     <div class="btn-replay" @click.prevent="replay">Rejouer</div>
                 </div>

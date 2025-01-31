@@ -48,6 +48,12 @@ const launchAnimation = (gameImg: string) => {
             route-name="darts-player"
             @click.prevent="launchAnimation('darts')"
         />
+        <!-- <GameContainer
+            img="babyfoot"
+            title="Babyfoot"
+            route-name="babyfoot-player"
+            @click.prevent="launchAnimation('babyfoot')"
+        /> -->
     </div>
     <div v-if="isAnimationLaunch" class="container-animation">
         <div class="scale-animation" :class="{'jello-animation': launchJelloAnimation}">
