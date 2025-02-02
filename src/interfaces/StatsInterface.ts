@@ -3,60 +3,60 @@ interface Stats {
         classementIdPlayers: any,
         zonestats: {
             "0": {
-                idPlayerFirstToclose: number
+                idPlayerFirstToClose: number
                 idPlayerTakeMorePoint: number
-                morepointTakenByPayer: number
+                maxPointTakenByPlayer: number
                 idPlayerScoreMorePoint: number
-                morepointScoredByPayer: number
+                maxPointScoredByPlayer: number
             },
             "15": {
-                idPlayerFirstToclose: number
+                idPlayerFirstToClose: number
                 idPlayerTakeMorePoint: number
-                morepointTakenByPayer: number
+                maxPointTakenByPlayer: number
                 idPlayerScoreMorePoint: number
-                morepointScoredByPayer: number
+                maxPointScoredByPlayer: number
             },
             "16": {
-                idPlayerFirstToclose: number
+                idPlayerFirstToClose: number
                 idPlayerTakeMorePoint: number
-                morepointTakenByPayer: number
+                maxPointTakenByPlayer: number
                 idPlayerScoreMorePoint: number
-                morepointScoredByPayer: number
+                maxPointScoredByPlayer: number
             },
             "17": {
-                idPlayerFirstToclose: number
+                idPlayerFirstToClose: number
                 idPlayerTakeMorePoint: number
-                morepointTakenByPayer: number
+                maxPointTakenByPlayer: number
                 idPlayerScoreMorePoint: number
-                morepointScoredByPayer: number
+                maxPointScoredByPlayer: number
             },
             "18": {
-                idPlayerFirstToclose: number
+                idPlayerFirstToClose: number
                 idPlayerTakeMorePoint: number
-                morepointTakenByPayer: number
+                maxPointTakenByPlayer: number
                 idPlayerScoreMorePoint: number
-                morepointScoredByPayer: number
+                maxPointScoredByPlayer: number
             },
             "19": {
-                idPlayerFirstToclose: number
+                idPlayerFirstToClose: number
                 idPlayerTakeMorePoint: number
-                morepointTakenByPayer: number
+                maxPointTakenByPlayer: number
                 idPlayerScoreMorePoint: number
-                morepointScoredByPayer: number
+                maxPointScoredByPlayer: number
             },
             "20": {
-                idPlayerFirstToclose: number
+                idPlayerFirstToClose: number
                 idPlayerTakeMorePoint: number
-                morepointTakenByPayer: number
+                maxPointTakenByPlayer: number
                 idPlayerScoreMorePoint: number
-                morepointScoredByPayer: number
+                maxPointScoredByPlayer: number
             },
             "25": {
-                idPlayerFirstToclose: number
+                idPlayerFirstToClose: number
                 idPlayerTakeMorePoint: number
-                morepointTakenByPayer: number
+                maxPointTakenByPlayer: number
                 idPlayerScoreMorePoint: number
-                morepointScoredByPayer: number
+                maxPointScoredByPlayer: number
             }
         }
     },
