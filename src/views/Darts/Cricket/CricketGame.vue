@@ -50,18 +50,31 @@ onMounted(async () => {
             return participants;
         }
 
-        const data = {
-            "typeJeu":{
-                "code":"DACKT",
-                "nom":"Cricket",
-                "variante":""
-            },
-            "participants": await participants(),
-            "properties": null
+        const currentDate = async (): Promise<string> => {
+            // Get current date
+            const today = new Date();
+
+            // Extract day, month, and year
+            let day = today.getDate();
+            let month = today.getMonth() + 1;
+            let year = today.getFullYear();
+
+            // Add leading zero to day and month if needed
+            day = day < 10 ? 0 + day : day;
+            month = month < 10 ? 0 + month : month;
+
+            // Format the date as dd/mm/yyyy
+            return `${day}-${month}-${year}`;
+        }
+
+        const data: DartGame = {
+            "typeGame": "DAX01",
+            "creationDate": await currentDate() ,
+            "players": await participants()
         }
 
         try {
-            const response = await fetch(import.meta.env.VITE_BE_URL + "/game", {
+            const response = await fetch(import.meta.env.VITE_BE_URL + "/dart/game", {
                 method: "POST",
                 body: JSON.stringify(data),
                 headers: {

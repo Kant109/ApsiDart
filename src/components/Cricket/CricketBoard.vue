@@ -11,7 +11,7 @@ const playersPosition = computed(() => gameStore.playersPosition);
 const double = ref(false);
 const triple = ref(false);
 const isGameFinish = computed(() => gameStore.isGameFinish);
-const numeroTour = ref(1);
+const numberRound = ref(1);
 const openConfirmEndGame = ref(false);
 const blur = computed(() => managementAppStore.blur);
 
@@ -84,18 +84,12 @@ const playerCloseAllDoors = (player: CricketPlayer): boolean => {
     return player.doors[20] >= 3 && player.doors[19] >= 3 && player.doors[18] >= 3 && player.doors[17] >= 3 && player.doors[16] >= 3 && player.doors[15] >= 3 && player.doors[25] >= 3;
 }
 
-const playerBestScore = (player: CricketPlayer): boolean => {
-    let isPlayerLeastPoints = true;
+const playerBestScore = async (): Promise<Array<CricketPlayer>> => {
+    let orderedPlayersByPoints = players.value.slice();
 
-    players.value.forEach(otherPlayer => {
-        if((player !== otherPlayer) && playerCloseAllDoors(otherPlayer)) {
-            if(otherPlayer.points.total < player.points.total) {
-                isPlayerLeastPoints = false;
-            }
-        }
-    })
+    orderedPlayersByPoints.sort((j1: CricketPlayer, j2: CricketPlayer) => j1.points.total - j2.points.total);
 
-    return isPlayerLeastPoints;
+    return orderedPlayersByPoints;
 }
 
 const getPlayersPosition = async () => {
@@ -115,15 +109,14 @@ const getPlayersPosition = async () => {
 }
 
 const checkIsGameFinish = async () => {
-    players.value.forEach(async player => {
-        if(!isGameFinish.value) {
-            if(playerCloseAllDoors(player) && playerBestScore(player)) {
-                openConfirmEndGame.value = true;
-                managementAppStore.blur = true;
-                gameStore.winnerPlayer = player;
-            }
+    const playersBestScore = await playerBestScore();
+    if(!isGameFinish.value) {
+        if(playerCloseAllDoors(playersBestScore[0])) {
+            openConfirmEndGame.value = true;
+            managementAppStore.blur = true;
+            gameStore.winnerPlayer = playersBestScore[0];
         }
-    });
+    }
 }
 
 const setPointsActivePlayer = async (points: number) => {
@@ -201,26 +194,26 @@ const setPointsActivePlayer = async (points: number) => {
                 player.volleys[player.volleys.length - 1][2] = currentPointValue;
 
                 if(players.value.indexOf(player) === players.value.length - 1) {
-                    let performance = [] as Array<any>;
+                    let performance = [] as Array<DartPerformance>;
                     players.value.forEach(player => {
 
                         performance.push({
-                            "idJoueur": player.id.toString(),
-                            "pseudo": player.pseudo,
-                            "volee": player.volleys[player.volleys.length - 1][0] + "-" + player.volleys[player.volleys.length - 1][1] + "-" + player.volleys[player.volleys.length - 1][2],
-                            "delta": "00",
-                            "numeroTour": numeroTour.value.toString(),
-                            "score": player.points.total.toString(),
+                            "idPlayer": player.id,
+                            "pseudo": player.firstName,
+                            "score": player.points.total,
+                            "position": 1, //TODO
+                            "volley": player.volleys[player.volleys.length - 1][0] + "-" + player.volleys[player.volleys.length - 1][1] + "-" + player.volleys[player.volleys.length - 1][2],
+                            "numberRound": numberRound.value,
                         })
                     });
-                    sendTour(performance);
+                    sendRound(performance);
                 }
 
                 player.isActive = false;
                 if(players.value.indexOf(player) + 1 === players.value.length) {
                     players.value[0].isActive = true;
                     players.value[0].volleys.push(['', '', '']);
-                    numeroTour.value++;
+                    numberRound.value++;
                 } else {
                     players.value[players.value.indexOf(player) + 1].isActive = true;
                     players.value[players.value.indexOf(player) + 1].volleys.push(['', '', '']);
@@ -233,23 +226,15 @@ const setPointsActivePlayer = async (points: number) => {
     reset();
 }
 
-const sendTour = async (performance: any) => {
-    const data = {
-        "modeJeu": {
-            "code": "DACKT",
-            "nom": "Cricket",
-            "variante": "",
-            "properties": {
-                "mode": "TOUR"
-            }
-        },
-        "idJeu": gameStore.gameId.toString(),
+const sendRound = async (performance: any) => {
+    const data: DartRound = {
+        "idGame": gameStore.gameId,
+        "numberRound": 0, //TODO
         "performances": performance,
-        "properties": {}
     }
 
     const maPromesse = new Promise(async (resolve, reject) => {
-        const response = await fetch(import.meta.env.VITE_BE_URL + "/game/perform", {
+        const response = await fetch(import.meta.env.VITE_BE_URL + "/dart/game/perform", {
             method: "POST",
             body: JSON.stringify(data),
             headers: {
@@ -276,7 +261,7 @@ const endGame = async () => {
             "pseudo": player.pseudo,
             "volee": player.volleys[player.volleys.length - 1][0] + "-" + player.volleys[player.volleys.length - 1][1] + "-" + player.volleys[player.volleys.length - 1][2],
             "delta": "00",
-            "numeroTour": numeroTour.value.toString(),
+            "numberRound": numberRound.value.toString(),
             "score": player.points.total.toString(),
         })
     });
@@ -487,7 +472,7 @@ const cancel = () => {
                         players.value[players.value.indexOf(player) - 1].isActive = true;
                         removePreviousDart(players.value[players.value.indexOf(player) - 1], isCancel);
                     } else {
-                        numeroTour.value--;
+                        numberRound.value--;
                         players.value[players.value.length - 1].isActive = true;
                         removePreviousDart(players.value[players.value.length - 1], isCancel);
                     }
