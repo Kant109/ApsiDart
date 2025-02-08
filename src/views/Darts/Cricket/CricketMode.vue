@@ -17,7 +17,7 @@ const selectCricketMode = (selectedCricketMode: string) => {
                 id: player.id,
                 pseudo: player.pseudo,
                 firstName: player.firstName,
-                lastName: player.lastName,
+                name: player.name,
                 isActive: player.order === "1",
                 points: {
                     20: 0,

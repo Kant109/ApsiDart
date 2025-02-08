@@ -42,7 +42,7 @@ onMounted(async () => {
                 participants.push({
                     "id": player.id,
                     "firstName": player.firstName,
-                    "lastName": player.lastName,
+                    "name": player.name,
                     "pseudo": player.pseudo
                 })
             });
@@ -55,20 +55,20 @@ onMounted(async () => {
             const today = new Date();
 
             // Extract day, month, and year
-            let day = today.getDate();
-            let month = today.getMonth() + 1;
-            let year = today.getFullYear();
+            let day = today.getDate().toString();
+            let month = (today.getMonth() + 1).toString();
+            let year = today.getFullYear().toString();
 
             // Add leading zero to day and month if needed
-            day = day < 10 ? 0 + day : day;
-            month = month < 10 ? 0 + month : month;
+            day = parseInt(day) < 10 ? "0" + day : day;
+            month = parseInt(month) < 10 ? "0" + month : month;
 
             // Format the date as dd/mm/yyyy
-            return `${day}-${month}-${year}`;
+            return day + "-" + month + "-" +year;
         }
 
         const data: DartGame = {
-            "typeGame": "DAX01",
+            "typeGame": "DACKT",
             "creationDate": await currentDate() ,
             "players": await participants()
         }

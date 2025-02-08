@@ -7,7 +7,6 @@ const gameStore = useCricketGameStore();
 const managementAppStore = useManagementAppStore();
 
 const players = computed(() => gameStore.players);
-const playersPosition = computed(() => gameStore.playersPosition);
 const double = ref(false);
 const triple = ref(false);
 const isGameFinish = computed(() => gameStore.isGameFinish);
@@ -84,7 +83,7 @@ const playerCloseAllDoors = (player: CricketPlayer): boolean => {
     return player.doors[20] >= 3 && player.doors[19] >= 3 && player.doors[18] >= 3 && player.doors[17] >= 3 && player.doors[16] >= 3 && player.doors[15] >= 3 && player.doors[25] >= 3;
 }
 
-const playerBestScore = async (): Promise<Array<CricketPlayer>> => {
+const getPlayersPosition = async (): Promise<Array<CricketPlayer>> => {
     let orderedPlayersByPoints = players.value.slice();
 
     orderedPlayersByPoints.sort((j1: CricketPlayer, j2: CricketPlayer) => j1.points.total - j2.points.total);
@@ -92,29 +91,29 @@ const playerBestScore = async (): Promise<Array<CricketPlayer>> => {
     return orderedPlayersByPoints;
 }
 
-const getPlayersPosition = async () => {
-    let pointsByPlayer = [] as Array<number>;
+// const getPlayersPosition = async () => {
+//     let pointsByPlayer = [] as Array<number>;
 
-    players.value.forEach(async player => {
-        pointsByPlayer.push(player.points.total);
-    });
+//     players.value.forEach(async player => {
+//         pointsByPlayer.push(player.points.total);
+//     });
 
-    pointsByPlayer.sort((x, y) => x - y);
+//     pointsByPlayer.sort((x, y) => x - y);
     
-    players.value.forEach(player => {
-        if(player.points.total === pointsByPlayer[players.value.indexOf(player)]) {
-            gameStore.playersPosition.push(player);
-        }
-    });
-}
+//     players.value.forEach(player => {
+//         if(player.points.total === pointsByPlayer[players.value.indexOf(player)]) {
+//             gameStore.playersPosition.push(player);
+//         }
+//     });
+// }
 
 const checkIsGameFinish = async () => {
-    const playersBestScore = await playerBestScore();
+    const playersPosition = await getPlayersPosition();
     if(!isGameFinish.value) {
-        if(playerCloseAllDoors(playersBestScore[0])) {
+        if(playerCloseAllDoors(playersPosition[0])) {
             openConfirmEndGame.value = true;
             managementAppStore.blur = true;
-            gameStore.winnerPlayer = playersBestScore[0];
+            gameStore.winnerPlayer = playersPosition[0];
         }
     }
 }
@@ -194,19 +193,22 @@ const setPointsActivePlayer = async (points: number) => {
                 player.volleys[player.volleys.length - 1][2] = currentPointValue;
 
                 if(players.value.indexOf(player) === players.value.length - 1) {
-                    let performance = [] as Array<DartPerformance>;
+                    let performances = [] as Array<DartPerformance>;
+                    
+                    const playersPosition = await getPlayersPosition();
+
                     players.value.forEach(player => {
 
-                        performance.push({
+                        performances.push({
                             "idPlayer": player.id,
                             "pseudo": player.firstName,
                             "score": player.points.total,
-                            "position": 1, //TODO
+                            "position": playersPosition.indexOf(player) + 1,
                             "volley": player.volleys[player.volleys.length - 1][0] + "-" + player.volleys[player.volleys.length - 1][1] + "-" + player.volleys[player.volleys.length - 1][2],
                             "numberRound": numberRound.value,
                         })
                     });
-                    sendRound(performance);
+                    sendRound(performances);
                 }
 
                 player.isActive = false;
@@ -226,62 +228,53 @@ const setPointsActivePlayer = async (points: number) => {
     reset();
 }
 
-const sendRound = async (performance: any) => {
+const sendRound = async (performances: Array<DartPerformance>) => {
     const data: DartRound = {
         "idGame": gameStore.gameId,
-        "numberRound": 0, //TODO
-        "performances": performance,
+        "numberRound": numberRound.value,
+        "performances": performances,
     }
 
     const maPromesse = new Promise(async (resolve, reject) => {
-        const response = await fetch(import.meta.env.VITE_BE_URL + "/dart/game/perform", {
+        const response = await fetch(import.meta.env.VITE_BE_URL + "/dart/game/round", {
             method: "POST",
             body: JSON.stringify(data),
             headers: {
                 "Content-Type": "application/json"
             }
         });
-        resolve(response.json());
+        // resolve(response.json()); //TODO
     })
     maPromesse.then((message: any) => {
-        speak(message.commentaire as string)
+        // speak(message as string) //TODO
     });
 }
 
 const endGame = async () => {
-    let performance = [] as Array<any>;
+    let performances = [] as Array<DartPerformance>;
 
-    await getPlayersPosition();
+    const playersPosition = await getPlayersPosition();
 
     players.value.forEach(player => {
 
-        performance.push({
-            "idJoueur": player.id.toString(),
-            "positionClassement": (playersPosition.value.indexOf(player) + 1).toString(),
-            "pseudo": player.pseudo,
-            "volee": player.volleys[player.volleys.length - 1][0] + "-" + player.volleys[player.volleys.length - 1][1] + "-" + player.volleys[player.volleys.length - 1][2],
-            "delta": "00",
-            "numberRound": numberRound.value.toString(),
-            "score": player.points.total.toString(),
+        performances.push({
+            "idPlayer": player.id,
+            "pseudo": player.firstName,
+            "score": player.points.total,
+            "position": playersPosition.indexOf(player) + 1,
+            "volley": player.volleys[player.volleys.length - 1][0] + "-" + player.volleys[player.volleys.length - 1][1] + "-" + player.volleys[player.volleys.length - 1][2],
+            "numberRound": numberRound.value,
         })
     });
 
-    const data = {
-        "modeJeu": {
-            "code": "DACKT",
-            "nom": "Cricket",
-            "variante": "",
-            "properties": {
-                "mode": "TOUR"
-            }
-        },
-        "idJeu": gameStore.gameId.toString(),
-        "performances": performance,
-        "properties": {}
+    const data: DartRound = {
+        "idGame": gameStore.gameId,
+        "numberRound": numberRound.value,
+        "performances": performances,
     }
 
     try {
-        const response = await fetch(import.meta.env.VITE_BE_URL + "/game/end", {
+        const response = await fetch(import.meta.env.VITE_BE_URL + "/dart/game/end", {
             method: "POST",
             body: JSON.stringify(data),
             headers: {
@@ -292,16 +285,7 @@ const endGame = async () => {
             throw new Error(`Response status: ${response.status}`);
         }
     } catch (error) {
-        console.error(error)
-    }
-    try {
-        const response = await fetch(import.meta.env.VITE_BE_URL + "/stat/dart/" + gameStore.gameId);
-        if (!response.ok) {
-            throw new Error(`Response status: ${response.status}`);
-        }
-        gameStore.stats = await response.json();
-    } catch (error) {
-        console.log(error)
+        console.error(error);
     }
 }
 
@@ -493,7 +477,6 @@ const confirmEndGame = async (confirm: boolean) => {
     if(confirm) {
         await endGame();
         gameStore.isGameFinish = true;
-        gameStore.gameId = 0;
     } else {
         cancel();
     }

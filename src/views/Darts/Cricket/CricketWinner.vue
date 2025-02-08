@@ -13,7 +13,7 @@ const stats = computed(() => gameStore.stats);
 const router = useRouter();
 
 const replay = () => {
-    
+    gameStore.gameId = 0;
 }
 
 const backHome = () => {
@@ -33,7 +33,17 @@ const scoreMorePoint = (door: Door, player: CricketPlayer) => {
     return stats.value.commonStat.zonestats[door].idPlayerScoreMorePoint === player.id;
 }
 
-onMounted(() => {
+onMounted(async () => {
+    try {
+        const response = await fetch(import.meta.env.VITE_BE_URL + "/stat/dart/" + gameStore.gameId);
+        if (!response.ok) {
+            throw new Error(`Response status: ${response.status}`);
+        }
+        gameStore.stats = await response.json();
+    } catch (error) {
+        console.log(error);
+    }
+
     register();
 })
 
@@ -49,10 +59,10 @@ onMounted(() => {
             <swiper-slide v-for="player in playersPosition">
                 <div class="end-game-player-content">
                     <div class="winner-content">
-                        <img class="player-img" :src="'https://api.dicebear.com/9.x/adventurer/svg?seed=' + player.firstName + player.pseudo + player.lastName" alt="Avatar"></img>
+                        <img class="player-img" :src="'https://api.dicebear.com/9.x/adventurer/svg?seed=' + player.firstName + player.pseudo + player.name" alt="Avatar"></img>
                         <div class="player-info">
                             <div class="player-info-pseudo">{{ player.pseudo }}</div>
-                            <div class="player-info-full-name">{{ player.firstName }} {{ player.lastName.toUpperCase() }}</div>
+                            <div class="player-info-full-name">{{ player.firstName }} {{ player.name.toUpperCase() }}</div>
                         </div>
                     </div>
                     <div class="game-stats">

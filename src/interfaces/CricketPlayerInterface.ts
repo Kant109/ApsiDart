@@ -2,7 +2,7 @@ interface CricketPlayer {
     id: number,
     pseudo: string,
     firstName: string,
-    lastName: string,
+    name: string,
     isActive: boolean,
     points: {
         20: number,

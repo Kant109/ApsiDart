@@ -157,7 +157,7 @@ const createPlayer = async () => {
     
     let player = {
         "firstName": firstname.value,
-        "lastName": name.value,
+        "name": name.value,
         "pseudo": pseudo.value
     }
 
@@ -208,7 +208,7 @@ const back = () => {
                     @click.prevent="playerAction(player)"
                 >
                     <div class="player-content">
-                        <img class="player-img" :src="'https://api.dicebear.com/9.x/adventurer/svg?seed=' + player.firstName + player.pseudo + player.lastName" alt="Avatar" v-if="!changeOrderMode && !modificationMode" />
+                        <img class="player-img" :src="'https://api.dicebear.com/9.x/adventurer/svg?seed=' + player.firstName + player.pseudo + player.name" alt="Avatar" v-if="!changeOrderMode && !modificationMode" />
                         <div class="player-order" :class="{'change-order': changeOrderMode}" v-else >{{ player.order }}</div>
                         <div class="player-name">{{ player.pseudo.length > 5 ? player.pseudo.substring(0,5) + ".." : player.pseudo}}</div>
                     </div>
@@ -232,10 +232,10 @@ const back = () => {
                 <div class="btn-create-modal" @click.prevent="addingPlayer">Créer un joueur</div>
                 <div v-for="player in allPlayers" :class="{'send-out': selectedPlayers.includes(player)}">  
                     <div class="select-player-container" v-if="allPlayers.includes(player)">
-                        <img class="player-img" :src="'https://api.dicebear.com/9.x/adventurer/svg?seed=' + player.firstName + player.pseudo + player.lastName" alt="Avatar" />
+                        <img class="player-img" :src="'https://api.dicebear.com/9.x/adventurer/svg?seed=' + player.firstName + player.pseudo + player.name" alt="Avatar" />
                         <div class="player-name">
                             <div class="player-name-pseudo">{{ player.pseudo.length > 18 ? player.pseudo.substring(0,18) + ".." : player.pseudo}}</div>
-                            <div class="player-full-name">{{ player.firstName.length + player.lastName.length > 18 ? (player.firstName + " " + player.lastName).substring(0,18) + ".." : player.firstName + " " + player.lastName}}</div>
+                            <div class="player-full-name">{{ player.firstName.length + player.name.length > 18 ? (player.firstName + " " + player.name).substring(0,18) + ".." : player.firstName + " " + player.name}}</div>
                         </div>
                     </div>
                     <div class="select-player" :class="{'darkmode': isDarkMode}" @click.prevent="selectPlayer(player)"></div>

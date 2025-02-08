@@ -1,5 +1,5 @@
 interface DartRound {
     idGame: number,
     numberRound: number,
-    performances: DartPerformance
+    performances: Array<DartPerformance>
 }
