@@ -13,6 +13,9 @@ const isGameFinish = computed(() => gameStore.isGameFinish);
 const numberRound = ref(1);
 const openConfirmEndGame = ref(false);
 const blur = computed(() => managementAppStore.blur);
+const openCancelGame = computed(() => managementAppStore.openCancelGame);
+
+const emit = defineEmits(['comment', 'back']);
 
 const selectDouble = () => {
     if(triple.value) {
@@ -88,6 +91,8 @@ const getPlayersPosition = async (): Promise<Array<CricketPlayer>> => {
 
     orderedPlayersByPoints.sort((j1: CricketPlayer, j2: CricketPlayer) => j1.points.total - j2.points.total);
 
+    gameStore.playersPosition = orderedPlayersByPoints;
+    
     return orderedPlayersByPoints;
 }
 
@@ -243,10 +248,10 @@ const sendRound = async (performances: Array<DartPerformance>) => {
                 "Content-Type": "application/json"
             }
         });
-        // resolve(response.json()); //TODO
+        resolve(response.json());
     })
-    maPromesse.then((message: any) => {
-        // speak(message as string) //TODO
+    maPromesse.then((data: any) => {
+        emit("comment", data.comment);
     });
 }
 
@@ -287,27 +292,6 @@ const endGame = async () => {
     } catch (error) {
         console.error(error);
     }
-}
-
-const speak = async (text: string) => {
-    const utterance = new SpeechSynthesisUtterance(text);
-    
-    utterance.voice = window.speechSynthesis
-        .getVoices()
-        .find((voice) => voice.name === "") as SpeechSynthesisVoice;
-        // .find((voice) => voice.name === "Microsoft Paul - French (France)") as SpeechSynthesisVoice;
-    utterance.rate = 1.5;
-    utterance.pitch = 1;
-
-    utterance.onstart = () => {
-        managementAppStore.displayRadioBox = true;
-    };
-
-    utterance.onend = () => {
-        managementAppStore.displayRadioBox = false;
-    };
-
-    window.speechSynthesis.speak(utterance);
 }
 
 const removePoints = async (points: number) => {
@@ -482,6 +466,14 @@ const confirmEndGame = async (confirm: boolean) => {
     }
 }
 
+const confirmCancelGame = async (confirm: boolean) => {
+    managementAppStore.openCancelGame = false;
+    managementAppStore.blur = false;
+    if(confirm) {
+        emit('back');
+    }
+}
+
 onMounted(() => {
     gameStore.winnerPlayer = {} as CricketPlayer;
     cancel();
@@ -513,16 +505,19 @@ onMounted(() => {
     </div>
 
     <Teleport to="main">
-        <dialog class="confirm-end-game-dialog" :open="openConfirmEndGame">
+        <dialog class="confirm-end-game-dialog" :open="openConfirmEndGame || openCancelGame">
 
             <div class="confirm-end-game-container">
-                <div class="title">Un joueur a terminé</div>
-                <div class="text">Confirmez-vous la fin de la partie ?</div>
+                <div class="title">{{openCancelGame ? "Annulation de partie" : "Un joueur a terminé"}}</div>
+                <div class="text">{{openCancelGame ? "Êtes-vous sûr de vouloir annuler la partie ?" : "Confirmez-vous la fin de la partie ?"}}</div>
                 <div class="btn-container">
-                    <div class="btn cancel" @click.prevent="confirmEndGame(false)">Annuler</div>
-                    <div class="btn end" @click.prevent="confirmEndGame(true)">Terminer</div>
+                    <div v-if="openConfirmEndGame" class="btn cancel" @click.prevent="confirmEndGame(false)">Annuler</div>
+                    <div v-if="openConfirmEndGame" class="btn end" @click.prevent="confirmEndGame(true)">Terminer</div>
+                    <div v-if="openCancelGame" class="btn cancel" @click.prevent="confirmCancelGame(false)">Annuler</div>
+                    <div v-if="openCancelGame" class="btn end" @click.prevent="confirmCancelGame(true)">Confimer</div>
                 </div>
             </div>
+
 
         </dialog>
     </Teleport>

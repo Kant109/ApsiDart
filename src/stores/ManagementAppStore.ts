@@ -6,6 +6,7 @@ export const useManagementAppStore = defineStore('ManagementApp', () => {
   const isDarkMode = ref(false);
   const displayRadioBox = ref(false);
   const blur = ref(false);
+  const openCancelGame = ref(false);
 
-  return { isAppLoaded, isDarkMode, displayRadioBox, blur }
+  return { isAppLoaded, isDarkMode, displayRadioBox, blur, openCancelGame }
 })

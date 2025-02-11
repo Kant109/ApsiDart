@@ -27,6 +27,32 @@ const back = () => {
     router.push({ name: "darts-mode-cricket" });
 }
 
+const confirmBack = () => {
+    managementAppStore.blur = true;
+    managementAppStore.openCancelGame = true;
+}
+
+const speak = async (text: string) => {
+    const utterance = new SpeechSynthesisUtterance(text);
+    
+    utterance.voice = window.speechSynthesis
+        .getVoices()
+        .find((voice) => voice.name === "") as SpeechSynthesisVoice;
+        // .find((voice) => voice.name === "Microsoft Paul - French (France)") as SpeechSynthesisVoice;
+    utterance.rate = 1.5;
+    utterance.pitch = 1;
+
+    utterance.onstart = () => {
+        managementAppStore.displayRadioBox = true;
+    };
+
+    utterance.onend = () => {
+        managementAppStore.displayRadioBox = false;
+    };
+
+    window.speechSynthesis.speak(utterance);
+}
+
 watch(
     () => isGameFinish.value,
     () => {
@@ -73,7 +99,7 @@ onMounted(async () => {
             "players": await participants()
         }
 
-        try {
+        const maPromesse = new Promise(async (resolve, reject) => {
             const response = await fetch(import.meta.env.VITE_BE_URL + "/dart/game", {
                 method: "POST",
                 body: JSON.stringify(data),
@@ -81,14 +107,12 @@ onMounted(async () => {
                     "Content-Type": "application/json"
                 }
             });
-            if (!response.ok) {
-                throw new Error(`Response status: ${response.status}`);
-            }
-
-            gameStore.gameId = await response.json();
-        } catch (error: any) {
-            console.error(error.message);
-        }
+            resolve(response.json());
+        })
+        maPromesse.then((data: any) => {
+            gameStore.gameId = data.id;
+            speak(data.commentaire);
+        });
     }
 })
 
@@ -96,7 +120,7 @@ onMounted(async () => {
 
 <template>
     <RadioSpeaker />
-    <Header title="CRICKET" @previous-route="back" />
+    <Header title="CRICKET" @previous-route="confirmBack" />
 
     <div class="players-container" :class="{'blur': blur}">
         <div class="players-content" :class="{'lastPlayerActive': isLastPlayerActive}">
@@ -109,7 +133,7 @@ onMounted(async () => {
             />
         </div>
     </div>
-    <CricketBoard />
+    <CricketBoard @comment="(text) => speak(text)" @back="back"/>
 </template>
 
 <style lang="scss" scoped>
@@ -171,8 +195,7 @@ onMounted(async () => {
             content: "";
             height: .75rem;
             border-radius: 0 0 1rem 1rem;
-            --tw-shadow: inset 0 -5px 0 0 rgba(0, 0, 0, .25);
-            box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
+            border-bottom: 2px solid rgba(0, 0, 0, .25);
             background-color: var(--bg-color-secondary);
         }
         

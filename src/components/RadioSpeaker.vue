@@ -40,7 +40,7 @@ const stopSpeaker = () => {
     right: 5%;
     top: 50%;
     border-radius: .5rem;
-    z-index: 1000;
+    z-index: 999;
     
     .radio-box-content {
         display: flex;
