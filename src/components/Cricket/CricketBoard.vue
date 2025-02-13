@@ -91,35 +91,22 @@ const getPlayersPosition = async (): Promise<Array<CricketPlayer>> => {
 
     orderedPlayersByPoints.sort((j1: CricketPlayer, j2: CricketPlayer) => j1.points.total - j2.points.total);
 
-    gameStore.playersPosition = orderedPlayersByPoints;
+    gameStore.players = orderedPlayersByPoints;
     
     return orderedPlayersByPoints;
 }
 
-// const getPlayersPosition = async () => {
-//     let pointsByPlayer = [] as Array<number>;
-
-//     players.value.forEach(async player => {
-//         pointsByPlayer.push(player.points.total);
-//     });
-
-//     pointsByPlayer.sort((x, y) => x - y);
-    
-//     players.value.forEach(player => {
-//         if(player.points.total === pointsByPlayer[players.value.indexOf(player)]) {
-//             gameStore.playersPosition.push(player);
-//         }
-//     });
-// }
-
 const checkIsGameFinish = async () => {
     const playersPosition = await getPlayersPosition();
+
     if(!isGameFinish.value) {
-        if(playerCloseAllDoors(playersPosition[0])) {
-            openConfirmEndGame.value = true;
-            managementAppStore.blur = true;
-            gameStore.winnerPlayer = playersPosition[0];
-        }
+        playersPosition.forEach(player => { 
+            if(playerCloseAllDoors(player)) {
+                openConfirmEndGame.value = true;
+                managementAppStore.blur = true;
+                gameStore.winnerPlayer = player;
+            }
+        });
     }
 }
 

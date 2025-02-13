@@ -1,13 +1,42 @@
 <script setup lang="ts">
 import { useRouter } from "vue-router";
 import { useCricketGameStore } from "@/stores/CricketGameStore";
-import { computed, onMounted, ref } from "vue";
+import { computed, onBeforeMount, watch } from "vue";
 import { register } from 'swiper/element/bundle';
+import { Line } from 'vue-chartjs';
+import { Chart as ChartJS, CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend } from 'chart.js';
 
 const gameStore = useCricketGameStore();
 
-const playersPosition = computed(() => gameStore.playersPosition);
-const stats = computed(() => gameStore.playersStats);
+const players = computed(() => gameStore.players);
+
+const chartData = {
+    labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
+    datasets: [
+        {
+            label: 'Data One',
+            data: [40, 39, 10, 40, 39, 80, 40],
+            borderColor: "#FF0000",
+            backgroundColor: "#FF000080",
+            pointStyle: 'circle',
+            pointRadius: 10,
+            pointHoverRadius: 15
+        },
+        {
+            label: 'Data two',
+            data: [40, 39, 39, 80, 40],
+            borderColor: "#0000FF",
+            backgroundColor: "#0000FF80",
+            pointStyle: 'circle',
+            pointRadius: 10,
+            pointHoverRadius: 15
+        }
+    ]
+};
+const chartOptions = {
+    responsive: true,
+    maintainAspectRatio: false
+}
 
 const router = useRouter();
 
@@ -20,14 +49,29 @@ const backHome = () => {
     router.push({ name: "home"});
 }
 
-onMounted(async () => {
+onBeforeMount(async () => {
     register();
+    ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend);
     try {
         const response = await fetch(import.meta.env.VITE_BE_URL + "/dart/stat/game/" + gameStore.gameId + "/detail?typeGame=DACKT");
         if (!response.ok) {
             throw new Error(`Response status: ${response.status}`);
         }
-        gameStore.playersStats = await response.json();
+        const cricketGameStats = await response.json();
+
+        (cricketGameStats.players as Array<PlayerStats>).forEach(playerGameStat => {
+            players.value.forEach(player => {
+                if(playerGameStat.idPlayer === player.id) {
+                    player.elo = playerGameStat.eloScore;
+                    player.avgPosition = playerGameStat.avgPosition;
+                    player.avgPoints = playerGameStat.avgPoints;
+                    player.pctVictory = playerGameStat.pctVictory;
+                    player.avgNbDartCompleted = playerGameStat.avgNbDartCompleted;
+                    player.nbGame = playerGameStat.nbGame;
+                    player.nbVictory = playerGameStat.nbVictory;
+                }
+            })
+        });
     } catch (error: any) {
         console.error(error.message);
     }
@@ -42,7 +86,7 @@ onMounted(async () => {
             :navigation="true"
             class="mySwiper"
         >
-            <swiper-slide v-for="player in playersPosition">
+            <swiper-slide v-for="player in players">
                 <div class="end-game-player-content">
                     <div class="winner-content">
                         <img class="player-img" :src="'https://api.dicebear.com/9.x/adventurer/svg?seed=' + player.firstName + player.pseudo + player.name" alt="Avatar"></img>
@@ -52,10 +96,15 @@ onMounted(async () => {
                         </div>
                     </div>
                     <div class="game-stats">
-                        <div class="player-position">{{ playersPosition.indexOf(player) + 1 }} <sup v-if="playersPosition.indexOf(player) === 0">er</sup><sup v-else>ème</sup>/ {{ playersPosition.length }}</div>
+                        <div class="player-position">Position : {{ players.indexOf(player) + 1 }} <sup v-if="players.indexOf(player) === 0">er</sup><sup v-else>ème</sup>/ {{ players.length }}</div>
+                        <div class="player-elo">Elo : {{ player.elo![0] }}</div>
                     </div>
                     <div class="stats-container">
-                        Test
+                        <Line
+                            id="my-chart-id"
+                            :options="chartOptions"
+                            :data="chartData"
+                        />
                     </div>
                     <div class="btn-replay" @click.prevent="replay">Rejouer</div>
                 </div>
@@ -97,12 +146,6 @@ onMounted(async () => {
         padding: 1rem;
         border-radius: 1rem;
         border: 1px solid rgba(0, 0, 0, .25);
-        
-        .animation {
-            position: absolute;
-            top: 0;
-            left: 0;
-        }
 
         .winner-content {
             display: flex;
@@ -153,6 +196,7 @@ onMounted(async () => {
             align-items: center;
             justify-content: center;
             width: 100%;
+            height: 400px
         }
 
         .btn-replay {
