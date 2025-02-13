@@ -25,10 +25,10 @@ interface CricketPlayer {
     },
     volleys: Array<Array<string>>,
     elo?: Array<number>,
-    avgPosition: Array<number>,
-    avgPoints: Array<number>,
-    pctVictory: Array<number>,
-    avgNbDartCompleted: Array<number>,
-    nbGame: number,
-    nbVictory: number
+    avgPosition?: Array<number>,
+    avgPoints?: Array<number>,
+    pctVictory?: Array<number>,
+    avgNbDartCompleted?: Array<number>,
+    nbGame?: number,
+    nbVictory?: number
 }
