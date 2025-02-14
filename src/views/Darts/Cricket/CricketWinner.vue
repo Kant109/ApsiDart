@@ -1,12 +1,13 @@
 <script setup lang="ts">
 import { useRouter } from "vue-router";
 import { useCricketGameStore } from "@/stores/CricketGameStore";
-import { computed, onBeforeMount } from "vue";
+import { computed, onBeforeMount, ref } from "vue";
 import { register } from 'swiper/element/bundle';
 
 const gameStore = useCricketGameStore();
 
 const players = computed(() => gameStore.players);
+const chartDataLoaded = ref(false);
 
 const router = useRouter();
 
@@ -90,6 +91,8 @@ onBeforeMount(async () => {
                 }
             })
         })
+
+        chartDataLoaded.value = true;
     } catch (error: any) {
         console.error(error.message);
     }
@@ -115,9 +118,9 @@ onBeforeMount(async () => {
                     </div>
                     <div class="game-stats">
                         <div class="player-position">Position : {{ players.indexOf(player) + 1 }} <sup v-if="players.indexOf(player) === 0">er</sup><sup v-else>ème</sup>/ {{ players.length }}</div>
-                        <div class="player-elo">Elo : {{ player.elo![0] }}</div>
+                        <div class="player-elo">Elo : {{ player.elo !== undefined ? player.elo![0] : "" }}</div>
                     </div>
-                    <div class="stats-container">
+                    <div class="stats-container" v-if="chartDataLoaded">
                         <highcharts :options="player.chartData"></highcharts>
                     </div>
                     <div class="btn-replay" @click.prevent="replay">Rejouer</div>
