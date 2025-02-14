@@ -10,12 +10,6 @@ const players = computed(() => gameStore.players);
 
 const router = useRouter();
 
-const chartOptions = {
-    series: [{
-        data: [1,2,3] // sample data
-    }]
-}
-
 const replay = () => {
     gameStore.gameId = 0;
 }
@@ -36,22 +30,57 @@ onBeforeMount(async () => {
 
         players.value.forEach(player => {
             player.chartData = {
-                labels: Array.from(Array(cricketGameStats.evolutionPosition[player.id].length).keys()),
-                datasets: [
+                title: {
+                    text: 'Évolution de votre position et score',
+                    align: 'center'
+                },
+                yAxis: [
                     {
-                        label: 'Position',
-                        data: cricketGameStats.evolutionPosition[player.id],
-                        borderColor: "#FF0000",
-                        yAxisID: 'y',
+                        labels: {
+                            format: '{value}',
+                            style: {
+                                color: "#0000FF"
+                            }
+                        },
+                        title: {
+                            text: 'Score',
+                            style: {
+                                color: "#0000FF"
+                            }
+                        },
+                        opposite: true,
+                        min: 0
                     },
                     {
-                        label: 'Points',
+                        labels: {
+                            format: '{value}',
+                            style: {
+                                color: "#FF0000"
+                            }
+                        },
+                        title: {
+                            text: 'Position',
+                            style: {
+                                color: "#FF0000"
+                            }
+                        },
+                        min: 0
+                    }
+                ],
+                series: [
+                    {
+                        name: "Position",
+                        yAxis: 1,
+                        data: cricketGameStats.evolutionPosition[player.id],
+                        color: "#FF0000"
+                    },
+                    {
+                        name: "Score",
                         data: cricketGameStats.evolutionScore[player.id],
-                        borderColor: "#0000FF",
-                        yAxisID: 'y1',
+                        color: "#0000FF"
                     }
                 ]
-            };
+            }
         });
 
         (cricketGameStats.players as Array<PlayerStats>).forEach(playerGameStat => {
@@ -89,7 +118,7 @@ onBeforeMount(async () => {
                         <div class="player-elo">Elo : {{ player.elo![0] }}</div>
                     </div>
                     <div class="stats-container">
-                        <highcharts :options="chartOptions"></highcharts>
+                        <highcharts :options="player.chartData"></highcharts>
                     </div>
                     <div class="btn-replay" @click.prevent="replay">Rejouer</div>
                 </div>

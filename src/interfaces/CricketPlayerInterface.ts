@@ -31,8 +31,5 @@ interface CricketPlayer {
     avgNbDartCompleted?: Array<number>,
     nbGame?: number,
     nbVictory?: number,
-    chartData?: {
-        labels: Array<any>,
-        datasets: Array<any>
-    },
+    chartData?: Object,
 }
