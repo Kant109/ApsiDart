@@ -91,8 +91,6 @@ const getPlayersPosition = async (): Promise<Array<CricketPlayer>> => {
 
     orderedPlayersByPoints.sort((j1: CricketPlayer, j2: CricketPlayer) => j1.points.total - j2.points.total);
 
-    gameStore.players = orderedPlayersByPoints;
-    
     return orderedPlayersByPoints;
 }
 
@@ -448,6 +446,7 @@ const confirmEndGame = async (confirm: boolean) => {
     if(confirm) {
         await endGame();
         gameStore.isGameFinish = true;
+        gameStore.players = await getPlayersPosition();
     } else {
         cancel();
     }

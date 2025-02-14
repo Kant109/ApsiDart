@@ -1,44 +1,20 @@
 <script setup lang="ts">
 import { useRouter } from "vue-router";
 import { useCricketGameStore } from "@/stores/CricketGameStore";
-import { computed, onBeforeMount, watch } from "vue";
+import { computed, onBeforeMount } from "vue";
 import { register } from 'swiper/element/bundle';
-import { Line } from 'vue-chartjs';
-import { Chart as ChartJS, CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend } from 'chart.js';
 
 const gameStore = useCricketGameStore();
 
 const players = computed(() => gameStore.players);
 
-const chartData = {
-    labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
-    datasets: [
-        {
-            label: 'Data One',
-            data: [40, 39, 10, 40, 39, 80, 40],
-            borderColor: "#FF0000",
-            backgroundColor: "#FF000080",
-            pointStyle: 'circle',
-            pointRadius: 10,
-            pointHoverRadius: 15
-        },
-        {
-            label: 'Data two',
-            data: [40, 39, 39, 80, 40],
-            borderColor: "#0000FF",
-            backgroundColor: "#0000FF80",
-            pointStyle: 'circle',
-            pointRadius: 10,
-            pointHoverRadius: 15
-        }
-    ]
-};
-const chartOptions = {
-    responsive: true,
-    maintainAspectRatio: false
-}
-
 const router = useRouter();
+
+const chartOptions = {
+    series: [{
+        data: [1,2,3] // sample data
+    }]
+}
 
 const replay = () => {
     gameStore.gameId = 0;
@@ -51,7 +27,6 @@ const backHome = () => {
 
 onBeforeMount(async () => {
     register();
-    ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend);
     try {
         const response = await fetch(import.meta.env.VITE_BE_URL + "/dart/stat/game/" + gameStore.gameId + "/detail?typeGame=DACKT");
         if (!response.ok) {
@@ -59,19 +34,33 @@ onBeforeMount(async () => {
         }
         const cricketGameStats = await response.json();
 
+        players.value.forEach(player => {
+            player.chartData = {
+                labels: Array.from(Array(cricketGameStats.evolutionPosition[player.id].length).keys()),
+                datasets: [
+                    {
+                        label: 'Position',
+                        data: cricketGameStats.evolutionPosition[player.id],
+                        borderColor: "#FF0000",
+                        yAxisID: 'y',
+                    },
+                    {
+                        label: 'Points',
+                        data: cricketGameStats.evolutionScore[player.id],
+                        borderColor: "#0000FF",
+                        yAxisID: 'y1',
+                    }
+                ]
+            };
+        });
+
         (cricketGameStats.players as Array<PlayerStats>).forEach(playerGameStat => {
             players.value.forEach(player => {
-                if(playerGameStat.idPlayer === player.id) {
+                if(player.id === playerGameStat.idPlayer) {
                     player.elo = playerGameStat.eloScore;
-                    player.avgPosition = playerGameStat.avgPosition;
-                    player.avgPoints = playerGameStat.avgPoints;
-                    player.pctVictory = playerGameStat.pctVictory;
-                    player.avgNbDartCompleted = playerGameStat.avgNbDartCompleted;
-                    player.nbGame = playerGameStat.nbGame;
-                    player.nbVictory = playerGameStat.nbVictory;
                 }
             })
-        });
+        })
     } catch (error: any) {
         console.error(error.message);
     }
@@ -100,11 +89,7 @@ onBeforeMount(async () => {
                         <div class="player-elo">Elo : {{ player.elo![0] }}</div>
                     </div>
                     <div class="stats-container">
-                        <Line
-                            id="my-chart-id"
-                            :options="chartOptions"
-                            :data="chartData"
-                        />
+                        <highcharts :options="chartOptions"></highcharts>
                     </div>
                     <div class="btn-replay" @click.prevent="replay">Rejouer</div>
                 </div>
@@ -183,7 +168,7 @@ onBeforeMount(async () => {
             }
         }
 
-        .player-position {
+        .player-position, .player-elo {
             font-family: "Tilt Warp", sans-serif;
             font-size: 1rem;
             color: var(--text-color);
@@ -196,7 +181,6 @@ onBeforeMount(async () => {
             align-items: center;
             justify-content: center;
             width: 100%;
-            height: 400px
         }
 
         .btn-replay {
