@@ -86,7 +86,7 @@ const playerCloseAllDoors = (player: CricketPlayer): boolean => {
     return player.doors[20] >= 3 && player.doors[19] >= 3 && player.doors[18] >= 3 && player.doors[17] >= 3 && player.doors[16] >= 3 && player.doors[15] >= 3 && player.doors[25] >= 3;
 }
 
-const getPlayersPosition = async (): Promise<Array<CricketPlayer>> => {
+const getPlayersPosition = async (): Promise<CricketPlayer[]> => {
     let orderedPlayersByPoints = players.value.slice();
 
     orderedPlayersByPoints.sort((j1: CricketPlayer, j2: CricketPlayer) => j1.points.total - j2.points.total);
@@ -98,13 +98,19 @@ const checkIsGameFinish = async () => {
     const playersPosition = await getPlayersPosition();
 
     if(!isGameFinish.value) {
-        playersPosition.forEach(player => { 
-            if(playerCloseAllDoors(player)) {
-                openConfirmEndGame.value = true;
-                managementAppStore.blur = true;
-                gameStore.winnerPlayer = player;
-            }
-        });
+        if(playersPosition[0].points.total === 0) {
+            playersPosition.forEach(player => { 
+                if(playerCloseAllDoors(player)) {
+                    openConfirmEndGame.value = true;
+                    managementAppStore.blur = true;
+                    gameStore.winnerPlayer = player;
+                }
+            });
+        } else if(playerCloseAllDoors(playersPosition[0])) {
+            openConfirmEndGame.value = true;
+            managementAppStore.blur = true;
+            gameStore.winnerPlayer = playersPosition[0];
+        }
     }
 }
 
@@ -214,11 +220,15 @@ const setPointsActivePlayer = async (points: number) => {
             }
         }
     });
-    await checkIsGameFinish();
+
+    setTimeout(async () => {
+        await checkIsGameFinish();
+    }, 200);
+    
     reset();
 }
 
-const sendRound = async (performances: Array<DartPerformance>) => {
+const sendRound = async (performances: DartPerformance[]) => {
     const data: DartRound = {
         "idGame": gameStore.gameId,
         "numberRound": numberRound.value,

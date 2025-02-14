@@ -37,6 +37,7 @@ onBeforeMount(async () => {
                 },
                 yAxis: [
                     {
+                        allowDecimals: false,
                         labels: {
                             format: '{value}',
                             style: {
@@ -53,6 +54,7 @@ onBeforeMount(async () => {
                         min: 0
                     },
                     {
+                        allowDecimals: false,
                         labels: {
                             format: '{value}',
                             style: {
