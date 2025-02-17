@@ -181,6 +181,7 @@ const dragOptions = () => {
                         :class="{'remove-player': isRemovePlayerMode}"
                         @click.prevent="playerAction(player)"
                     >
+                        <i class="player-order">{{ selectedPlayers.indexOf(player) + 1  }}</i>
                         <div class="player-content" draggable="false" @dragstart.prevent>
                             <img class="player-img" :src="'https://api.dicebear.com/9.x/adventurer/svg?seed=' + player.firstName + player.pseudo + player.name" alt="Avatar" />
                             <div class="player-name">{{ player.pseudo.length > 5 ? player.pseudo.substring(0,5) + ".." : player.pseudo}}</div>
@@ -286,6 +287,8 @@ const dragOptions = () => {
                 width: 100%;
                 border-radius: .5rem;
                 border: 5px solid var(--bg-color-primary);
+                position: relative;
+
 
                 &.remove-player {
                     border: 5px solid;
@@ -312,30 +315,20 @@ const dragOptions = () => {
                         cursor: pointer;
                     }
 
-                    .player-order {
-                        display: flex;
-                        align-items: center;
-                        justify-content: center;
-                        height: 3rem;
-                        width: 3rem;
-                        border-radius: 50%;
-                        background-color: var(--bg-color-secondary);
-                        cursor: pointer;
-                        font-family: "Tilt Warp", sans-serif;
-                        font-size: 2rem;
-                        color: var(--text-color);
-                        border: 2px solid;
-                        
-                        &.change-order {
-                            animation: bounce-border-color 1s infinite;
-                        }
-                    }
 
                     .player-name {
                         font-family: "Tilt Warp", sans-serif;
                         font-size: 1rem;
                         color: var(--text-color);
                     }
+                }
+                .player-order {
+                    font-family: "Tilt Warp", sans-serif;
+                    position: absolute;
+                    top: 0.1rem;
+                    left: 0.2rem;
+                    font-style: normal;
+                    font-size: large;
                 }
             }
         }
