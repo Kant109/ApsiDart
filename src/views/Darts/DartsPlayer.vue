@@ -3,6 +3,7 @@ import Header from '@/components/Header.vue';
 import { useManagementAppStore } from '@/stores/ManagementAppStore';
 import { computed, onMounted, ref } from 'vue';
 import { useRouter } from 'vue-router';
+import draggable from 'vuedraggable';
 
 const router = useRouter();
 
@@ -14,16 +15,15 @@ const openSearchPlayer = ref(false);
 const isDarkMode = computed(() => managementAppStore.isDarkMode);
 const modificationMode = ref(false);
 const isRemovePlayerMode = ref(false);
-const changeOrderMode = ref(false);
 const modalTitle = ref("Sélectionner des joueurs");
 const creatingPlayer = ref(false);
 const formError = ref(false);
-const nextPlayerPlace = ref(1);
 const messageErrorNbPlayer = ref(false);
 
 const name = ref("");
 const firstname = ref("");
 const pseudo = ref("");
+let drag = ref(false);
 
 
 onMounted(async () => {
@@ -50,7 +50,6 @@ onMounted(async () => {
 
     if(selectedPlayers.value.length > 0) {
         selectedPlayers.value.forEach(player => {
-            player.order = (selectedPlayers.value.indexOf(player) + 1).toString();
             allPlayers.value.forEach(playerFromApi => {
                 if(player.id === playerFromApi.id) {
                     allPlayers.value.splice(allPlayers.value.indexOf(playerFromApi), 1);
@@ -71,7 +70,6 @@ const closeModal = () => {
 
 const selectPlayer = (player: Player) => {
     const indexOfPlayer = allPlayers.value.indexOf(player);
-    player.order = (selectedPlayers.value.length + 1).toString();
     selectedPlayers.value.push(player);
     setTimeout(() => {
         allPlayers.value.splice(indexOfPlayer, 1);
@@ -80,48 +78,25 @@ const selectPlayer = (player: Player) => {
 
 const playerAction = (player: Player) => {
     if(isRemovePlayerMode.value) {
-        if(parseInt(player.order as string) < selectedPlayers.value.length) {
-            for (let index = selectedPlayers.value.indexOf(player) + 1; index < selectedPlayers.value.length; index++) {
-                const newOrder = (parseInt(selectedPlayers.value[index].order as string) - 1).toString();
-                selectedPlayers.value[index].order = newOrder;
-            }
-        }
         const indexOfPlayer = selectedPlayers.value.indexOf(player);
         selectedPlayers.value.splice(indexOfPlayer, 1);
         allPlayers.value.push(player);
-    }
-    if(changeOrderMode.value) {
-        player.order = nextPlayerPlace.value.toString();
-        nextPlayerPlace.value++;
     }
 }
 
 const startGame = () => {
     if(selectedPlayers.value.length > 1) {
         router.push({ name: "darts-mode"});
-        localStorage.removeItem('orderedDartsPlayer');
-        
-        let orderedDartsPlayer = Array(selectedPlayers.value.length).fill("");
-        
-        selectedPlayers.value.forEach(player => {
-            orderedDartsPlayer[parseInt(player.order as string) - 1] = player;
-        })
-        
-        localStorage.setItem('orderedDartsPlayer', JSON.stringify(orderedDartsPlayer));
+        localStorage.setItem('orderedDartsPlayer', JSON.stringify([].slice.call(selectedPlayers.value)));
     } else {
         messageErrorNbPlayer.value = true;
     }
 }
-
 const validPlayers = () => {
-    if(!isRemovePlayerMode.value && !changeOrderMode.value) {
+    if(!isRemovePlayerMode.value) {
         modificationMode.value = false;
     }
     isRemovePlayerMode.value = false;
-    selectedPlayers.value.forEach(player => {
-        if(player.order === "") return;
-    });
-    changeOrderMode.value = false;
 }
 
 const modification = () => {
@@ -130,14 +105,6 @@ const modification = () => {
 
 const removePlayers = () => {
     isRemovePlayerMode.value = true;
-}
-
-const changeOrder = () => {
-    changeOrderMode.value = true;
-    nextPlayerPlace.value = 1;
-    selectedPlayers.value.forEach(player => {
-        player.order = "";
-    });
 }
 
 const addingPlayer = () => {
@@ -194,34 +161,47 @@ const back = () => {
     router.push({ name: "home" });
 }
 
+const dragOptions = () => {
+      return {
+        animation: 200,
+        group: "players",
+        disabled: false,
+        ghostClass: "ghost"
+      };
+    }
 </script>
 
 <template>
     <div class="settings-container" :class="{'blur': openSearchPlayer}">
         <Header title="FLÉCHETTES" @previous-route="back" />
         <div class="adding-player-container">
-            <div class="adding-player-recap" v-if="selectedPlayers.length > 0">
-                <div
-                    v-for="player in selectedPlayers"
-                    class="player-container"
-                    :class="{'remove-player': isRemovePlayerMode}"
-                    @click.prevent="playerAction(player)"
+            <draggable v-if="selectedPlayers.length > 0" 
+                    tag="div"
+                    v-model="selectedPlayers"
+                    v-bind="dragOptions"
+                    @start="drag = true"
+                    @end="drag = false"
+                    class="adding-player-recap"
                 >
-                    <div class="player-content">
-                        <img class="player-img" :src="'https://api.dicebear.com/9.x/adventurer/svg?seed=' + player.firstName + player.pseudo + player.name" alt="Avatar" v-if="!changeOrderMode && !modificationMode" />
-                        <div class="player-order" :class="{'change-order': changeOrderMode}" v-else >{{ player.order }}</div>
-                        <div class="player-name">{{ player.pseudo.length > 5 ? player.pseudo.substring(0,5) + ".." : player.pseudo}}</div>
+                <template #item="{ element: player }: {element : Player}" @dragover.prevent>
+                    <div class="player-container"
+                        :class="{'remove-player': isRemovePlayerMode}"
+                        @click.prevent="playerAction(player)"
+                    >
+                        <div class="player-content" draggable="false" @dragstart.prevent>
+                            <img class="player-img" :src="'https://api.dicebear.com/9.x/adventurer/svg?seed=' + player.firstName + player.pseudo + player.name" alt="Avatar" v-if="!modificationMode" />
+                            <div class="player-name">{{ player.pseudo.length > 5 ? player.pseudo.substring(0,5) + ".." : player.pseudo}}</div>
+                        </div>
                     </div>
-                </div>
-            </div>
+                </template>
+            </draggable>
             <div class="error-nb-player" v-if="messageErrorNbPlayer">Il faut minimum 2 joueurs pour lancer une partie</div>
             <div class="btn-container">
-                <div v-if="isRemovePlayerMode || changeOrderMode || modificationMode" class="btn-save-players" @click.prevent="validPlayers">Valider</div>
-                <div v-if="!isRemovePlayerMode && !changeOrderMode && !modificationMode" class="btn-add-player" @click.prevent="addNewPlayer">Ajouter des joueurs</div>
-                <div v-if="selectedPlayers.length > 0 && !isRemovePlayerMode && !changeOrderMode && !modificationMode" class="btn-start-game" @click.prevent="startGame">Choix du mode</div>
-                <div v-if="selectedPlayers.length > 0 && !isRemovePlayerMode && !changeOrderMode && !modificationMode" class="btn-modif-player" @click.prevent="modification">Modifier</div>
-                <div v-if="selectedPlayers.length > 0 && !isRemovePlayerMode && !changeOrderMode && modificationMode" class="btn-remove-player" @click.prevent="removePlayers">Supprimer des joueurs</div>
-                <div v-if="selectedPlayers.length > 0 && !isRemovePlayerMode && !changeOrderMode && modificationMode" class="btn-change-order" @click.prevent="changeOrder">Changer l'ordre</div>
+                <div v-if="isRemovePlayerMode" class="btn-save-players" @click.prevent="validPlayers">Valider</div>
+                <div v-if="!isRemovePlayerMode" class="btn-add-player" @click.prevent="addNewPlayer">Ajouter des joueurs</div>
+                <div v-if="selectedPlayers.length > 0 && !isRemovePlayerMode" class="btn-start-game" @click.prevent="startGame">Choix du mode</div>
+                <div v-if="selectedPlayers.length > 0 && !isRemovePlayerMode" class="btn-modif-player" @click.prevent="modification">Modifier</div>
+                <div v-if="selectedPlayers.length > 0 && !isRemovePlayerMode" class="btn-remove-player" @click.prevent="removePlayers">Supprimer des joueurs</div>
             </div>
         </div>
     </div>
@@ -320,6 +300,10 @@ const back = () => {
                     animation: bounce-border-color 1s infinite;
                 }
 
+                &:hover {
+                    cursor: grab;
+                }
+
                 .player-content {
                     display: flex;
                     flex-direction: column;
@@ -405,5 +389,12 @@ const back = () => {
         border-color: red;
     }
 }
+    .sortable-chosen {
+        transition: transform 0.5s;
+    }
 
+    .sortable-ghost {
+        opacity: 0.5;
+        background: #c8ebfb;
+    }
 </style>
