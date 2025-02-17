@@ -24,6 +24,7 @@ interface CricketPlayer {
         25: number
     },
     volleys: Array<Array<string>>,
+    position: number,
     elo?: Array<number>,
     avgPosition?: Array<number>,
     avgPoints?: Array<number>,
