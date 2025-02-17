@@ -13,7 +13,6 @@ const allPlayers = ref([] as Array<Player>);
 const selectedPlayers = ref([] as Array<Player>);
 const openSearchPlayer = ref(false);
 const isDarkMode = computed(() => managementAppStore.isDarkMode);
-const modificationMode = ref(false);
 const isRemovePlayerMode = ref(false);
 const modalTitle = ref("Sélectionner des joueurs");
 const creatingPlayer = ref(false);
@@ -93,15 +92,9 @@ const startGame = () => {
     }
 }
 const validPlayers = () => {
-    if(!isRemovePlayerMode.value) {
-        modificationMode.value = false;
-    }
     isRemovePlayerMode.value = false;
 }
 
-const modification = () => {
-    modificationMode.value = true;
-}
 
 const removePlayers = () => {
     isRemovePlayerMode.value = true;
@@ -189,7 +182,7 @@ const dragOptions = () => {
                         @click.prevent="playerAction(player)"
                     >
                         <div class="player-content" draggable="false" @dragstart.prevent>
-                            <img class="player-img" :src="'https://api.dicebear.com/9.x/adventurer/svg?seed=' + player.firstName + player.pseudo + player.name" alt="Avatar" v-if="!modificationMode" />
+                            <img class="player-img" :src="'https://api.dicebear.com/9.x/adventurer/svg?seed=' + player.firstName + player.pseudo + player.name" alt="Avatar" />
                             <div class="player-name">{{ player.pseudo.length > 5 ? player.pseudo.substring(0,5) + ".." : player.pseudo}}</div>
                         </div>
                     </div>
@@ -200,7 +193,6 @@ const dragOptions = () => {
                 <div v-if="isRemovePlayerMode" class="btn-save-players" @click.prevent="validPlayers">Valider</div>
                 <div v-if="!isRemovePlayerMode" class="btn-add-player" @click.prevent="addNewPlayer">Ajouter des joueurs</div>
                 <div v-if="selectedPlayers.length > 0 && !isRemovePlayerMode" class="btn-start-game" @click.prevent="startGame">Choix du mode</div>
-                <div v-if="selectedPlayers.length > 0 && !isRemovePlayerMode" class="btn-modif-player" @click.prevent="modification">Modifier</div>
                 <div v-if="selectedPlayers.length > 0 && !isRemovePlayerMode" class="btn-remove-player" @click.prevent="removePlayers">Supprimer des joueurs</div>
             </div>
         </div>
