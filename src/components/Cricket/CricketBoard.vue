@@ -113,17 +113,16 @@ const getPlayersPosition = async (): Promise<CricketPlayer[]> => {
 }
 
 const playerWithLessPoints = async (player: CricketPlayer): Promise<boolean> => {
-    if(player.points.total === 0) {
-        return true;
-    } else {
-        let res = true
-        players.value.forEach(otherPlayer => {
-            if((player.id !== otherPlayer.id) && player.points.total > otherPlayer.points.total) {
-                res = false;
-            }
-        });
-        return res;
-    }
+    if(player.points.total === 0) return true;
+
+    let res = true
+    players.value.forEach(otherPlayer => {
+        if((player.id !== otherPlayer.id) && player.points.total > otherPlayer.points.total) {
+            res = false;
+        }
+    });
+    return res;
+
 }
 
 const checkIsGameFinish = async () => {
@@ -455,24 +454,25 @@ const cancel = () => {
     }
     let isCancel = false;
     players.value.forEach(player => {
-        if(player.isActive) {
-            if(!(player.volleys[player.volleys.length - 1][0] === "" && player.volleys[player.volleys.length - 1][1] === "" && player.volleys[player.volleys.length - 1][2] === "")) {
-                removePreviousDart(player, isCancel);
-                isCancel = true;
-            } else {
-                player.isActive = false;
-                if((players.value.indexOf(player) - 1) >= 0) {
-                    players.value[players.value.indexOf(player) - 1].isActive = true;
-                    removePreviousDart(players.value[players.value.indexOf(player) - 1], isCancel);
-                    isCancel = true;
-                } else {
-                    players.value[0].volleys.pop();
-                    numberRound.value--;
-                    players.value[players.value.length - 1].isActive = true;
-                    removePreviousDart(players.value[players.value.length - 1], isCancel);
-                    isCancel = true;
-                }
+        if(!player.isActive) {
+            return;
+        }
+        if(!(player.volleys[player.volleys.length - 1][0] === "" && player.volleys[player.volleys.length - 1][1] === "" && player.volleys[player.volleys.length - 1][2] === "")) {
+            removePreviousDart(player, isCancel);
+            isCancel = true;
+        } else {
+            player.isActive = false;
+            const playerIndex = (players.value.indexOf(player) - 1) >= 0 ? players.value.indexOf(player) - 1 : players.value.length - 1;
+
+            players.value[playerIndex].isActive = true;
+            removePreviousDart(players.value[playerIndex], isCancel);
+
+            if(playerIndex === players.value.length - 1) {
+                players.value[0].volleys.pop();
+                numberRound.value--;
             }
+            
+            isCancel = true;
         }
     });
 }
