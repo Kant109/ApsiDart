@@ -33,8 +33,6 @@ onBeforeMount(async () => {
             let evolutionScore = cricketGameStats.evolutionScore[player.id];
             evolutionScore.push(player.points.total);
 
-            console.log(cricketGameStats.evolutionPosition[player.id].length - 1);
-
             player.chartData = {
                 title: {
                     text: 'Évolution de votre position et score',
