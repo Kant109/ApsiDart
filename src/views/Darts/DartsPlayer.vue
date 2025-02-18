@@ -153,15 +153,6 @@ const cancel = () => {
 const back = () => {
     router.push({ name: "home" });
 }
-
-const dragOptions = () => {
-      return {
-        animation: 200,
-        group: "players",
-        disabled: false,
-        ghostClass: "ghost"
-      };
-    }
 </script>
 
 <template>
@@ -171,10 +162,13 @@ const dragOptions = () => {
             <draggable v-if="selectedPlayers.length > 0" 
                     tag="div"
                     v-model="selectedPlayers"
-                    v-bind="dragOptions"
+                    animation="200"
+                    group="players"
                     @start="drag = true"
                     @end="drag = false"
+                    ghost-class = "ghost"
                     class="adding-player-recap"
+                    item-key="order"
                 >
                 <template #item="{ element: player }: {element : Player}" @dragover.prevent>
                     <div class="player-container"
@@ -374,11 +368,8 @@ const dragOptions = () => {
         border-color: red;
     }
 }
-    .sortable-chosen {
-        transition: transform 0.5s;
-    }
 
-    .sortable-ghost {
+    .ghost {
         opacity: 0.5;
         background: #c8ebfb;
     }
