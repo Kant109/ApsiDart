@@ -316,5 +316,9 @@ const openStat = () => {
             }
         }
     }
+    .player-stats .recap-doors {
+        gap: 0.1rem;
+        font-size: 14px;
+    }
 }
 </style>
