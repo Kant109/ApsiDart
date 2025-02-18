@@ -7,18 +7,19 @@ import Header from '@/components/Header.vue';
 const cricketGameStore = useCricketGameStore();
 
 const orderedPlayers = computed(() => JSON.parse(localStorage.getItem('orderedDartsPlayer') as string));
+const players = (orderedPlayers.value as [] as Array<Player>);
 
 const router = useRouter();
 
 const selectCricketMode = (selectedCricketMode: string) => {
     if(selectedCricketMode === 'simple') {
-        orderedPlayers.value.forEach((player: Player) => {
+        players.forEach((player: Player) => {
             const currentPlayer: CricketPlayer = {
                 id: player.id,
                 pseudo: player.pseudo,
                 firstName: player.firstName,
                 name: player.name,
-                isActive: player.order === "1",
+                isActive: players.indexOf(player) == 0,
                 points: {
                     20: 0,
                     19: 0,
@@ -38,7 +39,7 @@ const selectCricketMode = (selectedCricketMode: string) => {
                     15: 0,
                     25: 0
                 },
-                volleys: player.order === "1" ? [['', '', '']] : [],
+                volleys: players.indexOf(player) === 0 ? [['', '', '']] : []
                 position: orderedPlayers.value.indexOf(player) + 1
             };
 

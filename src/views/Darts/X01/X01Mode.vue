@@ -7,6 +7,7 @@ import { useRouter } from 'vue-router';
 const x01GameStore = useX01GameStore();
 
 const orderedPlayers = computed(() => JSON.parse(localStorage.getItem('orderedDartsPlayer') as string));
+const players = (orderedPlayers.value as [] as Array<Player>);
 const x01Mode = ref(0);
 
 const router = useRouter();
@@ -14,15 +15,15 @@ const router = useRouter();
 const selectX01Mode = (selectedX01Mode: number) => {
     x01Mode.value = selectedX01Mode;
 
-    orderedPlayers.value.forEach((player: Player) => {
+    players.forEach((player: Player) => {
         const currentPlayer: X01Player = {
             id: player.id,
             pseudo: player.pseudo,
             firstName: player.firstName,
             name: player.name,
-            isActive: player.order === "1",
+            isActive: players.indexOf(player) == 0,
             points: x01Mode.value,
-            volleys: player.order === "1" ? [['', '', '']] : []
+            volleys: players.indexOf(player) == 0 ? [['', '', '']] : []
         };
 
         x01GameStore.setPlayer(currentPlayer);
