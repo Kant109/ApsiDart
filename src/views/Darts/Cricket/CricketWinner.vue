@@ -3,8 +3,10 @@ import { useRouter } from "vue-router";
 import { useCricketGameStore } from "@/stores/CricketGameStore";
 import { computed, onBeforeMount, ref } from "vue";
 import { register } from 'swiper/element/bundle';
+import { useManagementAppStore } from "@/stores/ManagementAppStore";
 
 const gameStore = useCricketGameStore();
+const managementAppStore = useManagementAppStore();
 
 const players = computed(() => gameStore.players);
 const chartDataLoaded = ref(false);
@@ -107,6 +109,7 @@ onBeforeMount(async () => {
     } catch (error: any) {
         console.error(error.message);
     }
+    managementAppStore.computeData = false;
 })
 
 </script>
