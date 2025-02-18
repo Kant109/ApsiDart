@@ -219,9 +219,14 @@ html .confirm-end-game-dialog, body .confirm-end-game-dialog, #app .confirm-end-
   position: absolute;
   top: calc(50vh - 73px);
   padding: 0;
-  padding-top: 1rem;
   box-shadow: 0px 0px 20px 3px rgba(0, 0, 0, 0.6);
   z-index: 1000;
+}
+html .confirm-end-game-dialog .loader, body .confirm-end-game-dialog .loader, #app .confirm-end-game-dialog .loader, main .confirm-end-game-dialog .loader {
+  padding: 0.5rem;
+}
+html .confirm-end-game-dialog .loader .anim, body .confirm-end-game-dialog .loader .anim, #app .confirm-end-game-dialog .loader .anim, main .confirm-end-game-dialog .loader .anim {
+  height: 146px;
 }
 html .confirm-end-game-dialog .confirm-end-game-container, body .confirm-end-game-dialog .confirm-end-game-container, #app .confirm-end-game-dialog .confirm-end-game-container, main .confirm-end-game-dialog .confirm-end-game-container {
   display: flex;
@@ -235,6 +240,7 @@ html .confirm-end-game-dialog .confirm-end-game-container .title, body .confirm-
   font-size: 1rem;
   color: var(--text-color);
   text-align: center;
+  padding-top: 1rem;
 }
 html .confirm-end-game-dialog .confirm-end-game-container .text, body .confirm-end-game-dialog .confirm-end-game-container .text, #app .confirm-end-game-dialog .confirm-end-game-container .text, main .confirm-end-game-dialog .confirm-end-game-container .text {
   font-family: "Tilt Warp", sans-serif;

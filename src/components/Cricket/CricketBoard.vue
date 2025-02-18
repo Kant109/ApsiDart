@@ -2,6 +2,8 @@
 import { computed, onMounted, ref } from 'vue';
 import { useCricketGameStore } from '@/stores/CricketGameStore';
 import { useManagementAppStore } from '@/stores/ManagementAppStore';
+import { LottieAnimation } from "lottie-web-vue";
+import DartsAnimation from "../../assets/animations/stats.json";
 
 const gameStore = useCricketGameStore();
 const managementAppStore = useManagementAppStore();
@@ -11,9 +13,10 @@ const double = ref(false);
 const triple = ref(false);
 const isGameFinish = computed(() => gameStore.isGameFinish);
 const numberRound = ref(1);
-const openConfirmEndGame = ref(false);
 const blur = computed(() => managementAppStore.blur);
 const openCancelGame = computed(() => managementAppStore.openCancelGame);
+const openConfirmEndGame = computed(() => managementAppStore.openConfirmEndGame);
+const computeData = computed(() => managementAppStore.computeData);
 
 const emit = defineEmits(['comment', 'back']);
 
@@ -132,7 +135,7 @@ const checkIsGameFinish = async () => {
     if(!isGameFinish.value) {
         players.value.forEach(async player => {
             if(await playerCloseAllDoors(player) && await playerWithLessPoints(player)) {
-                openConfirmEndGame.value = true;
+                managementAppStore.openConfirmEndGame = true;
                 managementAppStore.blur = true;
                 gameStore.winnerPlayer = player;
                 return;
@@ -483,14 +486,17 @@ const reset = () => {
 }
 
 const confirmEndGame = async (confirm: boolean) => {
-    openConfirmEndGame.value = false;
-    managementAppStore.blur = false;
     if(confirm) {
-        await endGame();
-        gameStore.isGameFinish = true;
-        gameStore.players = await getPlayersPosition();
+        managementAppStore.computeData = true;
+        setTimeout(async () => {
+            await endGame();
+            gameStore.isGameFinish = true;
+            gameStore.players = await getPlayersPosition();
+        }, 2500);
     } else {
         cancel();
+        managementAppStore.openConfirmEndGame = false;
+        managementAppStore.blur = false;
     }
 }
 
@@ -534,8 +540,17 @@ onMounted(() => {
 
     <Teleport to="main">
         <dialog class="confirm-end-game-dialog" :open="openConfirmEndGame || openCancelGame">
-
-            <div class="confirm-end-game-container">
+            <div class="loader" v-if="computeData">
+                <LottieAnimation 
+                    :animation-data="DartsAnimation"
+                    :auto-play="true"
+                    :loop="true"
+                    :speed="1"
+                    ref="anim"
+                    class="anim"
+                />
+            </div>
+            <div class="confirm-end-game-container" v-else>
                 <div class="title">{{openCancelGame ? "Annulation de partie" : "Un joueur a terminé"}}</div>
                 <div class="text">{{openCancelGame ? "Êtes-vous sûr de vouloir annuler la partie ?" : "Confirmez-vous la fin de la partie ?"}}</div>
                 <div class="btn-container">

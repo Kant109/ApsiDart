@@ -56,6 +56,8 @@ const speak = async (text: string) => {
 watch(
     () => isGameFinish.value,
     () => {
+        managementAppStore.openConfirmEndGame = false;
+        managementAppStore.blur = false;
         router.push({ name: "cricket-winner" });
     }
 );
