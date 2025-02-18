@@ -87,9 +87,27 @@ const playerCloseAllDoors = (player: CricketPlayer): boolean => {
 }
 
 const getPlayersPosition = async (): Promise<CricketPlayer[]> => {
-    let orderedPlayersByPoints = players.value.slice();
+    let orderedPlayersByPoints = JSON.parse(JSON.stringify(players.value)) as Array<CricketPlayer>;
+
+    orderedPlayersByPoints.forEach(player => {
+        player.points.total += (player.doors[25] - 3 < 0 ? (3 - player.doors[25]) * 25 : 0);
+        player.points.total += (player.doors[20] - 3 < 0 ? (3 - player.doors[20]) * 20 : 0);
+        player.points.total += (player.doors[19] - 3 < 0 ? (3 - player.doors[19]) * 19 : 0);
+        player.points.total += (player.doors[18] - 3 < 0 ? (3 - player.doors[18]) * 18 : 0);
+        player.points.total += (player.doors[17] - 3 < 0 ? (3 - player.doors[17]) * 17 : 0);
+        player.points.total += (player.doors[16] - 3 < 0 ? (3 - player.doors[16]) * 16 : 0);
+        player.points.total += (player.doors[15] - 3 < 0 ? (3 - player.doors[15]) * 15 : 0);
+    });
 
     orderedPlayersByPoints.sort((j1: CricketPlayer, j2: CricketPlayer) => j1.points.total - j2.points.total);
+
+    players.value.forEach(player => {
+        orderedPlayersByPoints.forEach(orderedPlayer => {
+            if(player.id === orderedPlayer.id) {
+                player.position = orderedPlayersByPoints.indexOf(orderedPlayer) + 1;
+            }
+        })
+    });
 
     return orderedPlayersByPoints;
 }
@@ -98,15 +116,7 @@ const checkIsGameFinish = async () => {
     const playersPosition = await getPlayersPosition();
 
     if(!isGameFinish.value) {
-        if(playersPosition[0].points.total === 0) {
-            playersPosition.forEach(player => { 
-                if(playerCloseAllDoors(player)) {
-                    openConfirmEndGame.value = true;
-                    managementAppStore.blur = true;
-                    gameStore.winnerPlayer = player;
-                }
-            });
-        } else if(playerCloseAllDoors(playersPosition[0])) {
+        if(playerCloseAllDoors(playersPosition[0])) {
             openConfirmEndGame.value = true;
             managementAppStore.blur = true;
             gameStore.winnerPlayer = playersPosition[0];
@@ -191,7 +201,7 @@ const setPointsActivePlayer = async (points: number) => {
                 if(players.value.indexOf(player) === players.value.length - 1) {
                     let performances = [] as Array<DartPerformance>;
                     
-                    const playersPosition = await getPlayersPosition();
+                    await getPlayersPosition();
 
                     players.value.forEach(player => {
 
@@ -199,7 +209,7 @@ const setPointsActivePlayer = async (points: number) => {
                             "idPlayer": player.id,
                             "pseudo": player.firstName,
                             "score": player.points.total,
-                            "position": playersPosition.indexOf(player) + 1,
+                            "position": player.position,
                             "volley": player.volleys[player.volleys.length - 1][0] + "-" + player.volleys[player.volleys.length - 1][1] + "-" + player.volleys[player.volleys.length - 1][2],
                             "numberRound": numberRound.value,
                         })
@@ -253,7 +263,7 @@ const sendRound = async (performances: DartPerformance[]) => {
 const endGame = async () => {
     let performances = [] as Array<DartPerformance>;
 
-    const playersPosition = await getPlayersPosition();
+    await getPlayersPosition();
 
     players.value.forEach(player => {
 
@@ -261,7 +271,7 @@ const endGame = async () => {
             "idPlayer": player.id,
             "pseudo": player.firstName,
             "score": player.points.total,
-            "position": playersPosition.indexOf(player) + 1,
+            "position": player.position,
             "volley": player.volleys[player.volleys.length - 1][0] + "-" + player.volleys[player.volleys.length - 1][1] + "-" + player.volleys[player.volleys.length - 1][2],
             "numberRound": numberRound.value,
         })

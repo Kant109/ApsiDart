@@ -39,7 +39,8 @@ const selectCricketMode = (selectedCricketMode: string) => {
                     15: 0,
                     25: 0
                 },
-                volleys: players.indexOf(player) === 0 ? [['', '', '']] : []
+                volleys: players.indexOf(player) === 0 ? [['', '', '']] : [],
+                position: orderedPlayers.value.indexOf(player) + 1
             };
 
             cricketGameStore.players.push(currentPlayer);

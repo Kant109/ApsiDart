@@ -30,6 +30,9 @@ onBeforeMount(async () => {
         const cricketGameStats = await response.json();
 
         players.value.forEach(player => {
+            let evolutionScore = cricketGameStats.evolutionScore[player.id];
+            evolutionScore.push(player.points.total);
+
             player.chartData = {
                 title: {
                     text: 'Évolution de votre position et score',
@@ -75,12 +78,18 @@ onBeforeMount(async () => {
                         name: "Position",
                         yAxis: 1,
                         data: cricketGameStats.evolutionPosition[player.id],
-                        color: "#FF0000"
+                        color: "#FF0000",
                     },
                     {
                         name: "Score",
-                        data: cricketGameStats.evolutionScore[player.id],
-                        color: "#0000FF"
+                        data: evolutionScore,
+                        color: "#0000FF",
+                        zoneAxis: 'x',
+                        zones: [{
+                            value: cricketGameStats.evolutionPosition[player.id].length - 1
+                        }, {
+                            dashStyle: 'dot'
+                        }]
                     }
                 ]
             }
@@ -120,7 +129,7 @@ onBeforeMount(async () => {
                     </div>
                     <div class="game-stats">
                         <div class="player-position">Position : {{ players.indexOf(player) + 1 }} <sup v-if="players.indexOf(player) === 0">er</sup><sup v-else>ème</sup>/ {{ players.length }}</div>
-                        <div class="player-elo">Elo : {{ player.elo !== undefined ? player.elo![0] : "" }}</div>
+                        <div class="player-elo">Classement Elo : {{ player.elo !== undefined ? Math.round(player.elo[0]) : "" }}&nbsp;<img v-if="((player.elo !== undefined) && (player.elo.length > 1)) && player.elo[1] < player.elo[0]" src="@/assets/images/chevron-up.svg" alt=""><img v-if="((player.elo !== undefined) && (player.elo.length > 1)) && player.elo[1] > player.elo[0]" src="@/assets/images/chevron-down.svg" alt="">&nbsp;{{ ((player.elo !== undefined) && (player.elo.length > 1)) ? " ("  + (player.elo[0] - player.elo[1] < 0 ? player.elo[0] - player.elo[1] : `+${ player.elo[0] - player.elo[1] }`) + ")" : "" }}</div>
                     </div>
                     <div class="stats-container" v-if="chartDataLoaded">
                         <highcharts :options="player.chartData"></highcharts>
@@ -138,7 +147,7 @@ onBeforeMount(async () => {
 .end-game-container {
     position: relative;
     width: 100%;
-    height: 100%;
+    background-color: var(--bg-color-primary);
 
     .close {
         position: absolute;
@@ -202,12 +211,27 @@ onBeforeMount(async () => {
             }
         }
 
+        .game-stats {
+            display: flex;
+            flex-direction: column;
+        }
+
         .player-position, .player-elo {
             font-family: "Tilt Warp", sans-serif;
             font-size: 1rem;
             color: var(--text-color);
             text-align: center;
             margin: 1rem 0;
+
+            &:is(.player-elo) {
+                display: flex;
+                align-items: center;
+                
+                img {
+                    height: 1.5rem;
+                    width: 1.5rem;
+                }
+            }
         }
 
         .stats-container {
