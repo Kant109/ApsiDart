@@ -1,0 +1,34 @@
+<svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+  <!-- Fond -->
+  <rect width="200" height="200" fill="#ffffff"/>
+
+    <!-- Couche externe -->
+    <!-- <path d="M 20 10 L 100 10 Q 180 10 180 100 Q 180 190 100 190 L 20 190 Z" 
+        fill="none" 
+        stroke="#948366" 
+        stroke-width="8"/> -->
+
+    <!-- Couche médiane 1 -->
+    <!-- <path d="M 35 25 L 100 25 Q 165 25 165 100 Q 165 175 100 175 L 35 175 Z" 
+        fill="none" 
+        stroke="#00cc66" 
+        stroke-width="8"/> -->
+  
+  <!-- Couche médiane 2 -->
+  <path d="M 50 40 L 100 40 Q 150 40 150 100 Q 150 160 100 160 L 50 160 Z" 
+        fill="none" 
+        stroke="#d90368" 
+        stroke-width="8"/>
+        
+  <!-- Couche médiane 3 -->
+  <path d="M 65 55 L 100 55 Q 135 55 135 100 Q 135 145 100 145 L 65 145 Z" 
+        fill="none" 
+        stroke="#F9CD61" 
+        stroke-width="8"/>
+        
+  <!-- Couche interne -->
+  <path d="M 80 70 L 100 70 Q 120 70 120 100 Q 120 130 100 130 L 80 130 Z" 
+        fill="none" 
+        stroke="#2274a5" 
+        stroke-width="8"/>
+</svg>

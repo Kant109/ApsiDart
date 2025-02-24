@@ -22,15 +22,15 @@ export default defineConfig({
         cleanupOutdatedCaches: false
       },
       manifest: {
-        name: 'ApsiDart',
-        short_name: 'ApsiDart',
-        description: 'Application de fléchettes d\'Apside',
+        name: 'Denis',
+        short_name: 'Denis',
+        description: 'Un pur de moment plaisir',
         theme_color: '#ffffff',
         icons: [
           {
-            src: 'icons/darts.png',
+            src: 'icons/logo.svg',
             sizes: '512x512',
-            type: 'image/png',
+            type: 'image/svg',
           }
         ],
       },
