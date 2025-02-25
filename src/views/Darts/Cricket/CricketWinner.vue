@@ -14,7 +14,8 @@ const chartDataLoaded = ref(false);
 const router = useRouter();
 
 const replay = () => {
-    gameStore.gameId = 0;
+    gameStore.reset();
+    router.push({ name: "darts-player"});
 }
 
 const backHome = () => {
