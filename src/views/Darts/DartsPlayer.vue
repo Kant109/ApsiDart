@@ -188,11 +188,15 @@ const back = () => {
                         </div>
                     </div>
                 </template>
+                <template #footer>
+                    <div class="btn-container-add" @click.prevent="addNewPlayer">
+                        <i class="btn-add-player">+</i>
+                    </div>
+                </template>
             </draggable>
             <div class="error-nb-player" v-if="messageErrorNbPlayer">Il faut minimum 2 joueurs pour lancer une partie</div>
             <div class="btn-container">
                 <div v-if="isRemovePlayerMode" class="btn-save-players" @click.prevent="validPlayers">Valider</div>
-                <div v-if="!isRemovePlayerMode" class="btn-add-player" @click.prevent="addNewPlayer">Ajouter des joueurs</div>
                 <div v-if="selectedPlayers.length > 0 && !isRemovePlayerMode" class="btn-start-game" @click.prevent="startGame">Choix du mode</div>
                 <div v-if="selectedPlayers.length > 0 && !isRemovePlayerMode" class="btn-remove-player" @click.prevent="removePlayers">Supprimer des joueurs</div>
             </div>
@@ -296,7 +300,7 @@ const back = () => {
                 justify-content: center;
                 background-color: var(--bg-color-primary);
                 width: 100%;
-                border-radius: .5rem;
+
                 border: 5px solid var(--bg-color-primary);
                 position: relative;
 
@@ -366,6 +370,24 @@ const back = () => {
             }
         }
     }
+}
+.btn-container-add {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: .5rem;
+    border: 4px dotted var(--bg-color-primary);
+    background-color: #ffecd140;
+}
+
+.btn-add-player {
+    font-family: system-ui;
+    font-style: normal;
+    font-weight: bolder;
+    font-size: 50px;
+    top: -6px;
+    position: relative;
+    color: var(--active-player);
 }
 
 @keyframes appear {
