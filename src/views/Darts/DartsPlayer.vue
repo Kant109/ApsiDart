@@ -362,6 +362,10 @@ const back = () => {
     align-items: center;
     justify-content: center;
 
+    &:hover {
+        cursor: pointer;
+    }
+
     .btn-remove-icon {
         font-family: system-ui;
         font-size: 18px;
