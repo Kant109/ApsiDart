@@ -36,7 +36,7 @@ const launchAnimation = (gameImg: string) => {
 <template>
     <div class="header" :class="{'isAnimationLaunch': isAnimationLaunch}">
         <!-- <div class="profile" @click.prevent="goToProfile"></div> -->
-        <div class="title">DENIS</div>
+        <div class="title">ENIS</div>
         <!-- <div class="dark-mode" @click.prevent="setDarkMode">
             <input id="toggle" class="toggle" :class="{'darkmode': isDarkMode}" type="checkbox">
         </div> -->
@@ -83,9 +83,21 @@ const launchAnimation = (gameImg: string) => {
     .title {
         display: flex;
         justify-content: center;
-        font-family: "Monoton", sans-serif;
+        align-items: center;
+        font-family: "Michroma", sans-serif;
         font-size: 2rem;
         color: var(--text-color);
+
+        &::before {
+            content: "";
+            width: 4rem;
+            height: 4rem;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-image: url("@/assets/images/logo.svg");
+            box-sizing: border-box;
+            margin-right: -.8rem;
+        }
     }
 
     .dark-mode {
