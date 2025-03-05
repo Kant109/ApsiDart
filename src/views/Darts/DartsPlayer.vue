@@ -170,9 +170,9 @@ const back = () => {
                             <img class="player-img" :src="'https://api.dicebear.com/9.x/adventurer/svg?seed=' + player.firstName + player.pseudo + player.name" alt="Avatar" />
                             <div class="player-name">{{ player.pseudo.length > 5 ? player.pseudo.substring(0,5) + ".." : player.pseudo}}</div>
                         </div>
-                        <div class="btn-remove" @click.prevent="removePlayer(player)">
+                        <button type="button" class="btn-remove" @click.prevent="removePlayer(player)">
                             <i class="btn-remove-icon">x</i>
-                        </div>
+                        </button>
                     </div>
                 </template>
                 <template #footer>
@@ -358,6 +358,7 @@ const back = () => {
     border-radius: .5rem;
     border: 4px dotted var(--bg-color-primary);
     background-color: #ffecd140;
+    min-height: 102px;
 }
 
 .btn-add-player {
