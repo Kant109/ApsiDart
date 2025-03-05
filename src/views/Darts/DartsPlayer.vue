@@ -15,7 +15,6 @@ const allPlayers = ref([] as Array<Player>);
 const selectedPlayers = ref([] as Array<Player>);
 const openSearchPlayer = ref(false);
 const isDarkMode = computed(() => managementAppStore.isDarkMode);
-const isRemovePlayerMode = ref(false);
 const modalTitle = ref("Sélectionner des joueurs");
 const creatingPlayer = ref(false);
 const formError = ref(false);
@@ -31,9 +30,7 @@ const loader = ref(true);
 onMounted(async () => {
     if((localStorage.getItem('orderedDartsPlayer') as string) !== null) {
         const playersFromLocalStorage = JSON.parse(localStorage.getItem('orderedDartsPlayer') as string) as Array<Player>;
-        playersFromLocalStorage.forEach(player => {
-            selectedPlayers.value.push(player);
-        });
+        selectedPlayers.value.push(...playersFromLocalStorage);
     }
     if(selectedPlayers.value.length < 1) {
         openSearchPlayer.value = true;
@@ -81,14 +78,6 @@ const selectPlayer = (player: Player) => {
     }, 400);
 }
 
-const playerAction = (player: Player) => {
-    if(isRemovePlayerMode.value) {
-        const indexOfPlayer = selectedPlayers.value.indexOf(player);
-        selectedPlayers.value.splice(indexOfPlayer, 1);
-        allPlayers.value.push(player);
-    }
-}
-
 const startGame = () => {
     if(selectedPlayers.value.length > 1) {
         router.push({ name: "darts-mode"});
@@ -98,12 +87,10 @@ const startGame = () => {
     }
 }
 
-const validPlayers = () => {
-    isRemovePlayerMode.value = false;
-}
-
-const removePlayers = () => {
-    isRemovePlayerMode.value = true;
+const removePlayer = (player: Player) => {
+    const indexOfPlayer = selectedPlayers.value.indexOf(player);
+    selectedPlayers.value.splice(indexOfPlayer, 1);
+    allPlayers.value.push(player);
 }
 
 const addingPlayer = () => {
@@ -177,14 +164,14 @@ const back = () => {
                     item-key="order"
                 >
                 <template #item="{ element: player }: {element : Player}" @dragover.prevent>
-                    <div class="player-container"
-                        :class="{'remove-player': isRemovePlayerMode}"
-                        @click.prevent="playerAction(player)"
-                    >
+                    <div class="player-container">
                         <i class="player-order">{{ selectedPlayers.indexOf(player) + 1  }}</i>
                         <div class="player-content" draggable="false" @dragstart.prevent>
                             <img class="player-img" :src="'https://api.dicebear.com/9.x/adventurer/svg?seed=' + player.firstName + player.pseudo + player.name" alt="Avatar" />
                             <div class="player-name">{{ player.pseudo.length > 5 ? player.pseudo.substring(0,5) + ".." : player.pseudo}}</div>
+                        </div>
+                        <div class="btn-remove" @click.prevent="removePlayer(player)">
+                            <i class="btn-remove-icon">x</i>
                         </div>
                     </div>
                 </template>
@@ -196,9 +183,7 @@ const back = () => {
             </draggable>
             <div class="error-nb-player" v-if="messageErrorNbPlayer">Il faut minimum 2 joueurs pour lancer une partie</div>
             <div class="btn-container">
-                <div v-if="isRemovePlayerMode" class="btn-save-players" @click.prevent="validPlayers">Valider</div>
-                <div v-if="selectedPlayers.length > 0 && !isRemovePlayerMode" class="btn-start-game" @click.prevent="startGame">Choix du mode</div>
-                <div v-if="selectedPlayers.length > 0 && !isRemovePlayerMode" class="btn-remove-player" @click.prevent="removePlayers">Supprimer des joueurs</div>
+                <div v-if="selectedPlayers.length > 0" class="btn-start-game" @click.prevent="startGame">Choix du mode</div>
             </div>
         </div>
     </div>
@@ -304,12 +289,6 @@ const back = () => {
                 border: 5px solid var(--bg-color-primary);
                 position: relative;
 
-
-                &.remove-player {
-                    border: 5px solid;
-                    animation: bounce-border-color 1s infinite;
-                }
-
                 &:hover {
                     cursor: grab;
                 }
@@ -365,12 +344,13 @@ const back = () => {
                 @include btn-primary;
             }
             
-            .btn-add-player, .btn-modif-player, .btn-change-order, .btn-remove-player {
+            .btn-add-player, .btn-modif-player, .btn-change-order {
                 @include btn-secondary;
             }
         }
     }
 }
+
 .btn-container-add {
     display: flex;
     justify-content: center;
@@ -388,6 +368,37 @@ const back = () => {
     top: -6px;
     position: relative;
     color: var(--active-player);
+}
+
+.btn-remove {
+    position: absolute;
+    top: -10px;
+    right: -10px;
+    background-color: white;
+    width: 26px;
+    height: 26px;
+    min-height: 26px;
+    border-radius: 16px;
+    display: flex;
+    box-shadow: 1px 2px 1px 1px rgb(39 39 81 / 33%);
+    border: 1px solid rgba(0, 0, 0, .25);
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+
+    &:hover {
+        cursor: pointer;
+    }
+
+    .btn-remove-icon {
+        font-family: system-ui;
+        font-size: 18px;
+        font-style: normal;
+        font-weight: bolder;
+        top: -2px;
+        position: relative;
+        color:red;
+    }
 }
 
 @keyframes appear {
@@ -408,8 +419,8 @@ const back = () => {
     }
 }
 
-    .ghost {
-        opacity: 0.5;
-        background: #c8ebfb;
-    }
+.ghost {
+    opacity: 0.5;
+    background: #c8ebfb;
+}
 </style>
