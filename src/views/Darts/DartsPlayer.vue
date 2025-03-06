@@ -26,6 +26,10 @@ const pseudo = ref("");
 let drag = ref(false);
 const loader = ref(true);
 
+// TO DELETE AFTER TEST
+const isClicked = ref(0);
+// 
+
 
 onMounted(async () => {
     if((localStorage.getItem('orderedDartsPlayer') as string) !== null) {
@@ -88,6 +92,9 @@ const startGame = () => {
 }
 
 const removePlayer = (player: Player) => {
+    // TO DELETE AFTER TEST
+    isClicked.value++;
+    // 
     const indexOfPlayer = selectedPlayers.value.indexOf(player);
     selectedPlayers.value.splice(indexOfPlayer, 1);
     allPlayers.value.push(player);
@@ -151,6 +158,9 @@ const back = () => {
 <template>
     <div class="settings-container" :class="{'blur': openSearchPlayer}">
         <Header title="FLÉCHETTES" @previous-route="back" />
+        <!-- TO DELETE AFTER TEST -->
+        {{ isClicked }}
+        <!--  -->
         <div class="adding-player-container">
             <draggable v-if="selectedPlayers.length > 0" 
                     tag="div"
