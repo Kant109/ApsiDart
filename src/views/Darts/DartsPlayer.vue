@@ -173,15 +173,16 @@ const back = () => {
                     ghost-class = "ghost"
                     class="adding-player-recap"
                     item-key="order"
+                    filter=".btn-remove"
                 >
                 <template #item="{ element: player }: {element : Player}" @dragover.prevent>
                     <div class="player-container">
                         <i class="player-order">{{ selectedPlayers.indexOf(player) + 1  }}</i>
-                        <div class="player-content" draggable="false" @dragstart.prevent>
+                        <div class="player-content" @dragstart.prevent>
                             <img class="player-img" :src="'https://api.dicebear.com/9.x/adventurer/svg?seed=' + player.firstName + player.pseudo + player.name" alt="Avatar" />
                             <div class="player-name">{{ player.pseudo.length > 5 ? player.pseudo.substring(0,5) + ".." : player.pseudo}}</div>
                         </div>
-                        <button type="button" class="btn-remove" draggable="false" v-on:click="removePlayer(player)">
+                        <button type="button" class="btn-remove" v-on:click="removePlayer(player)">
                             <i class="btn-remove-icon">x</i>
                         </button>
                     </div>
