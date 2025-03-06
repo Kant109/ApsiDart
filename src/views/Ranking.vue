@@ -48,7 +48,6 @@ watch(
             
             <select name="sport" id="sport-select" v-model="selectedSport">
                 <option value="dart" :selected="selectedSport === 'dart'">Fléchettes</option>
-                <option value="babyfoot" :selected="selectedSport === 'babyfoot'">Babyfoot</option>
             </select>
         </div>
         <div class="ranking-content">
