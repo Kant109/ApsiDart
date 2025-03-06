@@ -9,6 +9,7 @@ import X01Mode from '@/views/Darts/X01/X01Mode.vue'
 import CricketTeamMode from '@/views/Darts/Cricket/CricketTeamMode.vue'
 import CricketWinner from '@/views/Darts/Cricket/CricketWinner.vue'
 import X01Winner from '@/views/Darts/X01/X01Winner.vue'
+import Ranking from '@/views/Ranking.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -17,6 +18,11 @@ const router = createRouter({
       path: '/',
       name: 'home',
       component: HomePage
+    },
+    {
+      path: '/ranking',
+      name: 'ranking',
+      component: Ranking
     },
     {
       path: '/darts',
