@@ -78,7 +78,6 @@ watch(
     .select-sport {
         display: flex;
         flex-direction: column;
-        margin-bottom: 1rem;
         width: 100%;
         padding: 0 1rem;
 
@@ -108,7 +107,7 @@ watch(
         flex-direction: column;
         gap: .5rem;
         width: 100%;
-        padding: 0 1rem;
+        padding: 1rem;
 
         .players {
             display: grid;
