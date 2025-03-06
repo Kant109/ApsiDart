@@ -159,6 +159,7 @@ const back = () => {
     <div class="settings-container" :class="{'blur': openSearchPlayer}">
         <Header title="FLÉCHETTES" @previous-route="back" />
         <!-- TO DELETE AFTER TEST -->
+        {{ drag }}
         {{ isClicked }}
         <!--  -->
         <div class="adding-player-container">
@@ -180,7 +181,7 @@ const back = () => {
                             <img class="player-img" :src="'https://api.dicebear.com/9.x/adventurer/svg?seed=' + player.firstName + player.pseudo + player.name" alt="Avatar" />
                             <div class="player-name">{{ player.pseudo.length > 5 ? player.pseudo.substring(0,5) + ".." : player.pseudo}}</div>
                         </div>
-                        <button type="button" class="btn-remove" v-on:click="removePlayer(player)">
+                        <button type="button" class="btn-remove" draggable="false" v-on:click="removePlayer(player)">
                             <i class="btn-remove-icon">x</i>
                         </button>
                     </div>
