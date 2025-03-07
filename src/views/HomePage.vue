@@ -38,6 +38,13 @@ const getRanking = () => {
     }, 1100);
 }
 
+const getGameDetails = () => {
+    launchAnimation('crossed_swords_3d');
+    setTimeout(() => {
+        router.push({ name: "game-details"});
+    }, 1100);
+}
+
 </script>
 
 <template>
@@ -54,7 +61,7 @@ const getRanking = () => {
             <img src="@/assets/images/trophy_3d.png" alt="Trophée">
             <div class="content">Classement</div>
         </div>
-        <div class="games-btn">
+        <div class="games-btn" @click.prevent="getGameDetails()">
             <img src="@/assets/images/crossed_swords_3d.png" alt="Trophée">
             <div class="content">Parties</div>
         </div>

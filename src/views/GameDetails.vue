@@ -1,22 +1,21 @@
 <script setup lang="ts">
-import Header from '@/components/Header.vue';
 import { onBeforeMount, ref, watch } from 'vue';
 import { useRouter } from 'vue-router';
+import Header from '@/components/Header.vue';
 
 const selectedSport = ref("");
-const players = ref([] as Array<PlayerRanking>);
+const games = ref([] as Array<GameDetails>);
 
 const router = useRouter();
 
-const getRanking = async (sport: string) => {
-    const url = import.meta.env.VITE_BE_URL + "/" + sport + "/stat/player/ranking";
+const getGameDetails = async (sport: string) => {
+    const url = import.meta.env.VITE_BE_URL + "/" + sport + "/game";
     try {
         const response = await fetch(url);
         if (!response.ok) {
             throw new Error(`Response status: ${response.status}`);
         }
-        const res = await response.json();
-        players.value = res.classements;
+        games.value = await response.json();
     } catch (error: any) {
         console.error(error.message);
     }
@@ -27,20 +26,20 @@ const previousRoute = () => {
 }
 
 onBeforeMount(() => {
-    selectedSport.value = localStorage.getItem('sports-ranking-denis') !== null ? localStorage.getItem('sports-ranking-denis') as string : 'dart';
+    selectedSport.value = localStorage.getItem('game-details-denis') !== null ? localStorage.getItem('game-details-denis') as string : 'dart';
 })
 
 watch(
     () => selectedSport.value,
-    () => getRanking(selectedSport.value)
+    () => getGameDetails(selectedSport.value)
 )
 
 </script>
 
 <template>
-    <div class="ranking-container">
+    <div class="game-details-container">
         <Header
-            title="Classement"
+            title="Parties"
             @previous-route="previousRoute"
         />
         <div class="select-sport">
@@ -50,17 +49,9 @@ watch(
                 <option value="dart" :selected="selectedSport === 'dart'">Fléchettes</option>
             </select>
         </div>
-        <div class="ranking-content">
-            <div class="players" v-for="player in players">
-                <div class="position">
-                    {{ players.indexOf(player) + 1 }}
-                </div>
-                <div class="name">
-                    {{ player.lastName }} <span>"{{ player.pseudo }}"</span> {{ player.name }}
-                </div>
-                <div class="elo">
-                    {{ player.elo }}
-                </div>
+        <div class="game-details-content">
+            <div class="game" v-for="game in games">
+                Partie #{{ game.id }}
             </div>
         </div>
     </div>
@@ -68,7 +59,7 @@ watch(
 
 <style lang="scss" scoped>
 
-.ranking-container {
+.game-details-container {
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -104,14 +95,14 @@ watch(
         }
     }
 
-    .ranking-content {
+    .game-details-content {
         display: flex;
         flex-direction: column;
         gap: .5rem;
         width: 100%;
         padding: 1rem;
 
-        .players {
+        .game {
             display: grid;
             grid-template-columns: 10% 60% 30%;
             align-items: center;
@@ -123,31 +114,7 @@ watch(
             cursor: pointer;
             font-family: "Playpen Sans", sans-serif;
             font-size: 1rem;
-
-            .position, .name, .elo {
-                display: flex;
-                flex-direction: row;
-
-                &:is(.position) {
-                    margin-left: .5rem;
-                    font-weight: 700;
-                }
-
-                &:is(.name) {
-                    gap: .5rem;
-                    span {
-                        font-weight: 300;
-                    }
-                }
-
-                &:is(.elo) {
-                    justify-content: flex-end;
-                    margin-right: .5rem;
-                    font-weight: 700;
-                }
-            }
         }
     }
 }
-
 </style>
