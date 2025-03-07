@@ -56,10 +56,10 @@ watch(
                     {{ players.indexOf(player) + 1 }}
                 </div>
                 <div class="name">
-                    {{ player.lastName }} {{ player.pseudo }} {{ player.name }}
+                    {{ player.lastName }} <span>"{{ player.pseudo }}"</span> {{ player.name }}
                 </div>
                 <div class="elo">
-                    Elo : {{ player.elo }}
+                    {{ player.elo }}
                 </div>
             </div>
         </div>
@@ -113,14 +113,13 @@ watch(
             display: grid;
             grid-template-columns: 10% 60% 30%;
             align-items: center;
-            gap: 0.5rem;
             width: 100%;
-            height: 3rem;
+            min-height: 3rem;
             position: relative;
             background-color: var(--bg-color-secondary);
             border-radius: 8px;
             cursor: pointer;
-            font-family: "Tilt Warp", sans-serif;
+            font-family: "Playpen Sans", sans-serif;
             font-size: 1rem;
 
             .position, .name, .elo {
@@ -129,6 +128,20 @@ watch(
 
                 &:is(.position) {
                     margin-left: .5rem;
+                    font-weight: 700;
+                }
+
+                &:is(.name) {
+                    gap: .5rem;
+                    span {
+                        font-weight: 300;
+                    }
+                }
+
+                &:is(.elo) {
+                    justify-content: flex-end;
+                    margin-right: .5rem;
+                    font-weight: 700;
                 }
             }
         }
