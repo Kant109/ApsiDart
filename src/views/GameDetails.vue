@@ -25,6 +25,10 @@ const previousRoute = () => {
     router.push({ name:"home" });
 }
 
+const seeGameDetails = (idGame: number) => {
+    console.log(idGame)
+}
+
 onBeforeMount(() => {
     selectedSport.value = localStorage.getItem('game-details-denis') !== null ? localStorage.getItem('game-details-denis') as string : 'dart';
 })
@@ -51,7 +55,16 @@ watch(
         </div>
         <div class="game-details-content">
             <div class="game" v-for="game in games">
-                Partie #{{ game.id }}
+                <div class="info-game">
+                    <div class="id">
+                        Partie #{{ game.id }}
+                    </div>
+                    <img :src="'/icons/' + selectedSport + '.png'" :alt="selectedSport">
+                </div>
+                <div class="winner-info">
+                    {{ game.typeGame }}
+                </div>
+                <div class="see-more" @click.prevent="seeGameDetails(game.id)">plus de statistiques</div>
             </div>
         </div>
     </div>
@@ -103,8 +116,8 @@ watch(
         padding: 1rem;
 
         .game {
-            display: grid;
-            grid-template-columns: 10% 60% 30%;
+            display: flex;
+            flex-direction: column;
             align-items: center;
             width: 100%;
             min-height: 3rem;
@@ -114,6 +127,26 @@ watch(
             cursor: pointer;
             font-family: "Playpen Sans", sans-serif;
             font-size: 1rem;
+            padding: 0 1rem 1rem 1rem;
+            gap: .5rem;
+
+            .info-game {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                width: 100%;
+
+                img {
+                    width: 4rem;
+                    aspect-ratio: 1/1;
+                }
+            }
+
+            .see-more {
+                text-decoration: underline;
+                font-size: .75rem;
+                color: grey;
+            }
         }
     }
 }

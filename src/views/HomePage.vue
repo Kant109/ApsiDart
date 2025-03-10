@@ -69,10 +69,10 @@ const getGameDetails = () => {
     <div class="all-games-container" :class="{'isAnimationLaunch': isAnimationLaunch}">
         <h2>Jeux :</h2>
         <GameContainer
-            img="darts"
+            img="dart"
             title="Fléchettes"
             route-name="darts-player"
-            @click.prevent="launchAnimation('darts')"
+            @click.prevent="launchAnimation('dart')"
         />
         <!-- <GameContainer
             img="babyfoot"
